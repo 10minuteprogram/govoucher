@@ -1,0 +1,6 @@
+db.sqlite3
+media/
+Pipfile.lock
+
+**/migrations/*
+!**/migrations/__init__.py

@@ -1,0 +1,97 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+
+    <head>
+
+        <meta charset="utf-8" />
+        <title>Register | Lexa - Admin & Dashboard Template</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
+        <meta content="Themesbrand" name="author" />
+        <!-- App favicon -->
+        <link rel="shortcut icon" href="{%static 'management/images/favicon.ico"> 
+        
+        <!-- Bootstrap Css -->
+        <link href="{%static 'management/css/bootstrap.min.css' %}" id="bootstrap-style" rel="stylesheet" type="text/css" />
+        <!-- Icons Css -->
+        <link href="{%static 'management/css/icons.min.css' %}" rel="stylesheet" type="text/css" />
+        <!-- App Css-->
+        <link href="{%static 'management/css/app.min.css' %}" id="app-style" rel="stylesheet" type="text/css" />
+
+    </head>
+
+    <body>
+        <div class="account-pages my-5 pt-sm-5">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-md-8 col-lg-6 col-xl-5">
+                        <div class="card overflow-hidden">
+                            <div class="card-body pt-0">
+                                <h3 class="text-center mt-5 mb-4">
+                                    <a href="index.html" class="d-block auth-logo">
+                                        <img src="{%static 'management/images/logo-dark.png" alt="" height="30" class="auth-logo-dark">
+                                        <img src="{%static 'management/images/logo-light.png" alt="" height="30" class="auth-logo-light">
+                                    </a>
+                                </h3>
+                                <div class="p-3">
+                                    <h4 class="text-muted font-size-18 mb-1 text-center">Staff Register</h4>
+                                    {% if messages %}
+                                    {% include 'management/message.html' %}
+                                    {% else %}
+                                    <p class="text-muted text-center">Get your Staff account Create now.</p>
+                                    {% endif %}
+                                    <form method="post" class="form-horizontal mt-4" >
+                                        {% csrf_token %}
+
+                                        <div class="mb-3">
+                                            <label for="username">Username</label>
+                                            <input type="text" class="form-control" name="username" required id="username" placeholder="Enter Staff username">
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="useremail">Email</label>
+                                            <input type="email" class="form-control" name="email" id="email" required placeholder="Enter Staff email">
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="userpassword">Password</label>
+                                            <input type="password" class="form-control" name="password" required id="password" placeholder="Enter Staff password">
+                                        </div>
+
+                                        <div class="mb-3 row mt-4">
+                                            <div class="col-12 text-end">
+                                                <button class="btn btn-primary w-md waves-effect waves-light" type="submit">Register</button>
+                                            </div>
+                                        </div>
+
+                                        <div class="mb-0 row">
+                                            <div class="col-12 mt-4">
+                                                <p class="text-muted mb-0 font-size-14">By registering you agree to the Lexa <a href="#" class="text-primary">Terms of Use</a></p>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-5 text-center">
+                            <p>Already have an account ? <a href="{% url 'login' %}" class="text-primary"> Login </a> </p>
+                            © <script>document.write(new Date().getFullYear())</script> Lexa <span class="d-none d-sm-inline-block"> - Crafted with <i class="mdi mdi-heart text-danger"></i> by Themesbrand.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- JAVASCRIPT -->
+        <script src="{%static 'management/libs/jquery/jquery.min.js' %}"></script>
+        <script src="{%static 'management/libs/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+        <script src="{%static 'management/libs/metismenu/metisMenu.min.js' %}"></script>
+        <script src="{%static 'management/libs/simplebar/simplebar.min.js' %}"></script>
+        <script src="{%static 'management/libs/node-waves/waves.min.js' %}"></script>
+        <script src="{%static 'management/libs/jquery-sparkline/jquery.sparkline.min.js' %}"></script>
+        <!-- App js -->
+        <script src="{%static 'management/js/app.js' %}"></script>
+    </body>
+
+</html>
