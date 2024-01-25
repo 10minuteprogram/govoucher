@@ -48,7 +48,7 @@
                     <a href="{% url 'users' %}" class=" waves-effect">
                         <i class="mdi mdi-account-group"></i>
                         <span class="badge rounded-pill bg-success float-end">New</span>
-                        <span>All users</span>
+                        <span>All Customers</span>
                     </a>
                 </li>
 
@@ -159,7 +159,7 @@
                 </li>
 
                 <li class="menu-title">Extras</li>
-
+                {% if user.is_superuser %}
                 <li>
                     <a href="javascript: void(0);" class="has-arrow waves-effect">
                         <i class="mdi mdi-36px mdi-account"></i>
@@ -177,7 +177,7 @@
                         </li>
                     </ul>
                 </li>
-
+                {% endif %}
                 <li>
                     <a href="javascript: void(0);" class="has-arrow waves-effect">
                         <i class="mdi mdi-account-box"></i>

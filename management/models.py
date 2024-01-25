@@ -13,6 +13,7 @@ class Profile(models.Model):
     profile_image = models.FileField(upload_to='user/profile/images', blank=True, null=True)
     email_verification_code = models.CharField(max_length=6, blank=True, null=True)
     is_email_active = models.BooleanField(default=False)
+    forget_password_token = models.CharField(max_length=100,blank=True, null=True)
 
 
 @receiver(post_save, sender=User)
@@ -23,3 +24,7 @@ def create_user_profile(sender, instance, created, **kwargs):
 @receiver(post_save, sender=User)
 def save_user_profile(sender, instance, **kwargs):
     instance.profile.save()
+
+
+def __str__(self):
+    return self.user
