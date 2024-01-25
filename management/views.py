@@ -8,8 +8,10 @@ import random
 from govoucher.postman import send_email
 import uuid
 from .helpers import send_forget_password_mail
+from django.http import HttpResponse
 
 # Create your views here.
+@login_required(login_url='login')
 def home(request):
 
     return render(request,'management/home.html')
@@ -36,7 +38,7 @@ def staffs_list(request):
 
     return render (request, 'management/staffs_list.html', context)
 
-
+@login_required(login_url='login')
 def users(request):
 
     users = User.objects.filter(is_superuser= False, is_staff = False)
@@ -57,24 +59,68 @@ def login(request):
 
     if request.method == 'POST':
         username = request.POST.get('username')
-        passwoed = request.POST.get('password')
+        password = request.POST.get('password')
 
-        if username and passwoed:
-            user = authenticate(request, username=username, password=passwoed)
 
+        if username and password:
+            user = authenticate(request, username=username, password=password)
+            
+
+            # geneate random otp
             if user:
-                auth_login(request,user)
-                return redirect('home')
+                otp = random.randint(100000,999999)
+
+                user.profile.email_verification_code = otp
+                user.profile.save()
+                user.save()
+                print(otp)
+                context = {
+                    'otp': otp,
+                    'username':username
+                }
+                email = User.objects.get(username=username).email
+                send_email('Verify your account', [email], 'management/emails/email_verification.html', context, [])
+                return redirect('verify_account')
+
+            # if user:
+            #     auth_login(request,user)
+            #     return redirect('home')
             else:
                 messages.error(request, "Invalid username and password")
+        
         else:
             messages.error(request, "username and password reqired")
     
 
-
     return render(request, 'accounts/login.html')
 
-def login_view(request):
+def login_verify(request):
+
+    if request.method == 'POST':
+        otp = request.POST.get('otp')
+
+        user_otp = Profile.objects.filter(email_verification_code=otp).first()
+
+        if user_otp:
+            user = User.objects.get(id=user_otp.user.id)
+
+            if otp == user_otp.email_verification_code:
+                auth_login(request, user)
+                messages.success(request, "Login successful")
+                return redirect('home')
+            else:
+                messages.error(request, "Invalid OTP entered")
+        else:
+            messages.error(request, "Invalid OTP entered or user not found")
+
+
+
+
+    return render(request, 'accounts/login_verify_email.html')
+
+
+
+def logout_view(request):
     logout(request,)
     return redirect('login')
 
@@ -136,6 +182,8 @@ def changePassword(request , token):
     
     try:
         profile_obj = Profile.objects.filter(forget_password_token = token).first()
+        if not profile_obj:
+            return HttpResponse("Invalid Token")
         context = {'user_id' : profile_obj.user.id}
         
         if request.method == 'POST':
@@ -202,6 +250,11 @@ def create_staff(request):
 
         #create staff account
         user = User.objects.create_user(username=username, email=email, password=password, is_staff=is_staff)
+        context = {
+            'username': username,
+            'password': password,
+        }        
+        send_email('your staff account', [email], 'management/emails/staff_info_email.html', context, [])
 
         messages.success(request, 'Staff user created successfully.')
         return redirect('staffs_list')
