@@ -1,97 +1,120 @@
-{% load static %}
-<!doctype html>
-<html lang="en">
+{% extends 'management/base.html' %}
 
-    <head>
+{% block content %}
 
-        <meta charset="utf-8" />
-        <title>Register | Lexa - Admin & Dashboard Template</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
-        <meta content="Themesbrand" name="author" />
-        <!-- App favicon -->
-        <link rel="shortcut icon" href="{%static 'management/images/favicon.ico"> 
-        
-        <!-- Bootstrap Css -->
-        <link href="{%static 'management/css/bootstrap.min.css' %}" id="bootstrap-style" rel="stylesheet" type="text/css" />
-        <!-- Icons Css -->
-        <link href="{%static 'management/css/icons.min.css' %}" rel="stylesheet" type="text/css" />
-        <!-- App Css-->
-        <link href="{%static 'management/css/app.min.css' %}" id="app-style" rel="stylesheet" type="text/css" />
+    <!-- ============================================================== -->
+    <!-- Start right Content here -->
+    <!-- ============================================================== -->
+    <div class="main-content">
 
-    </head>
+        <div class="page-content">
+            <div class="container-fluid">
 
-    <body>
-        <div class="account-pages my-5 pt-sm-5">
-            <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-md-8 col-lg-6 col-xl-5">
-                        <div class="card overflow-hidden">
-                            <div class="card-body pt-0">
-                                <h3 class="text-center mt-5 mb-4">
-                                    <a href="index.html" class="d-block auth-logo">
-                                        <img src="{%static 'management/images/logo-dark.png" alt="" height="30" class="auth-logo-dark">
-                                        <img src="{%static 'management/images/logo-light.png" alt="" height="30" class="auth-logo-light">
-                                    </a>
-                                </h3>
-                                <div class="p-3">
-                                    <h4 class="text-muted font-size-18 mb-1 text-center">Staff Register</h4>
-                                    {% if messages %}
-                                    {% include 'management/message.html' %}
-                                    {% else %}
-                                    <p class="text-muted text-center">Get your Staff account Create now.</p>
-                                    {% endif %}
-                                    <form method="post" class="form-horizontal mt-4" >
-                                        {% csrf_token %}
-
-                                        <div class="mb-3">
-                                            <label for="username">Username</label>
-                                            <input type="text" class="form-control" name="username" required id="username" placeholder="Enter Staff username">
-                                        </div>
-
-                                        <div class="mb-3">
-                                            <label for="useremail">Email</label>
-                                            <input type="email" class="form-control" name="email" id="email" required placeholder="Enter Staff email">
-                                        </div>
-
-                                        <div class="mb-3">
-                                            <label for="userpassword">Password</label>
-                                            <input type="password" class="form-control" name="password" required id="password" placeholder="Enter Staff password">
-                                        </div>
-
-                                        <div class="mb-3 row mt-4">
-                                            <div class="col-12 text-end">
-                                                <button class="btn btn-primary w-md waves-effect waves-light" type="submit">Register</button>
-                                            </div>
-                                        </div>
-
-                                        <div class="mb-0 row">
-                                            <div class="col-12 mt-4">
-                                                <p class="text-muted mb-0 font-size-14">By registering you agree to the Lexa <a href="#" class="text-primary">Terms of Use</a></p>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mt-5 text-center">
-                            <p>Already have an account ? <a href="{% url 'login' %}" class="text-primary"> Login </a> </p>
-                            © <script>document.write(new Date().getFullYear())</script> Lexa <span class="d-none d-sm-inline-block"> - Crafted with <i class="mdi mdi-heart text-danger"></i> by Themesbrand.</span>
+                <!-- start page title -->
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="page-title-box">
+                            <h4>Create Staff Account</h4>
+                                <ol class="breadcrumb m-0">
+                                    <li class="breadcrumb-item"><a href="{% url 'staffs_list' %}">Staff-list</a></li>
+                                    <li class="breadcrumb-item"><a href="{% url 'create_staff' %}">create-staff</a></li>
+                                </ol>
                         </div>
                     </div>
+
                 </div>
-            </div>
-        </div>
+                <!-- end page title -->
 
-        <!-- JAVASCRIPT -->
-        <script src="{%static 'management/libs/jquery/jquery.min.js' %}"></script>
-        <script src="{%static 'management/libs/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
-        <script src="{%static 'management/libs/metismenu/metisMenu.min.js' %}"></script>
-        <script src="{%static 'management/libs/simplebar/simplebar.min.js' %}"></script>
-        <script src="{%static 'management/libs/node-waves/waves.min.js' %}"></script>
-        <script src="{%static 'management/libs/jquery-sparkline/jquery.sparkline.min.js' %}"></script>
-        <!-- App js -->
-        <script src="{%static 'management/js/app.js' %}"></script>
-    </body>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
 
-</html>
+                            <form method="post">
+                                {% csrf_token %}
+
+                                <div class="mb-3 row">
+                                    <label for="example-text-input" class="col-md-2 col-form-label">First Name</label>
+                                    <div class="col-md-10">
+                                        <input class="form-control" type="text" name="first_name" id="name">
+                                    </div>
+                                </div><!-- end row -->
+                                <div class="mb-3 row">
+                                    <label for="example-text-input" class="col-md-2 col-form-label">Last Name</label>
+                                    <div class="col-md-10">
+                                        <input class="form-control" type="text" name="last_name" id="name">
+                                    </div>
+                                </div><!-- end row -->
+                                <div class="mb-3 row">
+                                    <label for="example-search-input" class="col-md-2 col-form-label">Username</label>
+                                    <div class="col-md-10">
+                                        <input class="form-control" type="text" name="username" id="username">
+                                    </div>
+                                </div><!-- end row -->
+                                <div class="mb-3 row">
+                                    <label for="example-email-input" class="col-md-2 col-form-label">Email</label>
+                                    <div class="col-md-10">
+                                        <input class="form-control" type="email" name="email" id="email">
+                                    </div>
+                                </div><!-- end row -->
+                                <div class="mb-3 row">
+                                    <label for="example-url-input" class="col-md-2 col-form-label">Father Name</label>
+                                    <div class="col-md-10">
+                                        <input class="form-control" type="text" name="father_name" id="father_name">
+                                    </div>
+                                </div><!-- end row -->
+                                <div class="mb-3 row">
+                                    <label for="example-url-input" class="col-md-2 col-form-label">Mother Name</label>
+                                    <div class="col-md-10">
+                                        <input class="form-control" type="text" name="mother_name" id="mother_name">
+                                    </div>
+                                </div><!-- end row -->
+                                <div class="mb-3 row">
+                                    <label for="example-url-input" class="col-md-2 col-form-label">Birth Date</label>
+                                    <div class="col-md-10">
+                                        <input class="form-control" type="date" name="birth_date" id="mother_name">
+                                    </div>
+                                </div><!-- end row -->
+                                <div class="mb-3 row">
+                                    <label for="example-tel-input" class="col-md-2 col-form-label">Phone</label>
+                                    <div class="col-md-10">
+                                        <input class="form-control" type="text" name="phone" id="example-tel-input">
+                                    </div>
+                                </div><!-- end row -->
+                                <div class="mb-3 row">
+                                    <label for="example-tel-input" class="col-md-2 col-form-label">Nid no</label>
+                                    <div class="col-md-10">
+                                        <input class="form-control" type="text" name="nid" id="example-tel-input">
+                                    </div>
+                                </div><!-- end row -->
+                                <div class="mb-3 row">
+                                    <label for="example-tel-input" class="col-md-2 col-form-label">Address</label>
+                                    <div class="col-md-10">
+                                        <input class="form-control" type="text" name="address" id="example-tel-input">
+                                    </div>
+                                </div><!-- end row -->
+
+
+                                <div class="mb-3 row">
+                                    <label class="col-md-2 col-form-label">Gender</label>
+                                    <div class="col-md-10">
+                                        <select class="form-control" name="gender">
+                                            <option>Select</option>
+                                            <option>Male</option>
+                                            <option>Female</option>
+                                        </select>
+                                    </div>
+                                </div><!-- end row -->
+                            
+                                <br>
+                                <div class="mt-4">
+                                    <button type="submit" class="btn btn-primary w-md">Submit</button>
+                                </div>
+                            </form>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end col -->
+                </div>
+                <!-- end row -->
+{% endblock %}

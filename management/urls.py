@@ -17,6 +17,8 @@ urlpatterns = [
     path('staffs_list/',superuser_required(staffs_list) , name= 'staffs_list' ),
     path('superuser_list/',superuser_required(superuser_list), name='superuser_list'),
     path('users/', users, name='users'),
+    path('profile/', management_profile, name='profile'),
+    path('edit-profile/', edit_profile, name='edit_profile'),
 
     #this is authentication url
     path('login/', login, name='login'),
@@ -27,4 +29,7 @@ urlpatterns = [
     path('verify_account/', login_verify, name='verify_account'),
     
     path('create_staff/', superuser_required(create_staff), name='create_staff'),
+    path('create_superuser/', superuser_required(create_superuser), name='create_superuser'),
+
+
 ]
