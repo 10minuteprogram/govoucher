@@ -14,24 +14,11 @@
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="page-title-box">
-                                    <h4>Editable Table</h4>
+                                    <h4>Staff List Table</h4>
                                         <ol class="breadcrumb m-0">
-                                            <li class="breadcrumb-item"><a href="javascript: void(0);">Lexa</a></li>
-                                            <li class="breadcrumb-item"><a href="javascript: void(0);">Tables</a></li>
-                                            <li class="breadcrumb-item active">Editable Table</li>
+                                            <li class="breadcrumb-item"><a href="{% url 'staffs_list' %}">staff-list</a></li>
+                                            <li class="breadcrumb-item"><a href="{% url 'create_staff' %}">create_staff</a></li>
                                         </ol>
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="state-information d-none d-sm-block">
-                                    <div class="state-graph">
-                                        <div id="header-chart-1" data-colors='["--bs-primary"]'></div>
-                                        <div class="info">Balance $ 2,317</div>
-                                    </div>
-                                    <div class="state-graph">
-                                        <div id="header-chart-2" data-colors='["--bs-info"]'></div>
-                                        <div class="info">Item Sold 1230</div>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -72,7 +59,7 @@
                                                         <td data-field="name">{{staff.username}}</td>
                                                        
                                                         <td data-field="age">24</td>
-                                                        <td data-field="gender">Male</td>
+                                                        <td data-field="gender">{{staff.profile.gender}}</td>
                                                         <td style="width: 100px">
                                                             <a class="btn btn-outline-secondary btn-sm edit" title="Edit">
                                                                 <i class="fas fa-pencil-alt"></i>
@@ -81,9 +68,8 @@
                                                         <td>
                                                             <div class="form-check form-switch form-switch-md mb-3" dir="ltr">
                                                                 <input type="checkbox" class="form-check-input"
-                                                                    id="customSwitchsizemd" {% if user.staff_status %}  checked {% endif %}
-                                                                     onclick="toggleStaffStatus({{ user.id }})">
-            
+                                                                       id="customSwitchsizemd_{{ staff.id }}" {% if staff.staff_status %} checked {% endif %}
+                                                                       onclick="toggleStaffStatus({{ staff.id }})">
                                                             </div>
                                                         </td>
                                                     </tr>
@@ -100,5 +86,22 @@
                     </div> <!-- container-fluid -->
                 </div>
                 <!-- End Page-content -->
+    {% block js_file %}
+    <script>
+        function toggleStaffStatus(userId) {
+            const checkbox = document.getElementById(customSwitchsizemd_${staffId});
+            fetch(/toggle_staff/${staffId}/)
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                // Update checkbox state based on the server response
+                checkbox.checked = data.is_staff;
+                } else {
+                console.error(Error: ${data.message});
+                }
+            });
+        }
+    </script>
+    {% endblock %}
 {% endblock %}
     

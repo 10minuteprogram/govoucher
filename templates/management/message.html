@@ -4,7 +4,7 @@
             {% if message.tags == 'success' %}
             <li class="alert alert-success">{{message}}</li>
             {% elif message.tags == 'error' %}
-            <li class="alert alert-danger">{{message}}</li>
+            <p class="alert alert-danger">{{message}}</p>
             {% endif %}
         {% endfor %}
     </ul>

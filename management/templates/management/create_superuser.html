@@ -1,0 +1,72 @@
+{% extends 'management/base.html' %}
+
+{% block content %}
+    <!-- ============================================================== -->
+    <!-- Start right Content here -->
+    <!-- ============================================================== -->
+    <div class="main-content">
+
+        <div class="page-content">
+            <div class="container-fluid">
+
+                <!-- start page title -->
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="page-title-box">
+                            <h4>Superuser Create</h4>
+                                <ol class="breadcrumb m-0">
+                                    <li class="breadcrumb-item"><a href="{% url 'superuser_list' %}">superuser-list</a></li>
+                                    <li class="breadcrumb-item"><a href="{% url 'create_superuser' %}">create-superuser</a></li>
+                                </ol>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- end page title -->
+
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+                            {% if messages %}
+                            {% include 'management/message.html' %}
+                            {% endif %}
+
+                            <form method="post">
+                                {% csrf_token %}
+
+                                <div class="mb-3 row">
+                                    <label for="example-text-input" class="col-md-2 col-form-label">First Name</label>
+                                    <div class="col-md-10">
+                                        <input class="form-control" type="text" name="first_name" id="name">
+                                    </div>
+                                </div><!-- end row -->
+                                <div class="mb-3 row">
+                                    <label for="example-text-input" class="col-md-2 col-form-label">Last Name</label>
+                                    <div class="col-md-10">
+                                        <input class="form-control" type="text" name="last_name" id="name">
+                                    </div>
+                                </div><!-- end row -->
+                                <div class="mb-3 row">
+                                    <label for="example-search-input" class="col-md-2 col-form-label">Username</label>
+                                    <div class="col-md-10">
+                                        <input class="form-control" type="text" name="username" id="username">
+                                    </div>
+                                </div><!-- end row -->
+                                <div class="mb-3 row">
+                                    <label for="example-email-input" class="col-md-2 col-form-label">Email</label>
+                                    <div class="col-md-10">
+                                        <input class="form-control" type="email" name="email" id="email">
+                                    </div>
+                                </div><!-- end row -->
+                                <div class="mt-4">
+                                    <button type="submit" class="btn btn-primary w-md">Submit</button>
+                                </div>
+                            </form>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end col -->
+                </div>
+                <!-- end row -->
+{% endblock %}

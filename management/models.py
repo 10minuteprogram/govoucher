@@ -11,9 +11,20 @@ class Profile(models.Model):
     location = models.CharField(max_length=30, blank=True, null=True)
     birth_date = models.DateField(null=True, blank=True)
     profile_image = models.FileField(upload_to='user/profile/images', blank=True, null=True)
+    father_name = models.CharField(max_length=150,null=True, blank=True)
+    mother_name = models.CharField(max_length=150,null=True, blank=True)
+    gender = models.CharField(max_length=10,null=True, blank=True)
+    phone = models.IntegerField(null=True, blank=True)
+    address = models.CharField(max_length=200,null=True, blank=True)
+    nid = models.IntegerField(null=True, blank=True)
+    
     email_verification_code = models.CharField(max_length=6, blank=True, null=True)
     is_email_active = models.BooleanField(default=False)
     forget_password_token = models.CharField(max_length=100,blank=True, null=True)
+    created_date = models.DateTimeField(auto_now_add=True,blank=True, null=True)
+
+    def __str__(self):
+        return f"{self.user.username}'s Profile"
 
 
 @receiver(post_save, sender=User)
@@ -26,5 +37,4 @@ def save_user_profile(sender, instance, **kwargs):
     instance.profile.save()
 
 
-def __str__(self):
-    return self.user
+
