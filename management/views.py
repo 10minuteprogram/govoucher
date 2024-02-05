@@ -7,7 +7,6 @@ from .models import *
 import random
 from govoucher.postman import send_email
 import uuid
-from .helpers import send_forget_password_mail
 from django.http import HttpResponse
 from datetime import datetime
 from django.core.exceptions import ObjectDoesNotExist
@@ -83,7 +82,7 @@ def login(request):
             if user is not None:
                 if user.is_superuser or user.is_staff:
 
-            # geneate random otp
+                    # geneate random otp
                     if user:
                         otp = random.randint(100000,999999)
 
@@ -96,16 +95,16 @@ def login(request):
                             'username':username
                         }
                         email = User.objects.get(username=username).email
-                        #send_email('Verify your account', [email], 'management/emails/email_verification.html', context, [])
+                        send_email('Verify your account', [email], 'management/emails/email_verification.html', context, [])
                         return redirect('verify_account')
 
                     else:
                         messages.error(request, "Invalid username and password")
-                else:
-                    messages.error(request, 'Invalid username and password.')    
+            else:
+                messages.error(request, 'Invalid username and password.')  
         else:
             messages.error(request, "username and password reqired")
-            
+ 
 
     return render(request, 'accounts/login.html')
 
@@ -136,7 +135,7 @@ def login_verify(request):
 
 
 def logout_view(request):
-    logout(request,)
+    logout(request)
     return redirect('login')
 
 
@@ -192,38 +191,33 @@ def sign_up(request):
 
 
 def changePassword(request , token):
-    context = {}
-    
-    
+
     try:
         profile_obj = Profile.objects.filter(forget_password_token = token).first()
         if not profile_obj:
             return HttpResponse("Invalid Token")
-        context = {'user_id' : profile_obj.user.id}
         
         if request.method == 'POST':
             new_password = request.POST.get('password')
             confirm_password = request.POST.get('confirm-password')
-            user_id = request.POST.get('user_id')
-            
-            if user_id is  None:
-                messages.success(request, 'No user id found.')
-                return redirect(f'/change-password/{token}/')
+            user_id = profile_obj.user.id
+            if new_password and confirm_password and user_id:       
                 
-            
-            if  new_password != confirm_password:
-                messages.success(request, 'both should  be equal.')
-                return redirect(f'/change-password/{token}/')
-            
-            user_obj = User.objects.get(id = user_id)
-            user_obj.set_password(new_password)
-            user_obj.save()
-            return redirect('login')
-            
+                if  new_password != confirm_password:
+                    messages.error(request, 'both should  be equal.')
+                    return redirect(f'change-password{token}')
+                
+                user_obj = profile_obj.user
+                user_obj.set_password(new_password)
+                user_obj.save()
+                return redirect('login')
+            else:
+                messages.error(request,"Please enter your new password.")
             
     except Exception as e:
         print(e)
-    return render(request , 'accounts/change-password.html' , context)
+
+    return render(request , 'accounts/change-password.html')
 
 
 
@@ -235,15 +229,19 @@ def forgetPassword(request):
             email = request.POST.get('email')
             
             if not User.objects.filter(email=email).first():
-                messages.success(request, f'Not email found with this {email}.')
+                messages.error(request, f'Not email found with this {email}.')
                 return redirect('forget-password')
             
             user_obj = User.objects.get(email = email)
             token = str(uuid.uuid4())
-            profile_obj= Profile.objects.get(user = user_obj)
+            profile_obj= user_obj.user
             profile_obj.forget_password_token = token
             profile_obj.save()
-            send_forget_password_mail(user_obj.email , token)
+            context = {
+                "token" : token,
+                "name": profile_obj.user.first_name
+            }
+            send_email('Change Your Password', [email], 'accounts/change-pass_email.html', context, [])
             messages.success(request, 'Reset your password. Please check your email inbox.')
             return redirect('forget-password')
                 
@@ -340,7 +338,7 @@ def create_superuser(request):
         # elif password != password2:
         #     messages.error(request,'Passwords do not match. Please enter both passwords correctly.')
         #     return redirect('create_superuser')
-        password = str(random.randint(100000,999999))
+        password = str(random.randint(10000000,99999999))
         print(password)
         user = User.objects.create_superuser(
             username=username,  
