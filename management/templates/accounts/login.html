@@ -48,11 +48,11 @@
                                         {% csrf_token %}
                                         <div class="mb-3">
                                             <label for="username">Username</label>
-                                            <input type="text" class="form-control" name="username" id="username" placeholder="Enter username">
+                                            <input type="text" class="form-control" name="username"  id="username" placeholder="Enter username">
                                         </div>
                                         <div class="mb-3">
                                             <label for="userpassword">Password</label>
-                                            <input type="password" class="form-control" name="password" id="userpassword" placeholder="Enter password">
+                                            <input type="password" class="form-control"  name="password" id="userpassword" placeholder="Enter password">
                                         </div>
                                         <div class="mb-3 row mt-4">
                                             <div class="col-6">
@@ -75,10 +75,12 @@
                                 </div>
                             </div>
                         </div>
+                        {% if user.is_superuser %}
                         <div class="mt-5 text-center">
                             <p>Don't have an account ? <a href="{% url 'sign_up' %}" class="text-primary"> Signup Now </a></p>
                             © <script>document.write(new Date().getFullYear())</script> Lexa <span class="d-none d-sm-inline-block"> - Crafted with <i class="mdi mdi-heart text-danger"></i> by Themesbrand.</span>
                         </div>
+                        {% endif %}
                     </div>
                 </div>
             </div>

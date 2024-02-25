@@ -1,0 +1,48 @@
+{% extends 'management/emails/email_formate.html' %}
+
+{% block content %}
+<table style="font-weight: normal;border-collapse: collapse;border: 0;margin: 0;padding: 0;font-family: Arial, sans-serif;">
+  <tr>
+    <td class="head-title" style="border-collapse: collapse;border: 0;margin: 0;padding: 0;-webkit-text-size-adjust: none;color: #555559;font-family: Arial, sans-serif;font-size: 28px;line-height: 34px;font-weight: bold; text-align: center;">
+      <div class="mktEditable" id="main_title">Admin Create your Staff Account</div>
+    </td>
+  </tr>
+  <tr>
+    <td class="sub-title" style="border-collapse: collapse;border: 0;margin: 0;padding: 0;padding-top:5px;-webkit-text-size-adjust: none;color: #555559;font-family: Arial, sans-serif;font-size: 18px;line-height: 29px;font-weight: bold;text-align: center;">
+      <div class="mktEditable" id="intro_title">Sub title:</div>
+    </td>
+  </tr>
+  <tr>
+    <td class="top-padding" style="border-collapse: collapse;border: 0;margin: 0;padding: 5px;-webkit-text-size-adjust: none;color: #555559;font-family: Arial, sans-serif;font-size: 16px;line-height: 26px;"></td>
+  </tr>
+  <tr>
+    <td class="grey-block" style="border-collapse: collapse;border: 0;margin: 0;-webkit-text-size-adjust: none;color: #555559;font-family: Arial, sans-serif;font-size: 16px;line-height: 26px;background-color: #fff; text-align:center;">
+
+    </td>
+  </tr>
+  <tr>
+    <td class="top-padding" style="border-collapse: collapse;border: 0;margin: 0;padding: 15px 0;-webkit-text-size-adjust: none;color: #555559;font-family: Arial, sans-serif;font-size: 16px;line-height: 21px;">
+      <hr size="1" color="#eeeff0" />
+    </td>
+  </tr>
+  <tr>
+    <td class="text" style="border-collapse: collapse;border: 0;margin: 0;padding: 0;-webkit-text-size-adjust: none;color: #555559;font-family: Arial, sans-serif;font-size: 16px;line-height: 26px;">
+      <div class="mktEditable" id="main_text">
+        <p>Hello, {{first_name}} your Login Username is <b>{{username}}</b> and Password is <b>{{ password }}</b> </p>
+      </div>
+    </td>
+  </tr>
+  <tr>
+    <td style="border-collapse: collapse;border: 0;margin: 0;padding: 0;-webkit-text-size-adjust: none;color: #555559;font-family: Arial, sans-serif;font-size: 16px;line-height: 24px;">
+      &nbsp;<br />
+    </td>
+  </tr>
+  <tr>
+    <td class="text" style="border-collapse: collapse;border: 0;margin: 0;padding: 0;-webkit-text-size-adjust: none;color: #555559;font-family: Arial, sans-serif;font-size: 16px;line-height: 24px;">
+      <div class="mktEditable" id="download_button" style="text-align: center;">
+        <a style="color:#ffffff; background-color: #ff8300; border: 20px solid #ff8300; border-left: 20px solid #ff8300; border-right: 20px solid #ff8300; border-top: 10px solid #ff8300; border-bottom: 10px solid #ff8300;border-radius: 3px; text-decoration:none;" href="http://127.0.0.1:8000/management/login/">Login Now</a>
+      </div>
+    </td>
+  </tr>
+</table>
+{% endblock %}

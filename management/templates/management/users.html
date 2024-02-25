@@ -44,7 +44,7 @@
         
                                         <h4 class="card-title">Table Edits</h4>
                                         <p class="card-title-desc">Table Edits is a lightweight jQuery plugin for making table rows editable.</p>
-                                        {% if user.is_superuser  %}
+                                        {% if user.is_superuser or user.is_staff %}
                                         <div style="text-align: end;">
                                             <a href="#" class="btn btn-primary">Add User</a>
                                         </div>
