@@ -95,7 +95,7 @@ def login(request):
                             'username':username
                         }
                         email = User.objects.get(username=username).email
-                        send_email('Verify your account', [email], 'management/emails/email_verification.html', context, [])
+                        #send_email('Verify your account', [email], 'management/emails/email_verification.html', context, [])
                         return redirect('verify_account')
 
                     else:
@@ -361,3 +361,23 @@ def create_superuser(request):
 
     return render(request,'management/create_superuser.html')
 
+
+def category(request):
+
+    categorys =  Category.objects.all()
+
+    context = {
+        'categorys': categorys,
+    }
+
+    return render(request, 'management/category.html',context)
+
+def subCategory(request):
+
+    subcategors = SubCategory.objects.all()
+
+    context = {
+        'subcategors' : subcategors,
+    }
+    
+    return render(request,  'management/subCategory.html',context)
