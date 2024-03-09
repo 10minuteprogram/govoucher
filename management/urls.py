@@ -31,5 +31,8 @@ urlpatterns = [
     path('create_staff/', superuser_required(create_staff), name='create_staff'),
     path('create_superuser/', superuser_required(create_superuser), name='create_superuser'),
 
+    #recourse
+    path('category/', category, name='category'),
+    path('sub-category/', subCategory, name="subCategory"),
 
 ]

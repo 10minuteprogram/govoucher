@@ -1,0 +1,102 @@
+{% extends 'management/base.html' %}
+
+
+{% block content %}
+<!-- ============================================================== -->
+<!-- Start right Content here -->
+<!-- ============================================================== -->
+<div class="main-content">
+
+    <div class="page-content">
+        <div class="container-fluid">
+
+            <!-- start page title -->
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="page-title-box">
+                        <h4>Superuser List Table</h4>
+                        <ol class="breadcrumb m-0">
+                            <li class="breadcrumb-item"><a href="{% url 'superuser_list' %}">superuser</a></li>
+                            <li class="breadcrumb-item"><a href="{% url 'create_superuser' %}">create_superuser</a></li>
+                        </ol>
+                    </div>
+                </div>
+
+            </div>
+            <!-- end page title -->
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+
+                            <h4 class="card-title">Table Edits</h4>
+                            <p class="card-title-desc">Table Edits is a lightweight jQuery plugin for making table rows
+                            editable.</p>
+                            {% if user.is_superuser  %}
+                            <div style="text-align: end;">
+                                <a href="#" class="btn btn-primary">Add category</a>
+                            </div>
+                            {% endif %}
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="dropdown">
+                                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="mdi mdi-format-list-checks"></i>
+                                            Select category
+                                            <i class="mdi mdi-chevron-down"></i>
+                                        </button>
+                                        
+                                        {% for subcategor in subcategors %}
+                                           
+                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                            <a class="dropdown-item" href="#">{{subcategor.category.name}}</a>
+                                            
+                                        </div>
+                                        {% endfor %}
+                                    </div>                                               
+                                </div><!-- end col -->
+
+                            <div class="table-responsive">
+                                <table class="table table-editable table-nowrap align-middle table-edits">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>categors</th>
+                                            <th>sub categors</th>
+                                            <th>Created on</th>
+                                            <th>Created by</th>
+                                            <th>Edit</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                        {% for subcategors in subcategors %}
+
+                                        <tr data-id="1">
+                                            <td data-field="id" style="width: 80px">{{forloop.counter}}</td>
+                                            <td data-field="name"><b><a href="#">{{subcategors.category.name}}</td></a></b>
+                                            <td data-field="name"><b><a href="#">{{subcategors.name}}</td></a></b>
+                                            <td data-field="age">{{category.created_on}}</td>
+                                            <td data-field="gender">{{category.created_by}}</td>
+                                            <td style="width: 100px">
+                                                <a class="btn btn-outline-secondary btn-sm edit" title="Edit">
+                                                    <i class="fas fa-pencil-alt"></i>
+                                                </a>
+                                            </td>
+                                            
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+                    </div>
+                </div> <!-- end col -->
+            </div> <!-- end row -->
+
+        </div> <!-- container-fluid -->
+    </div>
+    <!-- End Page-content -->
+    {% endblock %}
