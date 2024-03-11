@@ -1,6 +1,5 @@
 {% extends 'management/base.html' %}
 
-
 {% block content %}
 <!-- ============================================================== -->
 <!-- Start right Content here -->
@@ -35,39 +34,54 @@
                             editable.</p>
                             {% if user.is_superuser  %}
                             <div style="text-align: end;">
-                                <a href="{% url 'add_category' %}" class="btn btn-primary">Add category</a>
+                                <a href="{% url 'add_brand' %}" class="btn btn-primary">Add Brand</a>
                             </div>
                             {% endif %}
-                            
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="dropdown">
+                                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="mdi mdi-format-list-checks"></i>
+                                            Select category
+                                            <i class="mdi mdi-chevron-down"></i>
+                                        </button>
+                                        
+                                        {% for subcategor in subcategors %}
+                                           
+                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                            <a class="dropdown-item" href="#">{{subcategor.category.name}}</a>
+                                            
+                                        </div>
+                                        {% endfor %}
+                                    </div>                                               
+                                </div><!-- end col -->
 
                             <div class="table-responsive">
                                 <table class="table table-editable table-nowrap align-middle table-edits">
                                     <thead>
                                         <tr>
                                             <th>ID</th>
-                                            <th>Category Name</th>
+                                            <th>Sub categors</th>
+                                            <th>Brand</th>
                                             <th>Created on</th>
                                             <th>Created by</th>
                                             <th>Edit</th>
-                                            <th>Delete</th>
                                         </tr>
                                     </thead>
                                     <tbody>
 
-                                        {% for category in categorys %}
+                                        {% for brand in brands %}
 
                                         <tr data-id="1">
                                             <td data-field="id" style="width: 80px">{{forloop.counter}}</td>
-                                            <td data-field="name"><b><a href="#">{{category.name}}</td></a></b>
-                                            <td data-field="age">{{category.created_on}}</td>
-                                            <td data-field="gender">{{category.created_by}}</td>
+                                            <td data-field="name"><b><a href="#">{{brand.sub_category.name}}</td></a></b>
+                                            <td data-field="name"><b><a href="#">{{brand.name}}</td></a></b>
+                                            <td data-field="age">{{brand.created_on}}</td>
+                                            <td data-field="gender">{{brand.created_by}}</td>
                                             <td style="width: 100px">
-                                                <a href="#" class="btn btn-outline-secondary btn-sm edit" title="Edit">
+                                                <a class="btn btn-outline-secondary btn-sm edit" title="Edit">
                                                     <i class="fas fa-pencil-alt"></i>
                                                 </a>
-                                            </td>
-                                            <td>
-                                                <button type="button" class="btn btn-primary waves-light waves-effect"><i class="far fa-trash-alt"></i></button>
                                             </td>
                                             
                                         </tr>
@@ -84,4 +98,4 @@
         </div> <!-- container-fluid -->
     </div>
     <!-- End Page-content -->
-    {% endblock %}
+{% endblock %}

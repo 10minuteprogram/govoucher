@@ -81,7 +81,6 @@ class Brand(models.Model):
     
 class Deal(models.Model):
     sub_category = models.ForeignKey(SubCategory,on_delete=models.SET_NULL,related_name='deals', blank=True, null=True)
-    # brand = models.ManyToManyField(Brand,blank=True)
     brand = models.ForeignKey(Brand,on_delete=models.SET_NULL,related_name='bdeals',null=True,blank=True)
     name = models.CharField(max_length=200)
 

@@ -361,6 +361,26 @@ def create_superuser(request):
 
     return render(request,'management/create_superuser.html')
 
+def add_category(request):
+
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        image = request.FILES.get('image')
+        description = request.POST.get('description')
+
+        if name and image and description:
+            Category.objects.create(
+                name=name,
+                cover=image,
+                description=description,
+                created_by= Profile.objects.get(user=request.user)
+            )
+            return redirect('category')
+        else:
+            messages.error(request,"All fields are required")
+
+    return render(request, 'management/add_category.html')
+
 
 def category(request):
 
@@ -372,6 +392,36 @@ def category(request):
 
     return render(request, 'management/category.html',context)
 
+def add_subCategory(request):
+    category_id = None
+    categories = Category.objects.all()
+
+    if request.method == 'POST':
+        category_id = int(request.POST.get('category_id'))
+        name = request.POST.get('name')
+        image = request.FILES.get('image')
+        description = request.POST.get('description')
+
+        if name and description and category_id:
+            SubCategory.objects.create(
+               category_id=category_id,
+               name=name,
+               cover=image,
+               description=description,
+               created_by=Profile.objects.get(user=request.user),
+            )
+            return redirect('subCategory')
+        else:
+            messages.error(request,'Please enter all the details')
+
+
+    context = {
+        "categories": categories,
+    }
+
+    return render(request, 'management/add_subCategory.html',context)
+
+
 def subCategory(request):
 
     subcategors = SubCategory.objects.all()
@@ -381,3 +431,58 @@ def subCategory(request):
     }
     
     return render(request,  'management/subCategory.html',context)
+
+def add_brand(request):
+    category_id = None
+    sub_categorys = None
+    categories = Category.objects.all()
+
+    if request.method == 'POST':
+        try:
+            category_id = int(request.POST.get("category_id"))
+        except:
+            category_id = None
+
+        name = request.POST.get('name')
+        image = request.FILES.get('image')
+        description = request.POST.get('description')
+
+        sub_category_id = request.POST.get('sub_category_id')
+
+        if not sub_category_id:
+            sub_categorys = SubCategory.objects.filter(category_id=category_id)
+        elif sub_category_id and name:
+            Brand.objects.create(
+                sub_category = sub_category_id,
+                name = name,
+                photo = image,
+                description = description,
+            )
+            return redirect('brand_list')
+
+    context  ={
+        'categories' : categories,
+        'sub_categorys' : sub_categorys,
+    }
+
+
+
+    return render(request,"management/add_brand.html",context)
+
+def brand_list(request):
+
+    all_brand = Brand.objects.all()
+
+    context ={
+        'brands' : all_brand,
+    }
+
+    return render(request,"management/brand_list.html",context)
+
+def deal_list(request):
+    deals = Deal.objects.all()
+
+    context ={
+        "deals" : deals,
+    }
+    return render(request, 'management/deal-list.html',context)

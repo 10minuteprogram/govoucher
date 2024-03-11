@@ -34,5 +34,10 @@ urlpatterns = [
     #recourse
     path('category/', category, name='category'),
     path('sub-category/', subCategory, name="subCategory"),
+    path('brand-list/', brand_list, name= "brand_list" ),
+    path('deal-list/', deal_list, name='deal_list'),
+    path('add-category/', add_category, name='add_category'),
+    path('add-sub-category/', add_subCategory, name='add_subCategory'),
+    path('add-brand/', add_brand, name='add_brand'),
 
 ]
