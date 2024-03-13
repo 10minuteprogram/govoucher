@@ -1,6 +1,5 @@
 {% extends 'management/base.html' %}
 
-
 {% block content %}
 <!-- ============================================================== -->
 <!-- Start right Content here -->
@@ -35,7 +34,7 @@
                             editable.</p>
                             {% if user.is_superuser  %}
                             <div style="text-align: end;">
-                                <a href="{% url 'add_subCategory' %}" class="btn btn-primary">Add Sub category</a>
+                                <a href="{% url 'add_brand' %}" class="btn btn-primary">Add Brand</a>
                             </div>
                             {% endif %}
                             <div class="row">
@@ -47,46 +46,38 @@
                                             <i class="mdi mdi-chevron-down"></i>
                                         </button>
                                         
-                                        
-                                        <form method='GET'>
-                                        
-                                        <div class="dropdown-menu" >
-                                            {% for category in categorys %}
-                                            <button class="dropdown-item" type="submit" name="name" value="{{ category.id }}">{{ category.name }}</button>
-                                            {% endfor %}
+                                        {% for subcategor in subcategors %}
+                                           
+                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                            <a class="dropdown-item" href="#">{{subcategor.category.name}}</a>
+                                            
                                         </div>
-                                        
-                                        </form>
+                                        {% endfor %}
                                     </div>                                               
                                 </div><!-- end col -->
 
                             <div class="table-responsive">
                                 <table class="table table-editable table-nowrap align-middle table-edits">
                                     <thead>
-                                        {% if subcategors %}
                                         <tr>
                                             <th>ID</th>
-                                            <th>categors</th>
-                                            <th>sub categors</th>
+                                            <th>Sub categors</th>
+                                            <th>Brand</th>
                                             <th>Created on</th>
                                             <th>Created by</th>
                                             <th>Edit</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        
-                                        
 
-                                            
-
-                                        {% for subcategors in subcategors %}
+                                        {% for brand in brands %}
 
                                         <tr data-id="1">
                                             <td data-field="id" style="width: 80px">{{forloop.counter}}</td>
-                                            <td data-field="name"><b><a href="#">{{subcategors.category.name}}</td></a></b>
-                                            <td data-field="name"><b><a href="#">{{subcategors.name}}</td></a></b>
-                                            <td data-field="age">{{subcategors.created_on}}</td>
-                                            <td data-field="gender">{{subcategors.created_by}}</td>
+                                            <td data-field="name"><b><a href="#">{{brand.sub_category.name}}</td></a></b>
+                                            <td data-field="name"><b><a href="#">{{brand.name}}</td></a></b>
+                                            <td data-field="age">{{brand.created_on}}</td>
+                                            <td data-field="gender">{{brand.created_by}}</td>
                                             <td style="width: 100px">
                                                 <a class="btn btn-outline-secondary btn-sm edit" title="Edit">
                                                     <i class="fas fa-pencil-alt"></i>
@@ -95,10 +86,6 @@
                                             
                                         </tr>
                                         {% endfor %}
-                                        {% else %}
-                                        <td data-field="name" ><b>No Sub Categors Found!</td></b>
-                                        
-                                        {% endif %}
                                     </tbody>
                                 </table>
                             </div>
@@ -111,4 +98,4 @@
         </div> <!-- container-fluid -->
     </div>
     <!-- End Page-content -->
-    {% endblock %}
+{% endblock %}

@@ -35,7 +35,7 @@
                             editable.</p>
                             {% if user.is_superuser  %}
                             <div style="text-align: end;">
-                                <a href="#" class="btn btn-primary">Add category</a>
+                                <a href="{% url 'add_category' %}" class="btn btn-primary">Add category</a>
                             </div>
                             {% endif %}
                             
@@ -49,6 +49,7 @@
                                             <th>Created on</th>
                                             <th>Created by</th>
                                             <th>Edit</th>
+                                            <th>Delete</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -61,9 +62,12 @@
                                             <td data-field="age">{{category.created_on}}</td>
                                             <td data-field="gender">{{category.created_by}}</td>
                                             <td style="width: 100px">
-                                                <a class="btn btn-outline-secondary btn-sm edit" title="Edit">
+                                                <a href="#" class="btn btn-outline-secondary btn-sm edit" title="Edit">
                                                     <i class="fas fa-pencil-alt"></i>
                                                 </a>
+                                            </td>
+                                            <td>
+                                                <button type="button" class="btn btn-primary waves-light waves-effect"><i class="far fa-trash-alt"></i></button>
                                             </td>
                                             
                                         </tr>
