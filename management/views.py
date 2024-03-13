@@ -423,11 +423,23 @@ def add_subCategory(request):
 
 
 def subCategory(request):
+    subcategors = None
 
-    subcategors = SubCategory.objects.all()
+    categorys = Category.objects.all()
+
+
+    if request.method == 'GET':
+        search = request.GET.get("name")
+        if search:
+            # Filter subcategories based on search query
+            subcategors = SubCategory.objects.filter(category_id=search)
+        else:
+            subcategors = SubCategory.objects.all()
+                
 
     context = {
         'subcategors' : subcategors,
+        'categorys' : categorys,
     }
     
     return render(request,  'management/subCategory.html',context)
@@ -453,7 +465,7 @@ def add_brand(request):
             sub_categorys = SubCategory.objects.filter(category_id=category_id)
         elif sub_category_id and name:
             Brand.objects.create(
-                sub_category = sub_category_id,
+                sub_category_id = sub_category_id,
                 name = name,
                 photo = image,
                 description = description,
@@ -486,3 +498,33 @@ def deal_list(request):
         "deals" : deals,
     }
     return render(request, 'management/deal-list.html',context)
+
+def add_deal(request):
+    category_id = None
+    sub_categorys = None
+    brands = None
+    categories = Category.objects.all()
+
+
+    if request.method == "POST":
+        try:
+            category_id = int(request.POST.get("category_id"))
+        except:
+            category_id = None
+        name = request.POST.get('name')
+
+        sub_category_id = request.POST.get('sub_category_id')
+
+        if not sub_category_id:
+            sub_categorys = SubCategory.objects.filter(category_id=category_id)
+            if sub_categorys:
+                brands = Brand.objects.filter(sub_category_id=sub_category_id)
+
+
+    context ={
+        'categories': categories,
+        'sub_categorys': sub_categorys,
+        'brands': brands,
+    }
+
+    return render(request, 'management/add_deal.html',context)

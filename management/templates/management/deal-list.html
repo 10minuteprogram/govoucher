@@ -34,7 +34,7 @@
                             editable.</p>
                             {% if user.is_superuser  %}
                             <div style="text-align: end;">
-                                <a href="#" class="btn btn-primary">Add Deal</a>
+                                <a href="{% url 'add_deal' %}" class="btn btn-primary">Add Deal</a>
                             </div>
                             {% endif %}
                             <div class="row">
