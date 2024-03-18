@@ -37,7 +37,7 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <label for="category">Category</label>
-                                        <select name="category_id" class="form-control" id="" {% if sub_categorys %}disabled{% endif %}>
+                                        <select name="category_id" class="form-control" id="" {% if sub_categorys %}style="pointer-events: none; background-color: gray"{% endif %}>
                                             <option value="">Select Category</option>
                                             {% for c in categories %}
                                                 {% if c.id == category_id %}
@@ -50,33 +50,35 @@
                                     </div>
 
                                     {% if sub_categorys %}
-                                    <div class="col-md-6">
-                                        <label for="sub_category">Sub Category</label>
-                                        <select name="sub_category_id" class="form-control" id="">
-                                            <option value="">Select Sub Category</option>
-                                            {% for c in sub_categorys %}
-                                                <option value="{{c.id}}">{{c.name}}</option>
-                                            {% endfor %}
-                                        </select>
-                                    </div>
+                                        <div class="col-md-6">
+                                            <label for="sub_category">Sub Category</label>
+                                            <select name="sub_category_id" {% if sub_category_id %}style="pointer-events: none; background-color: gray"{% endif %} class="form-control" id="">
+                                                <option value="">Select Sub Category</option>
+                                                {% for c in sub_categorys %}
+                                                    {% if c.id == sub_category_id %}
+                                                    <option value="{{c.id}}" selected>{{c.name}}</option>
+                                                    {% else %}
+                                                    <option value="{{c.id}}">{{c.name}}</option>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </select>
+                                        </div>
                                     {% endif %}
 
-                                    {% if sub_categorys %}
-                                    <div class="col-md-6">
-                                        <label for="sub_category">Brand</label>
-                                        <select name="sub_category_id" class="form-control" id="">
-                                            <option value="">Select Brand</option>
-                                            {% for c in brands %}
-                                                <option value="{{c.id}}">{{c.name}}</option>
-                                            {% endfor %}
-                                        </select>
-                                    </div>
+                                    {% if brands %}
+                                        <div class="col-md-6">
+                                            <label for="sub_category">Brand</label>
+                                            <select name="brand_id" class="form-control" id="">
+                                                <option value="">Select Brand</option>
+                                                {% for c in brands %}
+                                                    <option value="{{c.id}}">{{c.brand.name}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
                                     {% endif %}
                                 </div>
-                            
-                                
                                     
-                                {% if sub_categorys %}
+                                {% if brands %}
                                 <label for="name" class="mt-3">Deal Name</label>
                                 <input type="text" name="name" id="name" class="form-control" placeholder="Enter category name" required>
                                
