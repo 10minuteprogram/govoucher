@@ -62,12 +62,14 @@
                                             <td data-field="age">{{category.created_on}}</td>
                                             <td data-field="gender">{{category.created_by}}</td>
                                             <td style="width: 100px">
-                                                <a href="#" class="btn btn-outline-secondary btn-sm edit" title="Edit">
+                                                <a class="btn btn-outline-secondary btn-sm edit" title="Edit">
                                                     <i class="fas fa-pencil-alt"></i>
                                                 </a>
                                             </td>
                                             <td>
-                                                <button type="button" class="btn btn-primary waves-light waves-effect"><i class="far fa-trash-alt"></i></button>
+                                                <button type="button" class="btn btn-primary waves-effect waves-light" id="sa-warning">
+                                                    <i class="far fa-trash-alt"></i>
+                                                </button>
                                             </td>
                                             
                                         </tr>
@@ -84,4 +86,7 @@
         </div> <!-- container-fluid -->
     </div>
     <!-- End Page-content -->
+
+        
+        
     {% endblock %}

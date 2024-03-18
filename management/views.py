@@ -447,6 +447,7 @@ def subCategory(request):
 def add_brand(request):
     category_id = None
     sub_categorys = None
+    sub_category_id = None
     categories = Category.objects.all()
 
     if request.method == 'POST':
@@ -469,12 +470,14 @@ def add_brand(request):
                 name = name,
                 photo = image,
                 description = description,
+                created_by = Profile.objects.get(user=request.user),
             )
             return redirect('brand_list')
 
     context  ={
         'categories' : categories,
         'sub_categorys' : sub_categorys,
+        # 'sub_category_id':sub_category_id
     }
 
 
@@ -483,27 +486,52 @@ def add_brand(request):
 
 def brand_list(request):
 
-    all_brand = Brand.objects.all()
+
+    brands = SubCategory.objects.all()
+
+    if request.method == 'GET':
+        search = request.GET.get("name")
+        if search:
+            # Filter subcategories based on search query
+            all_brand = Brand.objects.filter(sub_category_id=search)
+        else:
+            all_brand = Brand.objects.all()
 
     context ={
         'brands' : all_brand,
+        'brand':brands,
     }
 
     return render(request,"management/brand_list.html",context)
 
 def deal_list(request):
+
+    all_brand = None
+    deals = None
+
     deals = Deal.objects.all()
+
+    if request.method == 'GET':
+        search = request.GET.get("name")
+        if search:
+            # Filter subcategories based on search query
+            all_brand = Deal.objects.filter(brand_id=search)
+        else:
+            all_brand = Deal.objects.all()
 
     context ={
         "deals" : deals,
+        "all_brand":all_brand,
     }
     return render(request, 'management/deal-list.html',context)
 
 def add_deal(request):
-    category_id = None
+    categories = Category.objects.all()
     sub_categorys = None
     brands = None
-    categories = Category.objects.all()
+
+    category_id = None
+    sub_category_id = None
 
 
     if request.method == "POST":
@@ -511,20 +539,41 @@ def add_deal(request):
             category_id = int(request.POST.get("category_id"))
         except:
             category_id = None
-        name = request.POST.get('name')
 
-        sub_category_id = request.POST.get('sub_category_id')
 
-        if not sub_category_id:
+        try:
+            sub_category_id = int(request.POST.get('sub_category_id'))
+        except:
+            sub_category_id = None
+        
+        name = request.POST.get("name")
+        brand = request.POST.get('brand_id')
+        
+        if category_id:
             sub_categorys = SubCategory.objects.filter(category_id=category_id)
-            if sub_categorys:
-                brands = Brand.objects.filter(sub_category_id=sub_category_id)
+        
+        if sub_category_id:
+            brands = Deal.objects.filter(sub_category_id=sub_category_id)
+
+        
+        if sub_category_id and name:
+            Deal.objects.create(
+                name = name,
+                sub_category_id = sub_category_id,
+                brand_id = brand,
+            )
+            return redirect('deal_list')
+
+
 
 
     context ={
         'categories': categories,
         'sub_categorys': sub_categorys,
         'brands': brands,
+
+        'category_id' : category_id,
+        'sub_category_id':sub_category_id,
     }
 
     return render(request, 'management/add_deal.html',context)
