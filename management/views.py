@@ -10,6 +10,7 @@ import uuid
 from django.http import HttpResponse
 from datetime import datetime
 from django.core.exceptions import ObjectDoesNotExist
+from django.shortcuts import get_object_or_404
 
 
 
@@ -386,6 +387,14 @@ def category(request):
 
     categorys =  Category.objects.all()
 
+    if request.method=='POST':
+        delete_item = request.POST.get("delete_item")
+        if delete_item:
+            item = get_object_or_404(Category, id=delete_item)
+            item.delete()
+            #messages.success(request, f"{item} is deleted Successfully")
+            return redirect('category')
+
     context = {
         'categorys': categorys,
     }
@@ -509,7 +518,7 @@ def deal_list(request):
     all_brand = None
     deals = None
 
-    deals = Deal.objects.all()
+    deals = Brand.objects.all()
 
     if request.method == 'GET':
         search = request.GET.get("name")
@@ -547,20 +556,22 @@ def add_deal(request):
             sub_category_id = None
         
         name = request.POST.get("name")
-        brand = request.POST.get('brand_id')
+        brand_id = request.POST.get('brand_id')
         
         if category_id:
             sub_categorys = SubCategory.objects.filter(category_id=category_id)
         
         if sub_category_id:
             brands = Deal.objects.filter(sub_category_id=sub_category_id)
+            print(brands)
+        
 
         
         if sub_category_id and name:
             Deal.objects.create(
                 name = name,
                 sub_category_id = sub_category_id,
-                brand_id = brand,
+                brand_id = brand_id,
             )
             return redirect('deal_list')
 
