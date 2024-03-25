@@ -67,9 +67,14 @@
                                                 </a>
                                             </td>
                                             <td>
-                                                <button type="button" class="btn btn-primary waves-effect waves-light" id="sa-warning">
-                                                    <i class="far fa-trash-alt"></i>
-                                                </button>
+                                                <form method="POST" action="{% url 'category' %}" class="delete-form">
+                                                    {% csrf_token %}
+                                                    <input type="hidden" name="delete_item" value="{{ category.id }}">
+                                                    <button type="submit" class="btn btn-primary waves-effect waves-light">
+                                                        <i class="far fa-trash-alt"></i>
+                                                    </button>
+                                                </form>
+                                                                                                
                                             </td>
                                             
                                         </tr>
@@ -87,6 +92,6 @@
     </div>
     <!-- End Page-content -->
 
-        
-        
-    {% endblock %}
+
+
+{% endblock %}
