@@ -32,11 +32,30 @@ def superuser_list(request):
 
 
 def staffs_list(request):
+    staff_id = None
+    staff = None
      
     staff_users = User.objects.filter(is_staff = True, is_active=True, is_superuser=False)
 
+    if request.method == 'POST':
+        staff_id = request.POST.get('staff_id')
+        print(staff_id)
+        staff = User.objects.get(id=staff_id)
+        staff.is_staff = not staff.is_staff
+        staff.save()
+
+
+        # staff = User.objects.get(id=staff_id)
+
+        # # Toggle the staff status
+        # staff.staff_status = not staff.staff_status
+        # staff.save()
+
+
     context = {
-        "staff_users": staff_users
+        "staff_users": staff_users,
+        "staff_id":staff_id,
+        "staff_status":staff
     }
 
 
