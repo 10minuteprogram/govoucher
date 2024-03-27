@@ -32,11 +32,30 @@ def superuser_list(request):
 
 
 def staffs_list(request):
+    staff_id = None
+    staff = None
      
-    staff_users = User.objects.filter(is_staff = True, is_active=True, is_superuser=False)
+    staff_users = User.objects.filter(is_staff = True, is_superuser=False)
+
+    if request.method == 'POST':
+        staff_id = request.POST.get('staff_id')
+        print(staff_id)
+        staff = User.objects.get(id=staff_id)
+        staff.is_active = not staff.is_active
+        staff.save()
+
+
+        # staff = User.objects.get(id=staff_id)
+
+        # # Toggle the staff status
+        # staff.staff_status = not staff.staff_status
+        # staff.save()
+
 
     context = {
-        "staff_users": staff_users
+        "staff_users": staff_users,
+        "staff_id":staff_id,
+        "staff_status":staff
     }
 
 
@@ -574,8 +593,6 @@ def add_deal(request):
                 brand_id = brand_id,
             )
             return redirect('deal_list')
-
-
 
 
     context ={
