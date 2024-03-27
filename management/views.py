@@ -35,13 +35,13 @@ def staffs_list(request):
     staff_id = None
     staff = None
      
-    staff_users = User.objects.filter(is_staff = True, is_active=True, is_superuser=False)
+    staff_users = User.objects.filter(is_staff = True, is_superuser=False)
 
     if request.method == 'POST':
         staff_id = request.POST.get('staff_id')
         print(staff_id)
         staff = User.objects.get(id=staff_id)
-        staff.is_staff = not staff.is_staff
+        staff.is_active = not staff.is_active
         staff.save()
 
 
@@ -593,8 +593,6 @@ def add_deal(request):
                 brand_id = brand_id,
             )
             return redirect('deal_list')
-
-
 
 
     context ={

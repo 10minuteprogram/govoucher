@@ -50,7 +50,7 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                <form id="toggleStaffForm" method="post">
+                                                <form id="toggleStaffForm" method="post" action="{% url 'staffs_list' %}">
                                                     {% csrf_token %}
                                                     
                                                     {% for staff in staff_users %}
@@ -71,10 +71,19 @@
                                                         <td>
                                                             <div class="form-check form-switch form-switch-md mb-3" dir="ltr">
                                                                 <input type="checkbox" name="staff_id" value="{{ staff.id }}" class="form-check-input"
-                                                                       id="customSwitchsizemd_{{ staff.id }}" {% if staff.is_staff %} checked {% endif %}
+                                                                       id="customSwitchsizemd_{{ staff.id }}" {% if staff.is_active %} checked {% endif %}
                                                                        onclick="toggleStaffStatus({{ staff.id }})">
+                                                                <label for="customSwitchsizemd_{{ staff.id }}" data-on-label="On" data-off-label="Off">
+                                                                    {% if staff.is_active %}
+                                                                        On
+                                                                    {% else %}
+                                                                        Off
+                                                                    {% endif %}
+                                                                </label>
                                                             </div>
                                                         </td>
+                                                        
+                                                        
                                                         
                                                     </tr>
                                                     {% endfor %}
