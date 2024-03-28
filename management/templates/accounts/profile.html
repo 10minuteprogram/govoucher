@@ -104,59 +104,130 @@
           </div>
           <div class="col-md-8">
             <div class="card mb-3">
-              <div class="card-body">
-                <div class="row">
-                  <div class="col-sm-3">
-                    <h6 class="mb-0">Full Name</h6>
-                  </div>
-                  <div class="col-sm-9 text-secondary">
-                    {{user.first_name}}
-                  </div>
+                <div class="card-body">
+                    <!-- Edit Popup (styled as an alert) -->
+                    <div id="editPopup"  role="alert" style="display: none;">
+                        <!-- Your edit page content here -->
+                        <div class="container">
+                            <div class="main-body">
+                                <div class="row">
+                                    <div class="col-lg-8">
+                                        <div class="card">
+
+                                          <form method="post" action="{% url 'profile' %}">
+                                            {% csrf_token %}
+                                            <div class="card-body">
+                                                <div class="row mb-3">
+                                                    <div class="col-sm-3">
+                                                        <h6 class="mb-0">Full Name</h6>
+                                                    </div>
+                                                    <div class="col-sm-9 text-secondary">
+                                                        <input type="text" class="form-control" name="full_name" value="{{user.first_name}}">
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-3">
+                                                    <div class="col-sm-3">
+                                                        <h6 class="mb-0">Email</h6>
+                                                    </div>
+                                                    <div class="col-sm-9 text-secondary">
+                                                        <input type="text" class="form-control" name="email"value="{{user.email}}">
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-3">
+                                                    <div class="col-sm-3">
+                                                        <h6 class="mb-0">Phone</h6>
+                                                    </div>
+                                                    <div class="col-sm-9 text-secondary">
+                                                        <input type="text" class="form-control" name="phone" value="{{user.profile.phone}}">
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-3">
+                                                    <div class="col-sm-3">
+                                                        <h6 class="mb-0">Mobile</h6>
+                                                    </div>
+                                                    <div class="col-sm-9 text-secondary">
+                                                        <input type="text" class="form-control"placeholder="Enter Your Mobile">
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-3">
+                                                    <div class="col-sm-3">
+                                                        <h6 class="mb-0">Address</h6>
+                                                    </div>
+                                                    <div class="col-sm-9 text-secondary">
+                                                        <input type="text" class="form-control" placeholder="Enter Your Address">
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm-3"></div>
+                                                    <div class="col-sm-9 text-secondary">
+                                                        <input type="submit" class="btn btn-primary px-4" value="Save Changes" >
+                                                    </div>
+                                                </div>
+                                            </div>
+                                          </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Displaying user information -->
+                    <div id="userInfo">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Full Name</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                {{user.first_name}}
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Email</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                {{user.email}}
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Phone</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                {{user.profile.phone}}
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Mobile</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                (320) 380-4539
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Address</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                {{user.profile.address}}
+                            </div>
+                        </div>
+                        <hr>
+                    </div>
+                    <!-- Edit Button -->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <a class="btn btn-info" id="editBtn">Edit</a>
+                        </div>
+                    </div>
                 </div>
-                <hr>
-                <div class="row">
-                  <div class="col-sm-3">
-                    <h6 class="mb-0">Email</h6>
-                  </div>
-                  <div class="col-sm-9 text-secondary">
-                    {{user.email}}
-                  </div>
-                </div>
-                <hr>
-                <div class="row">
-                  <div class="col-sm-3">
-                    <h6 class="mb-0">Phone</h6>
-                  </div>
-                  <div class="col-sm-9 text-secondary">
-                    {{user.profile.phone}}
-                  </div>
-                </div>
-                <hr>
-                <div class="row">
-                  <div class="col-sm-3">
-                    <h6 class="mb-0">Mobile</h6>
-                  </div>
-                  <div class="col-sm-9 text-secondary">
-                    (320) 380-4539
-                  </div>
-                </div>
-                <hr>
-                <div class="row">
-                  <div class="col-sm-3">
-                    <h6 class="mb-0">Address</h6>
-                  </div>
-                  <div class="col-sm-9 text-secondary">
-                    {{user.profile.address}}
-                  </div>
-                </div>
-                <hr>
-                <div class="row">
-                  <div class="col-sm-12">
-                    <a class="btn btn-info "  href="{% url 'edit_profile' %}">Edit</a>
-                  </div>
-                </div>
-              </div>
             </div>
+        </div>
 
             <div class="row gutters-sm">
               <div class="col-sm-6 mb-3">
@@ -223,5 +294,27 @@
       </div>
   </div>
 
+
+
+  <script>
+    document.getElementById('editBtn').addEventListener('click', function(event) {
+        event.preventDefault(); // Prevents the default behavior of the button
+        var editPopup = document.getElementById('editPopup');
+        var userInfo = document.getElementById('userInfo');
+        var saveChangesBtn = document.getElementById('saveChangesBtn');
+
+        if (editPopup.style.display === 'none') {
+            editPopup.style.display = 'block'; // Shows the edit popup
+            userInfo.style.display = 'none'; // Hides the user information
+            document.getElementById('editBtn').style.display = 'none'; // Hides the edit button
+            saveChangesBtn.style.display = 'block'; // Shows the Save Changes button
+        } else {
+            editPopup.style.display = 'none'; // Hides the edit popup
+            userInfo.style.display = 'block'; // Shows the user information
+            document.getElementById('editBtn').style.display = 'block'; // Shows the edit button
+            saveChangesBtn.style.display = 'none'; // Hides the Save Changes button
+        }
+    });
+  </script>
 {% endblock %}
   

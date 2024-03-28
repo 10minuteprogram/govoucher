@@ -53,6 +53,10 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
+
+                                                    <form id="toggleStaffForm" method="post" action="{% url 'users' %}">
+                                                        {% csrf_token %}
+
                                                     {% for user in users %}
                                                     <tr data-id="1">
                                                         <td data-field="id" style="width: 80px">{{forloop.counter}}</td>
@@ -66,16 +70,23 @@
                                                         </td>
                                                         <td>
                                                             <div class="form-check form-switch form-switch-md mb-3" dir="ltr">
-                                                                <input type="checkbox" class="form-check-input"
-                                                                    id="customSwitchsizemd" {% if user.staff_status %}  checked {% endif %}
-                                                                     onclick="toggleStaffStatus({{ user.id }})">
-            
+                                                                <input type="checkbox" name="user_id" value="{{ user.id }}" class="form-check-input"
+                                                                       id="customSwitchsizemd_{{ user.id }}" {% if user.is_active %} checked {% endif %}
+                                                                       onclick="toggleStaffStatus({{ user.id }})">
+                                                                <label for="customSwitchsizemd_{{ user.id }}" data-on-label="On" data-off-label="Off">
+                                                                    {% if user.is_active %}
+                                                                        On
+                                                                    {% else %}
+                                                                        Off
+                                                                    {% endif %}
+                                                                </label>
                                                             </div>
                                                         </td>
                                                     </tr>
                                                     {% endfor %}
                                                 </tbody>
                                                 </table>
+                                                </form>
                                         </div>
         
                                     </div>
@@ -86,5 +97,12 @@
                     </div> <!-- container-fluid -->
                 </div>
                 <!-- End Page-content -->
+
+    <script>
+        function toggleStaffStatus(staffId) {
+            document.getElementById('toggleStaffForm').submit();
+        }
+        
+    </script>
 {% endblock %}
     
