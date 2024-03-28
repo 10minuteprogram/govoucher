@@ -63,17 +63,48 @@ def staffs_list(request):
 
 @login_required(login_url='login')
 def users(request):
+    user_id = None
 
     users = User.objects.filter(is_superuser= False, is_staff = False)
 
+    if request.method == 'POST':
+        user_id = request.POST.get('user_id')
+        print(user_id)
+        user = User.objects.get(id=user_id)
+        user.is_active = not user.is_active
+        user.save()
+
     context = {
-        "users" : users
+        "users" : users,
+        "user_id":user_id,
+
     }
 
     return render (request, 'management/users.html',context)
 
 def management_profile(request):
     profile = Profile.objects.all()
+
+    if request.method == 'POST':
+        full_name = request.POST.get( 'full_name' )
+        email = request.POST.get( 'email' ) 
+        phone = request.POST.get("phone")
+        address = request.POST.get("address")
+
+
+        # Create a new user instance
+        user = User.objects.create_user(first_name=full_name, email=email)
+        user.save()
+
+        # Create a new profile instance
+        profile = Profile(
+            user=user,
+            contact=phone,
+            address=address
+        )
+        profile.save()
+
+
     context = {
         "profiles": profile
     }
