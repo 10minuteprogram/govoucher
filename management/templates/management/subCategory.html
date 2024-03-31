@@ -52,7 +52,7 @@
                                         
                                         <div class="dropdown-menu" >
                                             {% for category in categorys %}
-                                            <button class="dropdown-item" type="submit" name="name" value="{{ category.id }}">{{ category.name }}</button>
+                                            <button class="dropdown-item" type="submit" class="js-example-basic-single" name="name" value="{{ category.id }}">{{ category.name }}</button>
                                             {% endfor %}
                                         </div>
                                         
@@ -100,7 +100,21 @@
                                     </tbody>
                                 </table>
                             </div>
-
+                            <nav aria-label="...">
+                                <ul class="pagination">
+                                    <li class="page-item disabled">
+                                        <a class="page-link" href="#" tabindex="-1">Previous</a>
+                                    </li>
+                                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                    <li class="page-item active">
+                                        <a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>
+                                    </li>
+                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                    <li class="page-item">
+                                        <a class="page-link" href="#">Next</a>
+                                    </li>
+                                </ul>
+                            </nav>
                         </div>
                     </div>
                 </div> <!-- end col -->
@@ -109,4 +123,15 @@
         </div> <!-- container-fluid -->
     </div>
     <!-- End Page-content -->
+    <!-- Include jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- Include Select2 JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Initialize Select2
+            $('#categorySelect').select2();
+        });
+    </script>
+        
     {% endblock %}

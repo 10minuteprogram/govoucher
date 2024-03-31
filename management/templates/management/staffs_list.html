@@ -41,7 +41,8 @@
                                                 <thead>
                                                     <tr>
                                                         <th>ID</th>
-                                                        <th>Name</th>
+                                                        <th>Username</th>
+                                                        <th>Email</th>
                                                         <th>Age</th>
                                                         <th>Gender</th>
                                                         <th>Edit</th>
@@ -59,8 +60,9 @@
                                                         <td data-field="id" style="width: 80px">{{forloop.counter}}</td>
                                                         
                                                         <td data-field="name"><b><a href="profile/{{staff.id}}">{{staff.username}}</td></a></b>
+                                                        <td>{{staff.email}}</td>
                                                        
-                                                        <td data-field="age">24</td>
+                                                        <td data-field="age">{{staff.profile.age}}</td>
                                                         <td data-field="gender">{{staff.profile.gender}}</td>
                                                         <td style="width: 100px">
                                                             <a class="btn btn-outline-secondary btn-sm edit" title="Edit">
@@ -90,8 +92,25 @@
                                                 </tbody>
                                                 </table>
                                                 </form>
+
                                         </div>
-        
+                                        
+                                        <nav aria-label="...">
+                                            <ul class="pagination">
+                                                <li class="page-item disabled">
+                                                    <a class="page-link" href="#" tabindex="-1">Previous</a>
+                                                </li>
+                                                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                                <li class="page-item active">
+                                                    <a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>
+                                                </li>
+                                                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                                <li class="page-item">
+                                                    <a class="page-link" href="#">Next</a>
+                                                </li>
+                                            </ul>
+                                        </nav>
+
                                     </div>
                                 </div>
                             </div> <!-- end col -->

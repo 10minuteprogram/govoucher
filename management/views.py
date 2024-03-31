@@ -83,33 +83,56 @@ def users(request):
     return render (request, 'management/users.html',context)
 
 def management_profile(request):
-    profile = Profile.objects.all()
+    
+    profiles = Profile.objects.all()
+
+    user = request.user
+    profile = user.profile
 
     if request.method == 'POST':
-        full_name = request.POST.get( 'full_name' )
-        email = request.POST.get( 'email' ) 
+        full_name = request.POST.get('full_name')
+        email = request.POST.get('email') 
         phone = request.POST.get("phone")
         address = request.POST.get("address")
+        birth_date = request.POST.get('birth_date')
 
 
-        # Create a new user instance
-        user = User.objects.create_user(first_name=full_name, email=email)
+        try:
+            birth_date = datetime.strptime(birth_date, "%Y-%m-%d")
+        except ValueError:
+            print("Invalid date format")
+
+
+        # Update profile fields with form data
+        user.first_name = full_name
+        user.email = email
+        profile.phone = phone
+        profile.address = address
+        profile.birth_date = birth_date
+
+        # Save changes to both user and profile
         user.save()
-
-        # Create a new profile instance
-        profile = Profile(
-            user=user,
-            contact=phone,
-            address=address
-        )
         profile.save()
 
 
+
+
     context = {
-        "profiles": profile
+        "profiles": profiles
     }
 
     return render(request, 'accounts/profile.html',context)
+
+def staff_profile(request, id):
+    staff_profiles = User.objects.filter(id=id).first()
+    
+    context={
+        "staff_profiles":staff_profiles
+    }
+
+    return render(request, 'accounts/staff_profile.html',context)
+    
+
 
 def edit_profile(request):
 
@@ -612,7 +635,7 @@ def add_deal(request):
             sub_categorys = SubCategory.objects.filter(category_id=category_id)
         
         if sub_category_id:
-            brands = Deal.objects.filter(sub_category_id=sub_category_id)
+            brands = Brand.objects.filter(sub_category_id=sub_category_id)
             print(brands)
         
 
@@ -620,8 +643,8 @@ def add_deal(request):
         if sub_category_id and name:
             Deal.objects.create(
                 name = name,
-                sub_category_id = sub_category_id,
                 brand_id = brand_id,
+                created_by = Profile.objects.get(user=request.user),
             )
             return redirect('deal_list')
 

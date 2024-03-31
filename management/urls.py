@@ -19,6 +19,7 @@ urlpatterns = [
     path('users/', users, name='users'),
     path('profile/', management_profile, name='profile'),
     path('edit-profile/', edit_profile, name='edit_profile'),
+    path('staffs_list/profile/<int:id>', staff_profile, name='staff_profile'),
 
     #this is authentication url
     path('login/', login, name='login'),
