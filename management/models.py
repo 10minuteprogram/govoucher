@@ -3,6 +3,8 @@ from django.contrib.auth.models import User
 from django.utils.text import slugify
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.utils import timezone
+
 
 # Create your models here.
 class Profile(models.Model):
@@ -13,6 +15,7 @@ class Profile(models.Model):
     profile_image = models.FileField(upload_to='user/profile/images', blank=True, null=True)
     father_name = models.CharField(max_length=150,null=True, blank=True)
     mother_name = models.CharField(max_length=150,null=True, blank=True)
+    age = models.IntegerField(blank=True, null=True)
     gender = models.CharField(max_length=10,null=True, blank=True)
     phone = models.IntegerField(null=True, blank=True)
     address = models.CharField(max_length=200,null=True, blank=True)
@@ -80,9 +83,12 @@ class Brand(models.Model):
         return f"{self.name}"
     
 class Deal(models.Model):
-    sub_category = models.ForeignKey(SubCategory,on_delete=models.SET_NULL,related_name='deals', blank=True, null=True)
     brand = models.ForeignKey(Brand,on_delete=models.SET_NULL,related_name='bdeals',null=True,blank=True)
     name = models.CharField(max_length=200)
+    created_on = models.DateTimeField(auto_now_add=True,blank=True, null=True)
+    created_by = models.ForeignKey(Profile,related_name='crdeal', on_delete=models.SET_NULL,blank=True, null=True)
+    upldated_on =  models.DateTimeField(auto_now=True)
+    updated_by =  models.ForeignKey(Profile, on_delete=models.SET_NULL,blank=True, null=True, related_name='updeal')
 
     def __str__(self):
         return f"{self.name}"
