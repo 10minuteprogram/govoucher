@@ -57,19 +57,19 @@
               <div class="card-body">
                 <div class="d-flex flex-column align-items-center text-center">
 
-                  {% if user.profile.profile_image %}
+                  {% if super_profile.profile.profile_image %}
                     <img src="{{ user.profile.profile_image.url }}" alt="User_image" class="rounded-circle" width="150">
                   {% else %}
-                    {% if user.profile.gender == 'Male' %}
+                    {% if super_profile.profile.gender == 'Male' %}
                         <img src="{% static 'management/images/users/placeholder1.png' %}" alt="Male_placeholder" class="rounded-circle" width="150">
-                    {% elif user.profile.gender == 'Female' %}
+                    {% elif super_profile.profile.gender == 'Female' %}
                         <img src="{% static 'management/images/users/female_place.jpg' %}" alt="Female_placeholder" class="rounded-circle" width="150">
                     {% endif %}
                   {% endif %}
               
               
                   <div class="mt-3">
-                    <h4>{{user.username}}</h4>
+                    <h4>{{super_profile.username}}</h4>
                     <p class="text-secondary mb-1">Full Stack Developer</p>
                     <p class="text-muted font-size-sm">Bay Area, San Francisco, CA</p>
 
@@ -122,7 +122,7 @@
                                                         <h6 class="mb-0">Full Name</h6>
                                                     </div>
                                                     <div class="col-sm-9 text-secondary">
-                                                        <input type="text" class="form-control" name="full_name" value="{{user.first_name}}">
+                                                        <input type="text" class="form-control" name="full_name" value="{{super_profile.first_name}}">
                                                     </div>
                                                 </div>
                                                 <div class="row mb-3">
@@ -130,7 +130,7 @@
                                                         <h6 class="mb-0">Email</h6>
                                                     </div>
                                                     <div class="col-sm-9 text-secondary">
-                                                        <input type="text" class="form-control" name="email"value="{{user.email}}">
+                                                        <input type="text" class="form-control" name="email"value="{{super_profile.email}}">
                                                     </div>
                                                 </div>
                                                 <div class="row mb-3">
@@ -138,7 +138,7 @@
                                                         <h6 class="mb-0">Age</h6>
                                                     </div>
                                                     <div class="col-sm-9 text-secondary">
-                                                        <input type="text" class="form-control" name="age"value="{{user.profile.age}}">
+                                                        <input type="text" class="form-control" name="age"value="{{super_profile.profile.age}}">
                                                     </div>
                                                 </div>
                                                 <div class="row mb-3">
@@ -146,7 +146,7 @@
                                                         <h6 class="mb-0">Gender</h6>
                                                     </div>
                                                     <div class="col-sm-9 text-secondary">
-                                                        <input type="text" class="form-control" name="gender"value="{{user.profile.gender}}">
+                                                        <input type="text" class="form-control" name="gender"value="{{super_profile.profile.gender}}">
                                                     </div>
                                                 </div>
                                                 <div class="row mb-3">
@@ -154,7 +154,7 @@
                                                         <h6 class="mb-0">Phone</h6>
                                                     </div>
                                                     <div class="col-sm-9 text-secondary">
-                                                        <input type="text" class="form-control" name="phone" value="{{user.profile.phone}}">
+                                                        <input type="text" class="form-control" name="phone" value="{{super_profile.profile.phone}}">
                                                     </div>
                                                 </div>
                                                 <div class="row mb-3">
@@ -162,16 +162,17 @@
                                                       <h6 class="mb-0">Birth Date</h6>
                                                   </div>
                                                   <div class="col-sm-9 text-secondary">
-                                                      <input type="date" name="birth_date" value="{{ user.profile.birth_date|date:'Y-m-d' }}" class="form-control">
+                                                      <input type="date" name="birth_date" value="{{ super_profile.profile.birth_date|date:'Y-m-d' }}" class="form-control">
                                                   </div>
                                               </div>
+                                              
                                               
                                                 <div class="row mb-3">
                                                     <div class="col-sm-3">
                                                         <h6 class="mb-0">Address</h6>
                                                     </div>
                                                     <div class="col-sm-9 text-secondary">
-                                                        <input type="text" class="form-control" name="address" value="{{user.profile.address}}">
+                                                        <input type="text" class="form-control" name="address" value="{{super_profile.profile.address}}">
                                                     </div>
                                                 </div>
                                                 <div class="row">
@@ -195,7 +196,7 @@
                                 <h6 class="mb-0">Full Name</h6>
                             </div>
                             <div class="col-sm-9 text-secondary">
-                                {{user.first_name}}
+                                {{super_profile.first_name}}
                             </div>
                         </div>
                         <hr>
@@ -204,7 +205,7 @@
                                 <h6 class="mb-0">Email</h6>
                             </div>
                             <div class="col-sm-9 text-secondary">
-                                {{user.email}}
+                                {{super_profile.email}}
                             </div>
                         </div>
                         <hr>
@@ -213,7 +214,7 @@
                                 <h6 class="mb-0">Age</h6>
                             </div>
                             <div class="col-sm-9 text-secondary">
-                                {{user.profile.age}}
+                                {{super_profile.profile.age}}
                             </div>
                         </div>
                         <hr>
@@ -222,7 +223,7 @@
                                 <h6 class="mb-0">Gender</h6>
                             </div>
                             <div class="col-sm-9 text-secondary">
-                                {{user.profile.gender}}
+                                {{super_profile.profile.gender}}
                             </div>
                         </div>
                         <hr>
@@ -231,7 +232,7 @@
                                 <h6 class="mb-0">Phone</h6>
                             </div>
                             <div class="col-sm-9 text-secondary">
-                                {{user.profile.phone}}
+                                {{super_profile.profile.phone}}
                             </div>
                         </div>
                         <hr>
@@ -240,7 +241,7 @@
                                 <h6 class="mb-0">Birth Date</h6>
                             </div>
                             <div class="col-sm-9 text-secondary">
-                                {{user.profile.birth_date}}
+                                {{super_profile.profile.birth_date}}
                             </div>
                         </div>
                         <hr>
@@ -329,16 +330,7 @@
       </div>
   </div>
 
-{% if messages %}
-  {% for message in messages %}
-    <div id="toast"><div id="img">Icon</div><div id="desc">{{ message }}</div></div>
-    <script>
-        var x = document.getElementById("toast")
-        x.className = "show";
-        setTimeout(function(){ x.className = x.className.replace("show", ""); }, 5000);
-    </script>
-  {% endfor %}
-  {% endif %}
+
 
   <script>
     document.getElementById('editBtn').addEventListener('click', function(event) {
