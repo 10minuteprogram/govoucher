@@ -72,22 +72,41 @@
                                     </tbody>
                                 </table>
                             </div>
+                            {% if superusers.has_other_pages %}
                             <nav aria-label="...">
                                 <ul class="pagination">
-                                    <li class="page-item disabled">
-                                        <a class="page-link" href="#" tabindex="-1">Previous</a>
-                                    </li>
-                                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                    <li class="page-item active">
-                                        <a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>
-                                    </li>
-                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                    <li class="page-item">
-                                        <a class="page-link" href="#">Next</a>
-                                    </li>
+                                    {% if superusers.has_previous %}
+                                        <li class="page-item ">
+                                            <a class="page-link" href="?page={{ superusers.previous_page_number }}" tabindex="-1">Previous</a>
+                                        </li>
+                                    {% else %}
+                                        <li class="page-item disabled">
+                                            <a class="page-link" tabindex="-1">Previous</a>
+                                        </li>
+                                    {% endif %}
+                                    {% for i in superusers.paginator.page_range %}
+                                        {% if superusers.number == i %}
+                                            <li class="page-item active">
+                                                <a class="page-link" > {{ i }} <span class="sr-only">(current)</span></a>
+                                            </li>
+                                        {% else %}
+                                        <li class="page-item"><a class="page-link" href="?page={{ i }}">{{i}}</a></li>
+                                        {% endif %}
+
+                                    {% endfor %}
+
+                                    {% if superusers.has_next %}
+                                        <li class="page-item">
+                                            <a class="page-link" href="?page={{ superusers.next_page_number }}">Next</a>
+                                        </li>
+                                    {% else %}
+                                        <li class="page-item disabled">
+                                            <a class="page-link" href="#">Next</a>
+                                        </li>
+                                    {% endif %}
                                 </ul>
                             </nav>
-
+                            {% endif %}
                         </div>
                     </div>
                 </div> <!-- end col -->

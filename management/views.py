@@ -11,6 +11,7 @@ from django.http import HttpResponse
 from datetime import datetime
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import get_object_or_404
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
 
@@ -23,19 +24,47 @@ def home(request):
 def superuser_list(request):
 
     superusers = User.objects.filter(is_superuser=True)
+    paginator = Paginator(superusers, 10) # Show 12 users per page.
+
+    page = request.GET.get('page', 1)
+
+    try:
+        superusers = paginator.page(page)
+    except PageNotAnInteger:
+        superusers = paginator.page(1)
+    except EmptyPage:
+        superusers = paginator.page(paginator.num_pages)
 
     context = {
         "superusers":superusers
     }
     return render(request, 'management/superuser_list.html', context)
 
-
+def superuser_profile(request, id):
+    super_profiles = User.objects.filter(id=id).first()
+    
+    context={
+        "super_profile":super_profiles
+    }
+    return render(request, 'accounts/superuser_profile.html',context)
 
 def staffs_list(request):
     staff_id = None
     staff = None
      
     staff_users = User.objects.filter(is_staff = True, is_superuser=False)
+    paginator = Paginator(staff_users, 4) # pagination Show 10 users per page.
+
+    page = request.GET.get('page', 1)
+
+    try:
+        staff_users = paginator.page(page)
+    except PageNotAnInteger:
+        staff_users = paginator.page(1)
+    except EmptyPage:
+        staff_users = paginator.page(paginator.num_pages)
+
+
 
     if request.method == 'POST':
         staff_id = request.POST.get('staff_id')
@@ -64,8 +93,17 @@ def staffs_list(request):
 @login_required(login_url='login')
 def users(request):
     user_id = None
-
     users = User.objects.filter(is_superuser= False, is_staff = False)
+    paginator = Paginator(users, 10) # pagination Show 10 users per page.
+
+    page = request.GET.get('page', 1)
+
+    try:
+        users = paginator.page(page)
+    except PageNotAnInteger:
+        users = paginator.page(1)
+    except EmptyPage:
+        users = paginator.page(paginator.num_pages)
 
     if request.method == 'POST':
         user_id = request.POST.get('user_id')
@@ -83,7 +121,6 @@ def users(request):
     return render (request, 'management/users.html',context)
 
 def management_profile(request):
-    
     profiles = Profile.objects.all()
 
     user = request.user
@@ -100,25 +137,28 @@ def management_profile(request):
         try:
             birth_date = datetime.strptime(birth_date, "%Y-%m-%d")
         except ValueError:
+            pass
             print("Invalid date format")
 
+        if  full_name and email and phone and address and birth_date:
+            # Update profile fields with form data
+            user.first_name = full_name
+            user.email = email
+            profile.phone = phone
+            profile.address = address
+            profile.birth_date = birth_date
 
-        # Update profile fields with form data
-        user.first_name = full_name
-        user.email = email
-        profile.phone = phone
-        profile.address = address
-        profile.birth_date = birth_date
-
-        # Save changes to both user and profile
-        user.save()
-        profile.save()
+            # Save changes to both user and profile
+            user.save()
+            profile.save()
+        else:
+            messages.error(request,"Please fill out all the required fields.")
 
 
 
 
     context = {
-        "profiles": profiles
+        "profiles": profiles,
     }
 
     return render(request, 'accounts/profile.html',context)
