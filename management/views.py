@@ -318,6 +318,18 @@ def create_superuser(request):
         last_name  = request.POST.get('last_name')
         username = request.POST.get('username')
         email = request.POST.get('email')
+        father_name = request.POST.get('father_name')
+        mother_name = request.POST.get('mother_name')
+        phone = request.POST.get('phone')
+        nid = request.POST.get('nid')
+        address = request.POST.get('address')
+        gender = request.POST.get('gender')
+        birth_date = request.POST.get('birth_date')
+
+        is_staff = True
+        password = str(random.randint(10000000,99999999))
+
+
         # password = request.POST.get('password')
         # password2 = request.POST.get('password2')
 
@@ -343,9 +355,15 @@ def create_superuser(request):
             username=username,  
             first_name=first_name,  
             last_name=last_name,   
-            email=email)
+            email=email,
+
+            )
         user.set_password(password)
         user.save()
+        profile = user.profile
+        profile.father_name = father_name
+        profile.save()
+
 
         context  = {
             "username":username,
