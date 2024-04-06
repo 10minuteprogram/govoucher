@@ -10,6 +10,8 @@ import uuid
 from django.http import HttpResponse
 from datetime import datetime
 from django.core.exceptions import ObjectDoesNotExist
+from django.shortcuts import get_object_or_404
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
 
@@ -22,20 +24,67 @@ def home(request):
 def superuser_list(request):
 
     superusers = User.objects.filter(is_superuser=True)
+    paginator = Paginator(superusers, 10) # Show 12 users per page.
+
+    page = request.GET.get('page', 1)
+
+    try:
+        superusers = paginator.page(page)
+    except PageNotAnInteger:
+        superusers = paginator.page(1)
+    except EmptyPage:
+        superusers = paginator.page(paginator.num_pages)
 
     context = {
         "superusers":superusers
     }
     return render(request, 'management/superuser_list.html', context)
 
-
+def superuser_profile(request, id):
+    super_profiles = User.objects.filter(id=id).first()
+    
+    context={
+        "super_profile":super_profiles
+    }
+    return render(request, 'accounts/superuser_profile.html',context)
 
 def staffs_list(request):
+    staff_id = None
+    staff = None
      
-    staff_users = User.objects.filter(is_staff = True, is_active=True, is_superuser=False)
+    staff_users = User.objects.filter(is_staff = True, is_superuser=False)
+    paginator = Paginator(staff_users, 4) # pagination Show 10 users per page.
+
+    page = request.GET.get('page', 1)
+
+    try:
+        staff_users = paginator.page(page)
+    except PageNotAnInteger:
+        staff_users = paginator.page(1)
+    except EmptyPage:
+        staff_users = paginator.page(paginator.num_pages)
+
+
+
+    if request.method == 'POST':
+        staff_id = request.POST.get('staff_id')
+        print(staff_id)
+        staff = User.objects.get(id=staff_id)
+        staff.is_active = not staff.is_active
+        staff.save()
+
+
+        # staff = User.objects.get(id=staff_id)
+
+        # # Toggle the staff status
+        # staff.staff_status = not staff.staff_status
+        # staff.save()
+
 
     context = {
-        "staff_users": staff_users
+        "staff_users": staff_users,
+        "staff_id":staff_id,
+        "staff_status":staff
     }
 
 
@@ -43,22 +92,87 @@ def staffs_list(request):
 
 @login_required(login_url='login')
 def users(request):
-
+    user_id = None
     users = User.objects.filter(is_superuser= False, is_staff = False)
+    paginator = Paginator(users, 10) # pagination Show 10 users per page.
+
+    page = request.GET.get('page', 1)
+
+    try:
+        users = paginator.page(page)
+    except PageNotAnInteger:
+        users = paginator.page(1)
+    except EmptyPage:
+        users = paginator.page(paginator.num_pages)
+
+    if request.method == 'POST':
+        user_id = request.POST.get('user_id')
+        print(user_id)
+        user = User.objects.get(id=user_id)
+        user.is_active = not user.is_active
+        user.save()
 
     context = {
-        "users" : users
+        "users" : users,
+        "user_id":user_id,
+
     }
 
     return render (request, 'management/users.html',context)
 
 def management_profile(request):
-    profile = Profile.objects.all()
+    profiles = Profile.objects.all()
+
+    user = request.user
+    profile = user.profile
+
+    if request.method == 'POST':
+        full_name = request.POST.get('full_name')
+        email = request.POST.get('email') 
+        phone = request.POST.get("phone")
+        address = request.POST.get("address")
+        birth_date = request.POST.get('birth_date')
+
+
+        try:
+            birth_date = datetime.strptime(birth_date, "%Y-%m-%d")
+        except ValueError:
+            pass
+            print("Invalid date format")
+
+        if  full_name and email and phone and address and birth_date:
+            # Update profile fields with form data
+            user.first_name = full_name
+            user.email = email
+            profile.phone = phone
+            profile.address = address
+            profile.birth_date = birth_date
+
+            # Save changes to both user and profile
+            user.save()
+            profile.save()
+        else:
+            messages.error(request,"Please fill out all the required fields.")
+
+
+
+
     context = {
-        "profiles": profile
+        "profiles": profiles,
     }
 
     return render(request, 'accounts/profile.html',context)
+
+def staff_profile(request, id):
+    staff_profiles = User.objects.filter(id=id).first()
+    
+    context={
+        "staff_profiles":staff_profiles
+    }
+
+    return render(request, 'accounts/staff_profile.html',context)
+    
+
 
 def edit_profile(request):
 
@@ -95,7 +209,7 @@ def login(request):
                             'username':username
                         }
                         email = User.objects.get(username=username).email
-                        send_email('Verify your account', [email], 'management/emails/email_verification.html', context, [])
+                        #send_email('Verify your account', [email], 'management/emails/email_verification.html', context, [])
                         return redirect('verify_account')
 
                     else:
@@ -379,3 +493,227 @@ def create_superuser(request):
     return render(request,'management/create_superuser.html')
 
 
+def add_category(request):
+
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        image = request.FILES.get('image')
+        description = request.POST.get('description')
+
+        if name and image and description:
+            Category.objects.create(
+                name=name,
+                cover=image,
+                description=description,
+                created_by= Profile.objects.get(user=request.user)
+            )
+            return redirect('category')
+        else:
+            messages.error(request,"All fields are required")
+
+    return render(request, 'management/add_category.html')
+
+
+def category(request):
+
+    categorys =  Category.objects.all()
+
+    if request.method=='POST':
+        delete_item = request.POST.get("delete_item")
+        if delete_item:
+            item = get_object_or_404(Category, id=delete_item)
+            item.delete()
+            #messages.success(request, f"{item} is deleted Successfully")
+            return redirect('category')
+
+    context = {
+        'categorys': categorys,
+    }
+
+    return render(request, 'management/category.html',context)
+
+def add_subCategory(request):
+    category_id = None
+    categories = Category.objects.all()
+
+    if request.method == 'POST':
+        category_id = int(request.POST.get('category_id'))
+        name = request.POST.get('name')
+        image = request.FILES.get('image')
+        description = request.POST.get('description')
+
+        if name and description and category_id:
+            SubCategory.objects.create(
+               category_id=category_id,
+               name=name,
+               cover=image,
+               description=description,
+               created_by=Profile.objects.get(user=request.user),
+            )
+            return redirect('subCategory')
+        else:
+            messages.error(request,'Please enter all the details')
+
+
+    context = {
+        "categories": categories,
+    }
+
+    return render(request, 'management/add_subCategory.html',context)
+
+
+def subCategory(request):
+    subcategors = None
+
+    categorys = Category.objects.all()
+
+
+    if request.method == 'GET':
+        search = request.GET.get("name")
+        if search:
+            # Filter subcategories based on search query
+            subcategors = SubCategory.objects.filter(category_id=search)
+        else:
+            subcategors = SubCategory.objects.all()
+                
+
+    context = {
+        'subcategors' : subcategors,
+        'categorys' : categorys,
+    }
+    
+    return render(request,  'management/subCategory.html',context)
+
+def add_brand(request):
+    category_id = None
+    sub_categorys = None
+    sub_category_id = None
+    categories = Category.objects.all()
+
+    if request.method == 'POST':
+        try:
+            category_id = int(request.POST.get("category_id"))
+        except:
+            category_id = None
+
+        name = request.POST.get('name')
+        image = request.FILES.get('image')
+        description = request.POST.get('description')
+
+        sub_category_id = request.POST.get('sub_category_id')
+
+        if not sub_category_id:
+            sub_categorys = SubCategory.objects.filter(category_id=category_id)
+        elif sub_category_id and name:
+            Brand.objects.create(
+                sub_category_id = sub_category_id,
+                name = name,
+                photo = image,
+                description = description,
+                created_by = Profile.objects.get(user=request.user),
+            )
+            return redirect('brand_list')
+
+    context  ={
+        'categories' : categories,
+        'sub_categorys' : sub_categorys,
+        # 'sub_category_id':sub_category_id
+    }
+
+
+
+    return render(request,"management/add_brand.html",context)
+
+def brand_list(request):
+
+
+    brands = SubCategory.objects.all()
+
+    if request.method == 'GET':
+        search = request.GET.get("name")
+        if search:
+            # Filter subcategories based on search query
+            all_brand = Brand.objects.filter(sub_category_id=search)
+        else:
+            all_brand = Brand.objects.all()
+
+    context ={
+        'brands' : all_brand,
+        'brand':brands,
+    }
+
+    return render(request,"management/brand_list.html",context)
+
+def deal_list(request):
+
+    all_brand = None
+    deals = None
+
+    deals = Brand.objects.all()
+
+    if request.method == 'GET':
+        search = request.GET.get("name")
+        if search:
+            # Filter subcategories based on search query
+            all_brand = Deal.objects.filter(brand_id=search)
+        else:
+            all_brand = Deal.objects.all()
+
+    context ={
+        "deals" : deals,
+        "all_brand":all_brand,
+    }
+    return render(request, 'management/deal-list.html',context)
+
+def add_deal(request):
+    categories = Category.objects.all()
+    sub_categorys = None
+    brands = None
+
+    category_id = None
+    sub_category_id = None
+
+
+    if request.method == "POST":
+        try:
+            category_id = int(request.POST.get("category_id"))
+        except:
+            category_id = None
+
+
+        try:
+            sub_category_id = int(request.POST.get('sub_category_id'))
+        except:
+            sub_category_id = None
+        
+        name = request.POST.get("name")
+        brand_id = request.POST.get('brand_id')
+        
+        if category_id:
+            sub_categorys = SubCategory.objects.filter(category_id=category_id)
+        
+        if sub_category_id:
+            brands = Brand.objects.filter(sub_category_id=sub_category_id)
+            print(brands)
+        
+
+        
+        if sub_category_id and name:
+            Deal.objects.create(
+                name = name,
+                brand_id = brand_id,
+                created_by = Profile.objects.get(user=request.user),
+            )
+            return redirect('deal_list')
+
+
+    context ={
+        'categories': categories,
+        'sub_categorys': sub_categorys,
+        'brands': brands,
+
+        'category_id' : category_id,
+        'sub_category_id':sub_category_id,
+    }
+
+    return render(request, 'management/add_deal.html',context)

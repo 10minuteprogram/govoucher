@@ -1,0 +1,98 @@
+{% extends 'management/base.html' %}
+
+{% block content %}
+    <!-- ============================================================== -->
+    <!-- Start right Content here -->
+    <!-- ============================================================== -->
+    <div class="main-content">
+
+        <div class="page-content">
+            <div class="container-fluid">
+
+                <!-- start page title -->
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="page-title-box">
+                            <h4>Add New Sub Category</h4>
+                                <ol class="breadcrumb m-0">
+                                    <li class="breadcrumb-item"><a href="#">Sub Category List</a></li>
+                                    <li class="breadcrumb-item"><a href="#">Add Sub Category</a></li>
+                                </ol>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- end page title -->
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+                            {% if messages %}
+                            {% include 'management/message.html' %}
+                            {% endif %}
+
+                            <form method="post" enctype="multipart/form-data">
+                                {% csrf_token %}
+                               
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label for="category">Category</label>
+                                        <select name="category_id" class="form-control" id="" {% if sub_categorys %}style="pointer-events: none; background-color: gray"{% endif %}>
+                                            <option value="">Select Category</option>
+                                            {% for c in categories %}
+                                                {% if c.id == category_id %}
+                                                    <option value="{{c.id}}" selected>{{c.name}}</option>
+                                                {% else %}
+                                                    <option value="{{c.id}}">{{c.name}}</option>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+
+                                    {% if sub_categorys %}
+                                        <div class="col-md-6">
+                                            <label for="sub_category">Sub Category</label>
+                                            <select name="sub_category_id" {% if sub_category_id %}style="pointer-events: none; background-color: gray"{% endif %} class="form-control" id="">
+                                                <option value="">Select Sub Category</option>
+                                                {% for c in sub_categorys %}
+                                                    {% if c.id == sub_category_id %}
+                                                    <option value="{{c.id}}" selected>{{c.name}}</option>
+                                                    {% else %}
+                                                    <option value="{{c.id}}">{{c.name}}</option>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    {% endif %}
+
+                                    {% if brands %}
+                                        <div class="col-md-6">
+                                            <label for="sub_category">Brand</label>
+                                            <select name="brand_id" class="form-control" id="">
+                                                <option value="">Select Brand</option>
+                                                {% for c in brands %}
+                                                    <option value="{{c.id}}">{{c.name}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                    
+                                {% if brands %}
+                                <label for="name" class="mt-3">Deal Name</label>
+                                <input type="text" name="name" id="name" class="form-control" placeholder="Enter category name" required>
+                               
+                                {% endif %}
+
+                                <div class="mt-4">
+                                    <a href="" class="btn btn-secondary w-md">Reset</a>
+                                    <button type="submit" class="btn btn-primary w-md">Submit</button>
+                                </div>
+                            </form>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end col -->
+                </div>
+                <!-- end row -->
+{% endblock %}

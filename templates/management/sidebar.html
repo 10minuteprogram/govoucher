@@ -17,6 +17,19 @@
                     </a>
                 </li>
 
+                <li>
+                    <a href="javascript: void(0);" class="has-arrow waves-effect">
+                        <i class="typcn typcn-document-text"></i>
+                        <span>Recourse</span>
+                    </a>
+                    <ul class="sub-menu" aria-expanded="false">
+                        <li><a href="{% url 'category' %}">Category</a></li>
+                        <li><a href="{% url 'subCategory' %}">Sub Category</a></li>
+                        <li><a href="{% url 'brand_list' %}">Brand</a></li>
+                        <li><a href="{% url 'deal_list' %}">Deal</a></li>
+                    </ul>
+                </li>
+
 
                 <li>
                     <a href="{% url 'users' %}" class=" waves-effect">
@@ -27,8 +40,7 @@
                 </li>
 
   
-
-                <li class="menu-title">Extras</li>
+                <li class="menu-title">Administration</li>
                 {% if user.is_superuser %}
                 <li>
                     <a href="javascript: void(0);" class="has-arrow waves-effect">

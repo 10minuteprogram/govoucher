@@ -19,6 +19,8 @@ urlpatterns = [
     path('users/', users, name='users'),
     path('profile/', management_profile, name='profile'),
     path('edit-profile/', edit_profile, name='edit_profile'),
+    path('staffs_list/profile/<int:id>', staff_profile, name='staff_profile'),
+    path('superuser_list/profile/<int:id>', superuser_profile, name='superuser_profile'),
 
     #this is authentication url
     path('login/', login, name='login'),
@@ -30,6 +32,16 @@ urlpatterns = [
     
     path('create_staff/', superuser_required(create_staff), name='create_staff'),
     path('create_superuser/', superuser_required(create_superuser), name='create_superuser'),
+
+    #recourse
+    path('category/', category, name='category'),
+    path('sub-category/', subCategory, name="subCategory"),
+    path('brand-list/', brand_list, name= "brand_list" ),
+    path('deal-list/', deal_list, name='deal_list'),
+    path('add-category/', add_category, name='add_category'),
+    path('add-sub-category/', add_subCategory, name='add_subCategory'),
+    path('add-brand/', add_brand, name='add_brand'),
+    path('add-deal', add_deal, name='add_deal'),
 
 
 ]

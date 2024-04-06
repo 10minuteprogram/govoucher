@@ -1,6 +1,5 @@
 {% extends 'management/base.html' %}
 
-
 {% block content %}
 <!-- ============================================================== -->
 <!-- Start right Content here -->
@@ -35,32 +34,55 @@
                             editable.</p>
                             {% if user.is_superuser  %}
                             <div style="text-align: end;">
-                                <a href="{% url 'create_superuser' %}" class="btn btn-primary">Add Superuser</a>
+                                <a href="{% url 'add_brand' %}" class="btn btn-primary">Add Brand</a>
                             </div>
                             {% endif %}
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="dropdown">
+                                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="mdi mdi-format-list-checks"></i>
+                                            Select Sub category
+                                            <i class="mdi mdi-chevron-down"></i>
+                                        </button>
+                                        
+                                        <form method='GET'>
+                                        
+                                            <div class="dropdown-menu" >
+                                                {% for brand in brand %}
+                                                <button class="dropdown-item" type="submit" name="name" value="{{ brand.id }}">{{ brand.name }}</button>
+                                                {% endfor %}
+                                            </div>
+                                            
+                                        </form>
+                                    </div>                                               
+                                </div><!-- end col -->
 
                             <div class="table-responsive">
                                 <table class="table table-editable table-nowrap align-middle table-edits">
                                     <thead>
+                                        
+                                        {% if brands %}
+        
                                         <tr>
                                             <th>ID</th>
-                                            <th>Username</th>
-                                            <th>Email</th>
-                                            <th>Age</th>
-                                            <th>Gender</th>
+                                            <th>Sub categors</th>
+                                            <th>Brand</th>
+                                            <th>Created on</th>
+                                            <th>Created by</th>
                                             <th>Edit</th>
                                         </tr>
                                     </thead>
                                     <tbody>
 
-                                        {% for superuser in superusers %}
+                                        {% for brand in brands %}
 
                                         <tr data-id="1">
                                             <td data-field="id" style="width: 80px">{{forloop.counter}}</td>
-                                            <td data-field="name"><b><a href="profile/{{superuser.id}}">{{superuser.username}}</td></a></b>
-                                            <td> {{superuser.email}} </td>
-                                            <td data-field="age">{{superuser.profile.age}}</td>
-                                            <td data-field="gender">{{superuser.profile.gender}}</td>
+                                            <td data-field="name"><b><a href="#">{{brand.sub_category.name}}</td></a></b>
+                                            <td data-field="name"><b><a href="#">{{brand.name}}</td></a></b>
+                                            <td data-field="age">{{brand.created_on}}</td>
+                                            <td data-field="gender">{{brand.created_by}}</td>
                                             <td style="width: 100px">
                                                 <a class="btn btn-outline-secondary btn-sm edit" title="Edit">
                                                     <i class="fas fa-pencil-alt"></i>
@@ -69,44 +91,14 @@
                                             
                                         </tr>
                                         {% endfor %}
+                                        {% else %}
+                                        <td data-field="name" ><b>No Barnd Found!</td></b>
+                                        
+                                        {% endif %}
                                     </tbody>
                                 </table>
                             </div>
-                            {% if superusers.has_other_pages %}
-                            <nav aria-label="...">
-                                <ul class="pagination">
-                                    {% if superusers.has_previous %}
-                                        <li class="page-item ">
-                                            <a class="page-link" href="?page={{ superusers.previous_page_number }}" tabindex="-1">Previous</a>
-                                        </li>
-                                    {% else %}
-                                        <li class="page-item disabled">
-                                            <a class="page-link" tabindex="-1">Previous</a>
-                                        </li>
-                                    {% endif %}
-                                    {% for i in superusers.paginator.page_range %}
-                                        {% if superusers.number == i %}
-                                            <li class="page-item active">
-                                                <a class="page-link" > {{ i }} <span class="sr-only">(current)</span></a>
-                                            </li>
-                                        {% else %}
-                                        <li class="page-item"><a class="page-link" href="?page={{ i }}">{{i}}</a></li>
-                                        {% endif %}
 
-                                    {% endfor %}
-
-                                    {% if superusers.has_next %}
-                                        <li class="page-item">
-                                            <a class="page-link" href="?page={{ superusers.next_page_number }}">Next</a>
-                                        </li>
-                                    {% else %}
-                                        <li class="page-item disabled">
-                                            <a class="page-link" href="#">Next</a>
-                                        </li>
-                                    {% endif %}
-                                </ul>
-                            </nav>
-                            {% endif %}
                         </div>
                     </div>
                 </div> <!-- end col -->
@@ -115,4 +107,4 @@
         </div> <!-- container-fluid -->
     </div>
     <!-- End Page-content -->
-    {% endblock %}
+{% endblock %}

@@ -1,6 +1,8 @@
 {% extends 'management/base.html' %}
 
 
+    
+
 {% block content %}
             <!-- ============================================================== -->
             <!-- Start right Content here -->
@@ -14,24 +16,12 @@
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="page-title-box">
-                                    <h4>Editable Table</h4>
+                                    <h4>Users Table</h4>
                                         <ol class="breadcrumb m-0">
-                                            <li class="breadcrumb-item"><a href="javascript: void(0);">Lexa</a></li>
+                                            <li class="breadcrumb-item"><a href="javascript: void(0);">users</a></li>
                                             <li class="breadcrumb-item"><a href="javascript: void(0);">Tables</a></li>
                                             <li class="breadcrumb-item active">Editable Table</li>
                                         </ol>
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="state-information d-none d-sm-block">
-                                    <div class="state-graph">
-                                        <div id="header-chart-1" data-colors='["--bs-primary"]'></div>
-                                        <div class="info">Balance $ 2,317</div>
-                                    </div>
-                                    <div class="state-graph">
-                                        <div id="header-chart-2" data-colors='["--bs-info"]'></div>
-                                        <div class="info">Item Sold 1230</div>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -54,7 +44,8 @@
                                                 <thead>
                                                     <tr>
                                                         <th>ID</th>
-                                                        <th>Name</th>
+                                                        <th>Username</th>
+                                                        <th>Email</th>
                                                         <th>Age</th>
                                                         <th>Gender</th>
                                                         <th>Edit</th>
@@ -63,10 +54,15 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
+
+                                                    <form id="toggleStaffForm" method="post" action="{% url 'users' %}">
+                                                        {% csrf_token %}
+
                                                     {% for user in users %}
                                                     <tr data-id="1">
                                                         <td data-field="id" style="width: 80px">{{forloop.counter}}</td>
                                                         <td data-field="name">{{user.username}}</td>
+                                                        <td>{{user.email}}</td>
                                                         <td data-field="age">24</td>
                                                         <td data-field="gender">Male</td>
                                                         <td style="width: 100px">
@@ -76,18 +72,61 @@
                                                         </td>
                                                         <td>
                                                             <div class="form-check form-switch form-switch-md mb-3" dir="ltr">
-                                                                <input type="checkbox" class="form-check-input"
-                                                                    id="customSwitchsizemd" {% if user.staff_status %}  checked {% endif %}
-                                                                     onclick="toggleStaffStatus({{ user.id }})">
-            
+                                                                <input type="checkbox" name="user_id" value="{{ user.id }}" class="form-check-input"
+                                                                       id="customSwitchsizemd_{{ user.id }}" {% if user.is_active %} checked {% endif %}
+                                                                       onclick="toggleStaffStatus({{ user.id }})">
+                                                                <label for="customSwitchsizemd_{{ user.id }}" data-on-label="On" data-off-label="Off">
+                                                                    {% if user.is_active %}
+                                                                        On
+                                                                    {% else %}
+                                                                        Off
+                                                                    {% endif %}
+                                                                </label>
                                                             </div>
                                                         </td>
                                                     </tr>
                                                     {% endfor %}
                                                 </tbody>
                                                 </table>
+                                                </form>
                                         </div>
-        
+                                        {% if users.has_other_pages %}
+                                        <nav aria-label="...">
+                                            <ul class="pagination">
+                                                {% if users.has_previous %}
+                                                <li class="page-item">
+                                                    <a class="page-link" href="?page={{ users.previous_page_number }}" tabindex="-1">Previous</a>
+                                                </li>
+                                                {% else %}
+                                                <li class="page-item disabled">
+                                                    <a class="page-link" href="#" tabindex="-1">Previous</a>
+                                                </li>
+                                                {% endif %}
+
+                                                {% for i in users.paginator.page_range %}
+                                                
+                                                    {% if users.number == i %}
+                                                    <li class="page-item active">
+                                                        <a class="page-link" >{{ i }} <span class="sr-only">(current)</span></a>
+                                                    </li>
+                                                    {% else %}
+                                                    <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                                                    {% endif %}
+                                                {% endfor %}
+                                        
+
+                                                {% if users.has_next %}
+                                                <li class="page-item">
+                                                    <a class="page-link" href="?page={{ users.next_page_number }}">Next</a>
+                                                </li>
+                                                {% else %}
+                                                <li class="page-item disabled">
+                                                    <a class="page-link" href="#">Next</a>
+                                                </li>
+                                                {% endif %}
+                                            </ul>
+                                        </nav>
+                                        {% endif %}
                                     </div>
                                 </div>
                             </div> <!-- end col -->
@@ -96,5 +135,12 @@
                     </div> <!-- container-fluid -->
                 </div>
                 <!-- End Page-content -->
+
+    <script>
+        function toggleStaffStatus(staffId) {
+            document.getElementById('toggleStaffForm').submit();
+        }
+        
+    </script>
 {% endblock %}
     
