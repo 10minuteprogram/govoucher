@@ -132,6 +132,9 @@ def management_profile(request):
         phone = request.POST.get("phone")
         address = request.POST.get("address")
         birth_date = request.POST.get('birth_date')
+        age = request.POST.get('age')
+        gender = request.POST.get('gender')
+        print(age,gender)
 
 
         try:
@@ -140,13 +143,15 @@ def management_profile(request):
             pass
             print("Invalid date format")
 
-        if  full_name and email and phone and address and birth_date:
+        if  full_name and email and phone and address and birth_date and age and gender:
             # Update profile fields with form data
             user.first_name = full_name
             user.email = email
             profile.phone = phone
             profile.address = address
             profile.birth_date = birth_date
+            profile.age = age
+            profile.gender = gender
 
             # Save changes to both user and profile
             user.save()
