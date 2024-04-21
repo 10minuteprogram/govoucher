@@ -35,7 +35,7 @@
                             editable.</p>
                             {% if user.is_superuser  %}
                             <div style="text-align: end;">
-                                <a href="{% url 'create_superuser' %}" class="btn btn-primary">Add Superuser</a>
+                                <a href="#" class="btn btn-primary">Send Email</a>
                             </div>
                             {% endif %}
 
@@ -44,30 +44,31 @@
                                     <thead>
                                         <tr>
                                             <th>ID</th>
-                                            <th>Username</th>
+                                            <th>Name</th>
                                             <th>Email</th>
-                                            <th>Age</th>
-                                            <th>Gender</th>
-                                            <th>Edit</th>
+                                            <th>Blacklist Reason</th>
+                                            <th>Campaign Sent</th>
+                                            <th>Last Sent</th>
                                         </tr>
                                     </thead>
                                     <tbody>
 
-                                        {% for superuser in superusers %}
+                                        {% for subscriber in subscribers %}
 
                                         <tr data-id="1">
                                             <td data-field="id" style="width: 80px">{{forloop.counter}}</td>
-                                            <td data-field="name"><b><a href="profile/{{superuser.id}}">{{superuser.username}}</td></a></b>
-                                            <td> {{superuser.email}} </td>
-                                            <td data-field="age">{{superuser.profile.age}}</td>
-                                            <td data-field="gender">{{superuser.profile.gender}}</td>
+                                            <td data-field="name"><b><a href="#">{{subscriber.name}}</td></a></b>
+                                            <td> {{subscriber.email}} </td>
+                                            <td data-field="blacklist_reason">
+                                                {% if not subscriber.blacklist_reason %}
+                                                No
+                                              {% else %}
+                                                Yes
+                                              {% endif %}
+                                            </td>
+                                            <td data-field="campaign_sent">{{subscriber.campaign_sent}}</td>
                                             <td style="width: 100px">
-                                                <a class="btn btn-outline-secondary btn-sm edit" title="Edit">
-                                                    <i class="fas fa-pencil-alt"></i>
-                                                </a>
-                                                <a class="btn btn-outline-secondary btn-sm" title="reset">
-                                                    <i class="ion ion-md-key"></i>
-                                                </a>
+                                                {{subscriber.last_sent}}
                                             </td>
                                             
                                         </tr>

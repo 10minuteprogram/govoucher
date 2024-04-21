@@ -45,14 +45,13 @@
                                                         <th>Email</th>
                                                         <th>Age</th>
                                                         <th>Gender</th>
-                                                        <th>Edit</th>
+                                                        <th>Action</th>
                                                         <th>Active</th>
                                                         
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                <form id="toggleStaffForm" method="post" action="{% url 'staffs_list' %}">
-                                                    {% csrf_token %}
+                                                
                                                     
                                                     {% for staff in staff_users %}
                                                     <tr data-id="1">
@@ -65,24 +64,32 @@
                                                         <td data-field="age">{{staff.profile.age}}</td>
                                                         <td data-field="gender">{{staff.profile.gender}}</td>
                                                         <td style="width: 100px">
+                                                            <form action="" method="post" action="{% url 'staffs_list' %}">
                                                             <a class="btn btn-outline-secondary btn-sm edit" title="Edit">
                                                                 <i class="fas fa-pencil-alt"></i>
                                                             </a>
+                                                            <a class="btn btn-outline-secondary btn-sm" value="{{staff.id}}" name="reset_pass" title="reset" onclick="confirmReset()">
+                                                                <i class="ion ion-md-key"></i>
+                                                            </a>
+                                                            </form>
                                                         </td>
                                                         
                                                         <td>
-                                                            <div class="form-check form-switch form-switch-md mb-3" dir="ltr">
-                                                                <input type="checkbox" name="staff_id" value="{{ staff.id }}" class="form-check-input"
-                                                                       id="customSwitchsizemd_{{ staff.id }}" {% if staff.is_active %} checked {% endif %}
-                                                                       onclick="toggleStaffStatus({{ staff.id }})">
-                                                                <label for="customSwitchsizemd_{{ staff.id }}" data-on-label="On" data-off-label="Off">
-                                                                    {% if staff.is_active %}
-                                                                        On
-                                                                    {% else %}
-                                                                        Off
-                                                                    {% endif %}
-                                                                </label>
-                                                            </div>
+                                                            <form id="toggleStaffForm" method="post" action="{% url 'staffs_list' %}">
+                                                                {% csrf_token %}
+                                                                <div class="form-check form-switch form-switch-md mb-3" dir="ltr">
+                                                                    <input type="checkbox" name="staff_id" value="{{ staff.id }}" class="form-check-input"
+                                                                        id="customSwitchsizemd_{{ staff.id }}" {% if staff.is_active %} checked {% endif %}
+                                                                        onclick="toggleStaffStatus({{ staff.id }})">
+                                                                    <label for="customSwitchsizemd_{{ staff.id }}" data-on-label="On" data-off-label="Off">
+                                                                        {% if staff.is_active %}
+                                                                            On
+                                                                        {% else %}
+                                                                            Off
+                                                                        {% endif %}
+                                                                    </label>
+                                                                </div>
+                                                            </form>
                                                         </td>
                                                         
                                                         
@@ -91,7 +98,7 @@
                                                     {% endfor %}
                                                 </tbody>
                                                 </table>
-                                                </form>
+                                                
 
                                         </div>
                                         
@@ -142,10 +149,18 @@
                 <!-- End Page-content -->
 
     <script>
-        function toggleStaffStatus(staffId) {
+        function toggleStaffStatus(staff_id) {
             document.getElementById('toggleStaffForm').submit();
         }
-        
+
+
+        function confirmReset() {
+            // Show a confirmation message using alert
+            if (confirm("Are you sure you want to reset your password?")) {
+                // If user clicks OK on the confirmation dialog, submit the form
+            document.getElementById('resetForm').submit();
+            }
+        }
     </script>
    
 {% endblock %}

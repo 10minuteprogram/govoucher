@@ -92,3 +92,48 @@ class Deal(models.Model):
 
     def __str__(self):
         return f"{self.name}"
+    
+
+class Subscribers(models.Model):
+    name = models.CharField(max_length=400)
+    email = models.EmailField()
+    blacklist_reason = models.BooleanField(default=False,blank=True, null=True)
+    campaign_sent = models.IntegerField(default=0,blank=True, null=True)
+    last_sent = models.DateTimeField(auto_now_add=True,blank=True, null=True)
+    created_on = models.DateTimeField(auto_now_add=True,blank=True, null=True)
+
+    def __str__(self):
+        return f"{self.name} | {self.email}"
+    
+class EmailCampaign(models.Model):
+    name = models.CharField(max_length=400)
+    source = models.CharField(max_length=400)
+    totat_participant = models.IntegerField()
+    filter_criteria = models.CharField(max_length=400)
+    template = models.TextField()
+
+    def __str__(self):
+        return f"{self.name}"
+
+class EmailCampaignParticipant(models.Model):
+    campaign = models.ForeignKey(EmailCampaign, on_delete=models.SET_NULL, related_name="campaign", null=True,blank=True)
+    subscriber = models.ForeignKey(Subscribers, on_delete=models.SET_NULL, related_name="subscriber", null=True,blank=True)
+    user = models.ForeignKey(User,on_delete=models.SET_NULL, related_name="user", null=True,blank=True)
+    sending_id = models.CharField(max_length=600)
+    status = models.CharField(max_length=100)
+    def __str__(self):
+        return f"{self.campaign} | {self.subscriber}"
+
+    
+class EmailTemplate(models.Model):
+    name = models.CharField(max_length=300)
+    subject = models.CharField(max_length=300)
+    body = models.TextField()
+    status = models.CharField(max_length=100)
+    created_on = models.DateTimeField(auto_now_add=True,blank=True, null=True)
+    created_by = models.ForeignKey(Profile,related_name='cremail', on_delete=models.SET_NULL,blank=True, null=True)
+    upldated_on =  models.DateTimeField(auto_now=True)
+    updated_by =  models.ForeignKey(Profile, on_delete=models.SET_NULL,blank=True, null=True, related_name='upemail')
+
+    def __str__(self):
+        return f"{self.name} | {self.subject}"

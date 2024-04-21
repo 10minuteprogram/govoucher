@@ -43,5 +43,11 @@ urlpatterns = [
     path('add-brand/', add_brand, name='add_brand'),
     path('add-deal', add_deal, name='add_deal'),
 
+    #email_campaign_url
+    path('subscriber/', subscriber, name='subscriber'),
+    path('email-campaign/', email_campaign, name='email_campaign'),
+    path('email-campaign-participant/', email_campaign_participent, name='email_campaign_participent'),
+    path('email-template/', email_template, name='email_template')
+
 
 ]

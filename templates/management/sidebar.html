@@ -19,6 +19,19 @@
 
                 <li>
                     <a href="javascript: void(0);" class="has-arrow waves-effect">
+                        <i class="mdi mdi-email-outline"></i>
+                        <span>Email Campaign</span>
+                    </a>
+                    <ul class="sub-menu" aria-expanded="false">
+                        <li><a href="{% url 'subscriber' %}">Subscribers</a></li>
+                        <li><a href="{% url 'email_campaign' %}">Email Campaign</a></li>
+                        <li><a href="{% url 'email_campaign_participent' %}">Email Campaign Participant</a></li>
+                        <li><a href="{% url 'email_template' %}">Email Template</a></li>
+                    </ul>
+                </li>
+
+                <li>
+                    <a href="javascript: void(0);" class="has-arrow waves-effect">
                         <i class="typcn typcn-document-text"></i>
                         <span>Recourse</span>
                     </a>
