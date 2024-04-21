@@ -49,7 +49,7 @@ def superuser_profile(request, id):
     return render(request, 'accounts/superuser_profile.html',context)
 
 def staffs_list(request):
-    staff_id = None
+
     staff = None
      
     staff_users = User.objects.filter(is_staff = True, is_superuser=False)
@@ -69,21 +69,27 @@ def staffs_list(request):
     if request.method == 'POST':
         staff_id = request.POST.get('staff_id')
         print(staff_id)
-        staff = User.objects.get(id=staff_id)
-        staff.is_active = not staff.is_active
-        staff.save()
+        if staff_id:
+            try:
+                staff = User.objects.get(id=staff_id)
+                staff.is_active = not staff.is_active
+                staff.save()
+            except User.DoesNotExist:
+                return HttpResponse("Invalid staff ID provided.")
+        else:
+            return HttpResponse("No staff ID provided.")
 
+    # if request.method == 'POST':
+    #     reset_pass = request.POST.get('reset_pass')
+    #     staff_pass = User.objects.filter(id=reset_pass).first()
+    #     email = staff_pass.email
+    #     print(staff_pass, email)
+    #     #send_email('Verify your account', [email], 'management/emails/email_verification.html', context, [])
 
-        # staff = User.objects.get(id=staff_id)
-
-        # # Toggle the staff status
-        # staff.staff_status = not staff.staff_status
-        # staff.save()
 
 
     context = {
         "staff_users": staff_users,
-        "staff_id":staff_id,
         "staff_status":staff
     }
 
@@ -699,3 +705,47 @@ def add_deal(request):
     }
 
     return render(request, 'management/add_deal.html',context)
+
+
+def subscriber(request):
+    subscribers = Subscribers.objects.all()
+
+    context = {
+        'subscribers': subscribers,
+    }
+    return render(request, 'management/subscriber.html',context)
+
+def email_campaign(request):
+    email_campaigns = EmailCampaign.objects.all()
+    context = {
+        'email_campaigns': email_campaigns,
+    }
+    return render(request, 'management/email_campaign.html', context)
+
+def email_campaign_participent(request):
+    campaign_participents = EmailCampaignParticipant.objects.all()
+
+    context = {
+        'campaign_participents': campaign_participents,
+    }
+    return render(request, 'management/email_cam_participent.html', context)
+
+def email_template(request):
+
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        subject = request.POST.get('subject')
+        body = request.POST.get('body')
+        status = request.POST.get('status')
+
+        if name and subject and body and status:
+            EmailTemplate.objects.create(
+                name=name,
+                subject=subject,
+                body=body,
+                status=status,
+                created_by = Profile.objects.get(user=request.user),
+            )
+        
+
+    return render(request, 'management/email_template.html')
