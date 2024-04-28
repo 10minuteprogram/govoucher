@@ -12,6 +12,13 @@ from datetime import datetime
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import get_object_or_404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from datetime import timedelta
+from django.utils import timezone
+from django.urls import reverse
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import render_to_string
+
+
 
 
 
@@ -709,11 +716,62 @@ def add_deal(request):
 
 def subscriber(request):
     subscribers = Subscribers.objects.all()
+    email_campaigns = EmailCampaign.objects.all()
+    templates = EmailTemplate.objects.all()
+
+    q = request.GET.get('q')
+    if q:
+        subscribers = subscribers.filter(email__icontains=q)
 
     context = {
         'subscribers': subscribers,
+        'email_campaigns': email_campaigns,
+        'templates': templates,
     }
     return render(request, 'management/subscriber.html',context)
+
+
+def create_campaign(request):
+    if request.method == 'POST':
+        # participant filter criteria
+        participants = Subscribers.objects.all()
+        q = request.POST.get('q')
+        if q:
+            participants = participants.filter(email__icontains=q)
+
+        name = request.POST.get('name')
+        template_id = request.POST.get('template_id')
+        template = EmailTemplate.objects.filter(id=template_id).first()
+        if not template:
+            messages.error(request, 'Template not found')
+            return redirect('subscriber')
+
+        body = template.body
+        subject = template.subject
+        total_participant = participants.count()
+        source = request.GET.get('source')
+
+
+        campaign = EmailCampaign.objects.create(
+            name=name,
+            source=source,
+            total_participant=total_participant,
+            body=body,
+            subject=subject,
+            created_by=request.user
+        )
+
+        for participant in participants:
+            EmailCampaignParticipant.objects.create(
+                campaign=campaign,
+                subscriber=participant,
+                status='Created'
+            )
+        
+        messages.success(request, 'Campaign has been created successfully!')
+        return redirect('subscriber')
+
+    return redirect('subscriber')
 
 def email_campaign(request):
     email_campaigns = EmailCampaign.objects.all()
@@ -722,15 +780,64 @@ def email_campaign(request):
     }
     return render(request, 'management/email_campaign.html', context)
 
-def email_campaign_participent(request):
-    campaign_participents = EmailCampaignParticipant.objects.all()
+def campaign_details(request, id):
+    campaign = EmailCampaign.objects.get(id=id)
+    participants = EmailCampaignParticipant.objects.filter(campaign=campaign)
 
     context = {
-        'campaign_participents': campaign_participents,
+        'campaign': campaign,
+        'participants': participants,
     }
-    return render(request, 'management/email_cam_participent.html', context)
+    return render(request, 'management/campaign_details.html',context)
+
+def send_email(request,subject, recipients, template_name, context, sender):
+    if request.method == "POST":
+        campaign_id = request.POST.get("campaign_id")
+        campaign = EmailCampaign.objects.get(id=campaign_id)
+        participants = EmailCampaignParticipant.objects.filter(campaign=campaign)
+
+        try:
+            email_template = campaign.body
+        except EmailTemplate.DoesNotExist:
+            return
+        # Render the email template with the provided context
+        html_content = email_template.html_content.format(**context)
+        print(html_content)
+
+        # Create EmailMultiAlternatives object
+        email = EmailMultiAlternatives(subject, '', sender, recipients)
+        email.attach_alternative(html_content, "text/html")
+
+        print(email)
+
+        # Send the email
+        email.send()
+
+
+        # Send email to all participants
+        for participant in participants:
+            email = participant.subscriber.email
+            print(email)
+            # Send email
+            context = {
+                'campaign': campaign,
+            }
+            # send_email('Email Campaign marketing', [email], 'management/emails/email_verification.html', context, [])
+
+        messages.success(request,"Email sent successfully to all participants!")
+        return redirect(reverse('campaign_details', kwargs={'id': campaign_id}))
+    else:
+        return HttpResponse("Method not allowed.")
 
 def email_template(request):
+    email_templates = EmailTemplate.objects.all()
+    context = {
+        'email_templates': email_templates,
+    }
+
+    return render(request, 'management/email_template.html',context)
+
+def add_email_template(request):
 
     if request.method == 'POST':
         name = request.POST.get('name')
@@ -746,6 +853,6 @@ def email_template(request):
                 status=status,
                 created_by = Profile.objects.get(user=request.user),
             )
-        
+            return redirect('email_template')
 
-    return render(request, 'management/email_template.html')
+    return render(request, 'management/add_email_template.html')

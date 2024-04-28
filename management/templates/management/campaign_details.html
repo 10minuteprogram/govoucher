@@ -1,0 +1,116 @@
+{% extends 'management/base.html' %}
+
+{% block content %}
+<div class="main-content">
+
+    <div class="page-content">
+        <div class="container-fluid">
+
+            <!-- start page title -->
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="page-title-box">
+                        <h4>Email Campaign Details</h4>
+                        <ol class="breadcrumb m-0">
+                            <li class="breadcrumb-item"><a href="/">Home</a></li>
+                            <li class="breadcrumb-item"><a href="#">Email Campaign Details</a></li>
+                        </ol>
+                    </div>
+                </div>
+
+            </div>
+            <!-- end page title -->
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+
+                            <h4 class="card-title">Email campaign Details</h4>
+                            <p class="card-title-desc">All email campaign Participant details</p>
+                            {% if messages %}
+                            {% include 'management/message.html' %}
+                            {% endif %}
+
+                            <form method="post" action="{% url 'send_email' %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="campaign_id" value="{{ campaign.id }}">
+                                <div style="text-align: end;">
+                                    <button type="submit" class="btn btn-primary">Send email</button>
+                                </div>
+                            </form>
+                            
+
+                            <div class="table-responsive">
+                                <table class="table table-editable table-nowrap align-middle table-edits">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Name</th>
+                                            <th>Email</th>
+                                            <th>sending_id</th>
+                                            <th>status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                        {% for participant in participants %}
+
+                                        <tr data-id="1">
+                                            <td data-field="id" style="width: 80px">{{forloop.counter}}</td>
+                                            <td data-field="name"><b><a href="#">{{participant.subscriber.name}}</td></a></b>
+                                            <td>{{participant.subscriber.email}}</td>
+                                            <td> {{campaigns.source}} </td>
+                                            <td data-field="blacklist_reason">
+                                                {{participant.status}}
+                                            </td>                                           
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            {% if superusers.has_other_pages %}
+                            <nav aria-label="...">
+                                <ul class="pagination">
+                                    {% if superusers.has_previous %}
+                                        <li class="page-item ">
+                                            <a class="page-link" href="?page={{ superusers.previous_page_number }}" tabindex="-1">Previous</a>
+                                        </li>
+                                    {% else %}
+                                        <li class="page-item disabled">
+                                            <a class="page-link" tabindex="-1">Previous</a>
+                                        </li>
+                                    {% endif %}
+                                    {% for i in superusers.paginator.page_range %}
+                                        {% if superusers.number == i %}
+                                            <li class="page-item active">
+                                                <a class="page-link" > {{ i }} <span class="sr-only">(current)</span></a>
+                                            </li>
+                                        {% else %}
+                                        <li class="page-item"><a class="page-link" href="?page={{ i }}">{{i}}</a></li>
+                                        {% endif %}
+
+                                    {% endfor %}
+
+                                    {% if superusers.has_next %}
+                                        <li class="page-item">
+                                            <a class="page-link" href="?page={{ superusers.next_page_number }}">Next</a>
+                                        </li>
+                                    {% else %}
+                                        <li class="page-item disabled">
+                                            <a class="page-link" href="#">Next</a>
+                                        </li>
+                                    {% endif %}
+                                </ul>
+                            </nav>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div> <!-- end col -->
+            </div> <!-- end row -->
+
+        </div> <!-- container-fluid -->
+    </div>
+    <!-- End Page-content -->
+</div>
+{% endblock %}

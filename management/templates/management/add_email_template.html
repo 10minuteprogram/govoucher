@@ -1,0 +1,78 @@
+{% extends 'management/base.html' %}
+
+{% block content %}
+    <!-- ============================================================== -->
+    <!-- Start right Content here -->
+    <!-- ============================================================== -->
+    <div class="main-content">
+
+        <div class="page-content">
+            <div class="container-fluid">
+
+                    <!-- start page title -->
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="page-title-box">
+                                <h4>Add Email Template</h4>
+                                    <ol class="breadcrumb m-0">
+                                        <li class="breadcrumb-item"><a href="#">Category List</a></li>
+                                        <li class="breadcrumb-item"><a href="#">Add Category</a></li>
+                                    </ol>
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- end page title -->
+                
+                        <div class="row">
+                                <div class="card">
+                                    <div class="card-body">
+                                    {% if messages %}
+                                    {% include 'management/message.html' %}
+                                    {% endif %}
+
+                                    <form method="post" enctype="multipart/form-data">
+                                        {% csrf_token %}
+                                        <label for="name">Name</label>
+                                        <input type="text" name="name" id="name" class="form-control" placeholder="Enter email name" required>
+                                        
+                                        <label for="subject" class="mt-3">Subject</label>
+                                        <input type="text" name="subject" id="subject" class="form-control" placeholder="Enter email subject">
+                                        
+                                        <div class="input-box">
+                                            <label for="body" class="mt-3">body</label>
+                                            <textarea id="input" oninput="convertTag()" name="body" class="form-control" placeholder="Enter description" rows="15" required></textarea>
+                                        </div>
+
+                                        <label for="status" class="mt-3">Status</label>
+                                        <input type="text" name="status" class="form-control" placeholder="Enter email subject">
+
+                                        <div class="mt-4">
+                                            <button type="submit" class="btn btn-primary w-md">Submit</button>
+                                        </div>
+                                    </form>
+                                    </div>
+                                </div>
+                            <!-- end col -->
+                        </div>
+                        <!-- end row -->
+                
+        
+
+                <div class="card">
+                    <div class="card-body">
+                        <div class="input-box">
+                            <label for="body" class="mt-3">Template Output</label>
+                            <div  id="output" class="output"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+    <script>
+        function convertTag() {
+            var inputText = document.getElementById("input").value;
+            document.getElementById("output").innerHTML = inputText;
+        }
+    </script>
+{% endblock %}
