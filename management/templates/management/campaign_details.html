@@ -71,8 +71,20 @@
 
                                         <tr data-id="1">
                                             <td data-field="id" style="width: 80px">{{forloop.counter}}</td>
-                                            <td data-field="name"><b>{{participant.subscriber.name}}</td></b>
-                                            <td>{{participant.subscriber.email}}</td>
+                                            <td data-field="name"><b>
+                                                {% if participant.subscriber %}
+                                                    {{ participant.subscriber.name }}
+                                                {% elif participant.user %}
+                                                    {{ participant.user.username }}
+                                                {% endif %}
+                                            </b></td>                                            
+                                            <td>
+                                                {% if participant.subscriber %}
+                                                    {{ participant.subscriber.email }}
+                                                {% elif participant.user %}
+                                                    {{ participant.user.email }}
+                                                {% endif %}
+                                            </td>
                                             <td> {{campaigns.source}} </td>
                                             <td data-field="blacklist_reason">
                                                 {{participant.status}}

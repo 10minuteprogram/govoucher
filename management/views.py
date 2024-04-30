@@ -112,6 +112,43 @@ def users(request):
     q = request.GET.get('q')
     if q:
         users = users.filter(email__icontains=q)
+    
+    if request.method == 'POST':
+        # participant filter criteria
+        q = request.POST.get('q')
+        if q:
+            users = users.filter(email__icontains=q)
+            
+        name = request.POST.get('name')
+        template_id = request.POST.get('template_id')
+        template = EmailTemplate.objects.filter(id=template_id).first()
+        if not template:
+            messages.error(request, 'Template not found')
+            return redirect('users')
+
+        body = template.body
+        subject = template.subject
+        total_participant = users.count()
+        source = 'User'
+
+
+        campaign = EmailCampaign.objects.create(
+            name=name,
+            source=source,
+            total_participant=total_participant,
+            body=body,
+            subject=subject,
+            created_by=request.user
+        )
+        for u in users:
+            EmailCampaignParticipant.objects.create(
+                campaign=campaign,
+                user=u,
+                status='Created'
+            )
+        
+        messages.success(request, 'Campaign has been created successfully!')
+        return redirect('email_campaign')
 
     paginator = Paginator(users, 10) # pagination Show 10 users per page.
 
@@ -812,9 +849,16 @@ def send_email(request):
         
         # Send email to all participants
         for participant in participants:
-            email = participant.subscriber.email
+            email = participant.subscriber.email if participant.subscriber else participant.user.email
             # Send email
             send_email_from_db(email_subject, [email], email_template)
+
+            # Update campaign_sent field
+            email_campaigns = Subscribers.objects.filter(email=email)
+            for email_campaign in email_campaigns:
+                email_campaign.campaign_sent += 1
+                email_campaign.last_sent = timezone.now()  # Update last_sent to current time
+                email_campaign.save()
 
         messages.success(request,"Email sent successfully to all participants!")
         return redirect(reverse('campaign_details', kwargs={'id': campaign_id}))
