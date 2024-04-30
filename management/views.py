@@ -16,8 +16,7 @@ from datetime import timedelta
 from django.utils import timezone
 from django.urls import reverse
 from django.core.mail import EmailMultiAlternatives
-from django.template.loader import render_to_string
-
+from .email_send import send_email_from_db
 
 
 
@@ -107,6 +106,13 @@ def staffs_list(request):
 def users(request):
     user_id = None
     users = User.objects.filter(is_superuser= False, is_staff = False)
+    email_campaigns = EmailCampaign.objects.all()
+    templates = EmailTemplate.objects.all()
+
+    q = request.GET.get('q')
+    if q:
+        users = users.filter(email__icontains=q)
+
     paginator = Paginator(users, 10) # pagination Show 10 users per page.
 
     page = request.GET.get('page', 1)
@@ -128,6 +134,8 @@ def users(request):
     context = {
         "users" : users,
         "user_id":user_id,
+        "email_campaigns":email_campaigns,
+        "templates":templates,
 
     }
 
@@ -790,7 +798,7 @@ def campaign_details(request, id):
     }
     return render(request, 'management/campaign_details.html',context)
 
-def send_email(request,subject, recipients, template_name, context, sender):
+def send_email(request):
     if request.method == "POST":
         campaign_id = request.POST.get("campaign_id")
         campaign = EmailCampaign.objects.get(id=campaign_id)
@@ -798,31 +806,15 @@ def send_email(request,subject, recipients, template_name, context, sender):
 
         try:
             email_template = campaign.body
+            email_subject = campaign.subject
         except EmailTemplate.DoesNotExist:
             return
-        # Render the email template with the provided context
-        html_content = email_template.html_content.format(**context)
-        print(html_content)
-
-        # Create EmailMultiAlternatives object
-        email = EmailMultiAlternatives(subject, '', sender, recipients)
-        email.attach_alternative(html_content, "text/html")
-
-        print(email)
-
-        # Send the email
-        email.send()
-
-
+        
         # Send email to all participants
         for participant in participants:
             email = participant.subscriber.email
-            print(email)
             # Send email
-            context = {
-                'campaign': campaign,
-            }
-            # send_email('Email Campaign marketing', [email], 'management/emails/email_verification.html', context, [])
+            send_email_from_db(email_subject, [email], email_template)
 
         messages.success(request,"Email sent successfully to all participants!")
         return redirect(reverse('campaign_details', kwargs={'id': campaign_id}))

@@ -4,137 +4,219 @@
     
 
 {% block content %}
-            <!-- ============================================================== -->
-            <!-- Start right Content here -->
-            <!-- ============================================================== -->
-            <div class="main-content">
+            
+    <div class="main-content">
+        <div class="page-content">
+            <div class="container-fluid">
 
-                <div class="page-content">
-                    <div class="container-fluid">
-
-                        <!-- start page title -->
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <div class="page-title-box">
-                                    <h4>Users Table</h4>
-                                        <ol class="breadcrumb m-0">
-                                            <li class="breadcrumb-item"><a href="javascript: void(0);">users</a></li>
-                                            <li class="breadcrumb-item"><a href="javascript: void(0);">Tables</a></li>
-                                            <li class="breadcrumb-item active">Editable Table</li>
-                                        </ol>
-                                </div>
-                            </div>
+                <!-- start page title -->
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="page-title-box">
+                            <h4>Users Table</h4>
+                                <ol class="breadcrumb m-0">
+                                    <li class="breadcrumb-item"><a href="javascript: void(0);">users</a></li>
+                                    <li class="breadcrumb-item"><a href="javascript: void(0);">Tables</a></li>
+                                    <li class="breadcrumb-item active">Editable Table</li>
+                                </ol>
                         </div>
-                        <!-- end page title -->
+                    </div>
+                </div>
+                <!-- end page title -->
 
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="card">
-                                    <div class="card-body">
-        
-                                        <h4 class="card-title">Table Edits</h4>
-                                        <p class="card-title-desc">Table Edits is a lightweight jQuery plugin for making table rows editable.</p>
-                                        {% if user.is_superuser or user.is_staff %}
-                                        <div style="text-align: end;">
-                                            <a href="#" class="btn btn-primary">Add User</a>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+
+                                <h4 class="card-title">Table Edits</h4>
+                                <p class="card-title-desc">Table Edits is a lightweight jQuery plugin for making table rows editable.</p>
+                                <div class="container">
+                                    <form>
+                                        <div class="filter-form">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="input-group mb-3">
+                                                        <input type="text" value="{{request.GET.q}}" name="q" class="form-control">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="input-group mb-3">
+                                                        {% comment %} <select class="form-control" id="time-range-select">
+                                                            <option value="7">Last 7 Days</option>
+                                                            <option value="15">Last 15 Days</option>
+                                                        </select> {% endcomment %}
+                                                        <div class="input-group-append">
+                                                            <button class="btn btn-success" type="submit">Filter</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div style="text-align: end;">
+                                                <button type="button" class="btn btn-primary waves-effect waves-light"
+                                                data-bs-toggle="modal" data-bs-target="#staticBackdrop">Start Campaign</button>
+                                            </div>
                                         </div>
-                                        {% endif %}
-                                        <div class="table-responsive">
-                                            <table class="table table-editable table-nowrap align-middle table-edits">
-                                                <thead>
-                                                    <tr>
-                                                        <th>ID</th>
-                                                        <th>Username</th>
-                                                        <th>Email</th>
-                                                        <th>Age</th>
-                                                        <th>Gender</th>
-                                                        <th>Edit</th>
-                                                        <th>Active</th>
-                                                        
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-
-                                                    <form id="toggleStaffForm" method="post" action="{% url 'users' %}">
-                                                        {% csrf_token %}
-
-                                                    {% for user in users %}
-                                                    <tr data-id="1">
-                                                        <td data-field="id" style="width: 80px">{{forloop.counter}}</td>
-                                                        <td data-field="name">{{user.username}}</td>
-                                                        <td>{{user.email}}</td>
-                                                        <td data-field="age">24</td>
-                                                        <td data-field="gender">Male</td>
-                                                        <td style="width: 100px">
-                                                            <a class="btn btn-outline-secondary btn-sm edit" title="Edit">
-                                                                <i class="fas fa-pencil-alt"></i>
-                                                            </a>
-                                                        </td>
-                                                        <td>
-                                                            <div class="form-check form-switch form-switch-md mb-3" dir="ltr">
-                                                                <input type="checkbox" name="user_id" value="{{ user.id }}" class="form-check-input"
-                                                                       id="customSwitchsizemd_{{ user.id }}" {% if user.is_active %} checked {% endif %}
-                                                                       onclick="toggleStaffStatus({{ user.id }})">
-                                                                <label for="customSwitchsizemd_{{ user.id }}" data-on-label="On" data-off-label="Off">
-                                                                    {% if user.is_active %}
-                                                                        On
-                                                                    {% else %}
-                                                                        Off
-                                                                    {% endif %}
-                                                                </label>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                    {% endfor %}
-                                                </tbody>
-                                                </table>
-                                                </form>
-                                        </div>
-                                        {% if users.has_other_pages %}
-                                        <nav aria-label="...">
-                                            <ul class="pagination">
-                                                {% if users.has_previous %}
-                                                <li class="page-item">
-                                                    <a class="page-link" href="?page={{ users.previous_page_number }}" tabindex="-1">Previous</a>
-                                                </li>
-                                                {% else %}
-                                                <li class="page-item disabled">
-                                                    <a class="page-link" href="#" tabindex="-1">Previous</a>
-                                                </li>
-                                                {% endif %}
-
-                                                {% for i in users.paginator.page_range %}
-                                                
-                                                    {% if users.number == i %}
-                                                    <li class="page-item active">
-                                                        <a class="page-link" >{{ i }} <span class="sr-only">(current)</span></a>
-                                                    </li>
-                                                    {% else %}
-                                                    <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
-                                                    {% endif %}
-                                                {% endfor %}
-                                        
-
-                                                {% if users.has_next %}
-                                                <li class="page-item">
-                                                    <a class="page-link" href="?page={{ users.next_page_number }}">Next</a>
-                                                </li>
-                                                {% else %}
-                                                <li class="page-item disabled">
-                                                    <a class="page-link" href="#">Next</a>
-                                                </li>
-                                                {% endif %}
-                                            </ul>
-                                        </nav>
-                                        {% endif %}
+                                    </form>
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text">{{users.count}} results</span>
                                     </div>
                                 </div>
-                            </div> <!-- end col -->
-                        </div> <!-- end row -->
+                                
+                                {% if user.is_superuser or user.is_staff %}
+                                <div style="text-align: end;">
+                                    <a href="#" class="btn btn-primary">Add User</a>
+                                </div>
+                                {% endif %}
+                                <div class="table-responsive">
+                                    <table class="table table-editable table-nowrap align-middle table-edits">
+                                        <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Username</th>
+                                                <th>Email</th>
+                                                <th>Age</th>
+                                                <th>Gender</th>
+                                                <th>Edit</th>
+                                                <th>Active</th>
+                                                
+                                            </tr>
+                                        </thead>
+                                        <tbody>
 
-                    </div> <!-- container-fluid -->
+                                            <form id="toggleStaffForm" method="post" action="{% url 'users' %}">
+                                                {% csrf_token %}
+
+                                            {% for user in users %}
+                                            <tr data-id="1">
+                                                <td data-field="id" style="width: 80px">{{forloop.counter}}</td>
+                                                <td data-field="name">{{user.username}}</td>
+                                                <td>{{user.email}}</td>
+                                                <td data-field="age">24</td>
+                                                <td data-field="gender">Male</td>
+                                                <td style="width: 100px">
+                                                    <a class="btn btn-outline-secondary btn-sm edit" title="Edit">
+                                                        <i class="fas fa-pencil-alt"></i>
+                                                    </a>
+                                                </td>
+                                                <td>
+                                                    <div class="form-check form-switch form-switch-md mb-3" dir="ltr">
+                                                        <input type="checkbox" name="user_id" value="{{ user.id }}" class="form-check-input"
+                                                                id="customSwitchsizemd_{{ user.id }}" {% if user.is_active %} checked {% endif %}
+                                                                onclick="toggleStaffStatus({{ user.id }})">
+                                                        <label for="customSwitchsizemd_{{ user.id }}" data-on-label="On" data-off-label="Off">
+                                                            {% if user.is_active %}
+                                                                On
+                                                            {% else %}
+                                                                Off
+                                                            {% endif %}
+                                                        </label>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                        </table>
+                                        </form>
+                                </div>
+                                {% if users.has_other_pages %}
+                                <nav aria-label="...">
+                                    <ul class="pagination">
+                                        {% if users.has_previous %}
+                                        <li class="page-item">
+                                            <a class="page-link" href="?page={{ users.previous_page_number }}" tabindex="-1">Previous</a>
+                                        </li>
+                                        {% else %}
+                                        <li class="page-item disabled">
+                                            <a class="page-link" href="#" tabindex="-1">Previous</a>
+                                        </li>
+                                        {% endif %}
+
+                                        {% for i in users.paginator.page_range %}
+                                        
+                                            {% if users.number == i %}
+                                            <li class="page-item active">
+                                                <a class="page-link" >{{ i }} <span class="sr-only">(current)</span></a>
+                                            </li>
+                                            {% else %}
+                                            <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                                            {% endif %}
+                                        {% endfor %}
+                                
+
+                                        {% if users.has_next %}
+                                        <li class="page-item">
+                                            <a class="page-link" href="?page={{ users.next_page_number }}">Next</a>
+                                        </li>
+                                        {% else %}
+                                        <li class="page-item disabled">
+                                            <a class="page-link" href="#">Next</a>
+                                        </li>
+                                        {% endif %}
+                                    </ul>
+                                </nav>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div> <!-- end col -->
+                </div> <!-- end row -->
+
+            </div> <!-- container-fluid -->
+        </div>
+        <!-- End Page-content -->
+    </div>
+
+    {% comment %} modals {% endcomment %}
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static"
+        data-bs-keyboard="false" tabindex="-1" role="dialog"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Add Campaign
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
                 </div>
-                <!-- End Page-content -->
+
+                <form method='post' action="{% url 'create_campaign' %}?source=User" class="container">
+                    {% csrf_token %}
+                    <input type="hidden" name="q" value="{{ request.GET.q }}" id="">
+                    <div class="mb-3 mt-3 row">
+                        <label for="name" class="col-md-2 col-form-label">Campaign Name</label>
+                        <div class="col-md-10">
+                            <input class="form-control" type="text"  name="name" id="name">
+                        </div>
+                    </div>
+                    <div class="mb-3 mt-3 row">
+                        <label for="template_id" class="col-md-2 col-form-label">Select Template</label>
+                        <div class="col-md-10">
+                            <select name="template_id" id="template_id" class="form-control">
+                                <option value="">Select Template</option>
+                                {% for t in templates %}
+                                <option value="{{t.id}}">{{ t.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mb-3 mt-3 row">
+                        <label for="name" class="col-md-2 col-form-label">Total Participant</label>
+                        <div class="col-md-10">
+                            <input class="form-control" type="text" disabled value="{{subscribers.count}}" id="name">
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light waves-effect"
+                            data-bs-dismiss="modal">Close</button>
+                        <button type="submit"
+                            class="btn btn-primary waves-effect waves-light">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
 
     <script>
         function toggleStaffStatus(staffId) {
