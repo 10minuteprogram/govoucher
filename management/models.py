@@ -131,7 +131,7 @@ class EmailCampaignParticipant(models.Model):
     sending_id = models.CharField(max_length=600,blank=True, null=True)
     status = models.CharField(max_length=100)
     def __str__(self):
-        return f"{self.campaign} | {self.subscriber}"
+        return f"{self.campaign} | {self.subscriber if self.subscriber else self.user}"
 
     
 class EmailTemplate(models.Model):

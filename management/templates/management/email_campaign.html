@@ -28,6 +28,9 @@
 
                             <h4 class="card-title">Email campaign</h4>
                             <p class="card-title-desc">All email campaign list</p>
+                            {% if messages %}
+                            {% include 'management/message.html' %}
+                            {% endif %}
 
                             <div class="table-responsive">
                                 <table class="table table-editable table-nowrap align-middle table-edits">

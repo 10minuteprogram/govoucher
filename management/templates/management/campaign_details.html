@@ -20,6 +20,19 @@
 
             </div>
             <!-- end page title -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">      
+                            <p><strong>Name:</strong> {{campaign.name}}</p>
+                            <p><strong>Source:</strong> {{campaign.source}}</p>
+                            <p><strong>Total Participants:</strong> {{campaign.total_participant}}</p>
+                            <p><strong>Template Name:</strong> {{campaign.subject}}</p>
+                        </div>
+                    </div>
+                </div> <!-- end col -->
+            </div> <!-- end row -->
+                            
 
             <div class="row">
                 <div class="col-12">
@@ -58,8 +71,20 @@
 
                                         <tr data-id="1">
                                             <td data-field="id" style="width: 80px">{{forloop.counter}}</td>
-                                            <td data-field="name"><b><a href="#">{{participant.subscriber.name}}</td></a></b>
-                                            <td>{{participant.subscriber.email}}</td>
+                                            <td data-field="name"><b>
+                                                {% if participant.subscriber %}
+                                                    {{ participant.subscriber.name }}
+                                                {% elif participant.user %}
+                                                    {{ participant.user.username }}
+                                                {% endif %}
+                                            </b></td>                                            
+                                            <td>
+                                                {% if participant.subscriber %}
+                                                    {{ participant.subscriber.email }}
+                                                {% elif participant.user %}
+                                                    {{ participant.user.email }}
+                                                {% endif %}
+                                            </td>
                                             <td> {{campaigns.source}} </td>
                                             <td data-field="blacklist_reason">
                                                 {{participant.status}}
