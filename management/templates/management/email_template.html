@@ -1,20 +1,15 @@
 {% extends 'management/base.html' %}
 
-
 {% block content %}
-<!-- ============================================================== -->
-<!-- Start right Content here -->
-<!-- ============================================================== -->
-<div class="main-content">
 
+<div class="main-content">
     <div class="page-content">
         <div class="container-fluid">
-
             <!-- start page title -->
             <div class="row">
                 <div class="col-sm-6">
                     <div class="page-title-box">
-                        <h4>Superuser List Table</h4>
+                        <h4>Email template</h4>
                         <ol class="breadcrumb m-0">
                             <li class="breadcrumb-item"><a href="{% url 'superuser_list' %}">superuser</a></li>
                             <li class="breadcrumb-item"><a href="{% url 'create_superuser' %}">create_superuser</a></li>
@@ -30,9 +25,8 @@
                     <div class="card">
                         <div class="card-body">
 
-                            <h4 class="card-title">Table Edits</h4>
-                            <p class="card-title-desc">Table Edits is a lightweight jQuery plugin for making table rows
-                            editable.</p>
+                            <h4 class="card-title">Email template</h4>
+                            <p class="card-title-desc">All Email Template</p>
                             {% if user.is_superuser  %}
                             <div style="text-align: end;">
                                 <a href="{% url 'add_email_template' %}" class="btn btn-primary">Add email template</a>
@@ -46,7 +40,8 @@
                                             <th>ID</th>
                                             <th>Name</th>
                                             <th>Subject</th>
-                                            <th>Status</th>
+                                            <th>Created by</th>
+                                            <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -60,7 +55,19 @@
                                             </td></a></b>
                                             <td> {{template.subject}} </td>
                                             <td data-field="blacklist_reason">
-                                               {{template.status}}
+                                               {{template.created_by}}
+                                            </td>
+                                            <td style="width: 100px">
+                                                <button class="btn btn-outline-secondary btn-sm edit" title="Edit"
+                                                data-bs-toggle="modal" 
+                                                data-id="{{template.id}}"
+                                                data-name="{{template.name}}"
+                                                data-subject="{{template.subject}}"
+                                                data-body="{{template.body}}"
+                                                data-bs-target="#staticBackdrop" 
+                                                onclick="setTemplateValues(this)">
+                                                    <i class="fas fa-pencil-alt"></i>
+                                                </button>
                                             </td>
                                             
                                             
@@ -112,4 +119,65 @@
         </div> <!-- container-fluid -->
     </div>
     <!-- End Page-content -->
-    {% endblock %}
+</div>
+
+    {% comment %} modals {% endcomment %}
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static"
+        data-bs-keyboard="false" tabindex="-1" role="dialog"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Edit Template
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+
+                <form method='post' class="container">
+                    {% csrf_token %}
+                    <input type="hidden" name="template_id" id="templateId" >
+                    <div class="mb-3 mt-3 row">
+                        <label for="name" class="col-md-2 col-form-label">Template Name</label>
+                        <div class="col-md-10">
+                            <input class="form-control" type="text"  name="name" id="templateName">
+                        </div>
+                    </div>
+                    <div class="mb-3 mt-3 row">
+                        <label for="template_id" class="col-md-2 col-form-label">Subject Name</label>
+                        <div class="col-md-10">
+                            <input class="form-control" type="text"  name="subject" id="templateSubject">
+                        </div>
+                    </div>
+                    <div class="mb-3 mt-3 row">
+                        <label for="name" class="col-md-2 col-form-label">Template Body</label>
+                        <div class="col-md-10">
+                            <textarea id="templateBody" name="body" class="form-control" rows="10" required></textarea>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light waves-effect"
+                            data-bs-dismiss="modal">Close</button>
+                        <button type="submit"
+                            class="btn btn-primary waves-effect waves-light">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+<script>
+    function setTemplateValues(button) {
+        var templateId = button.dataset.id;
+        var templateName = button.dataset.name;
+        var templateSubject = button.dataset.subject;
+        var templateBody = button.dataset.body;
+    
+        document.getElementById("templateId").value = templateId;
+        document.getElementById("templateName").value = templateName;
+        document.getElementById("templateSubject").value = templateSubject;
+        document.getElementById("templateBody").value = templateBody;
+    }
+    
+</script>
+{% endblock %}

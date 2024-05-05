@@ -768,6 +768,18 @@ def subscriber(request):
     if q:
         subscribers = subscribers.filter(email__icontains=q)
 
+    # # Filter by last_sent date
+    # last_sent = request.GET.get('last_sent')
+
+    # if last_sent:
+    #     # Convert last_sent to a datetime object if needed
+    #     # Assuming last_sent is in ISO 8601 format (e.g., '2024-04-25T12:00:00Z')
+    #     last_sent_date = timezone.datetime.fromisoformat(last_sent)
+        
+    #     # Calculate the date 7 days ago
+    #     seven_days_ago = last_sent_date - timedelta(days=7)
+
+    #     subscribers = subscribers.filter(last_sent__lte=seven_days_ago)
     context = {
         'subscribers': subscribers,
         'email_campaigns': email_campaigns,
@@ -867,6 +879,20 @@ def send_email(request):
 
 def email_template(request):
     email_templates = EmailTemplate.objects.all()
+    if request.method == 'POST':
+        template_id = request.POST.get('template_id')  # Assuming you have a hidden input field for template ID in your form
+        name = request.POST.get('name')
+        subject = request.POST.get('subject')
+        body = request.POST.get('body')
+
+        if template_id and name and subject and body:
+            email_template = email_templates.get(id=template_id)
+            email_template.name = name
+            email_template.subject = subject
+            email_template.body = body
+            email_template.save()
+            messages.success(request, 'Campaign has been updated successfully!')
+            return redirect('email_template')
     context = {
         'email_templates': email_templates,
     }
