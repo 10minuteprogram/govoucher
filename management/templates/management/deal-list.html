@@ -49,7 +49,7 @@
                                         <form method='GET'>
                                         
                                             <div class="dropdown-menu" >
-                                                {% for brand in deals %}
+                                                {% for brand in all_brand %}
                                                 <button class="dropdown-item" type="submit" name="name" value="{{ brand.id }}">{{ brand.name }}</button>
                                                 {% endfor %}
                                             </div>
@@ -62,12 +62,14 @@
                                 <table class="table table-editable table-nowrap align-middle table-edits">
                                     <thead>
                                         
-                                        {% if all_brand %}
+                                        {% if deals %}
                                             
                                         <tr>
                                             <th>ID</th>
-                                            <th>Barnd</th>
                                             <th>Deal</th>
+                                            <th>Barnd</th>
+                                            <th>Sub Category</th>
+                                            <th>Category</th>
                                             <th>Created on</th>
                                             <th>Created by</th>
                                             <th>Edit</th>
@@ -75,12 +77,14 @@
                                     </thead>
                                     <tbody>
 
-                                        {% for deal in all_brand %}
+                                        {% for deal in deals %}
 
                                         <tr data-id="1">
                                             <td data-field="id" style="width: 80px">{{forloop.counter}}</td>
-                                            <td data-field="name"><b><a href="#">{{deal.brand.name}}</td></a></b>
                                             <td data-field="name"><b><a href="#">{{deal.name}}</td></a></b>
+                                            <td data-field="name"><b><a href="#">{{deal.brand.name}}</td></a></b>
+                                            <td data-field="name"><b><a href="#">{{deal.brand.sub_category.name}}</td></a></b>
+                                            <td data-field="name"><b><a href="#">{{deal.brand.sub_category.category.name}}</td></a></b>
                                             <td data-field="age">{{deal.created_on}}</td>
                                             <td data-field="gender">{{deal.created_by}}</td>
                                             <td style="width: 100px">
@@ -98,7 +102,42 @@
                                     </tbody>
                                 </table>
                             </div>
+                            {% if deals.has_other_pages %}
+                            <nav aria-label="...">
+                                <ul class="pagination">
+                                    {% if deals.has_previous %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page={{ deals.previous_page_number }}" tabindex="-1">Previous</a>
+                                    </li>
+                                    {% else %}
+                                    <li class="page-item disabled">
+                                        <a class="page-link" href="#" tabindex="-1">Previous</a>
+                                    </li>
+                                    {% endif %}
 
+                                    {% for i in deals.paginator.page_range %}
+                                    
+                                        {% if deals.number == i %}
+                                        <li class="page-item active">
+                                            <a class="page-link" >{{ i }} <span class="sr-only">(current)</span></a>
+                                        </li>
+                                        {% else %}
+                                        <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                                        {% endif %}
+                                    {% endfor %}
+                            
+                                    {% if deals.has_next %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page={{ deals.next_page_number }}">Next</a>
+                                    </li>
+                                    {% else %}
+                                    <li class="page-item disabled">
+                                        <a class="page-link" href="#">Next</a>
+                                    </li>
+                                    {% endif %}
+                                </ul>
+                            </nav>
+                            {% endif %}
                         </div>
                     </div>
                 </div> <!-- end col -->

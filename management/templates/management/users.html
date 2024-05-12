@@ -87,8 +87,8 @@
                                         </thead>
                                         <tbody>
 
-                                            <form id="toggleStaffForm" method="post" action="{% url 'users' %}">
-                                                {% csrf_token %}
+                                    <form id="toggleStaffForm" method="post" action="{% url 'users' %}">
+                                        {% csrf_token %}
 
                                             {% for user in users %}
                                             <tr data-id="1">
@@ -120,7 +120,7 @@
                                             {% endfor %}
                                         </tbody>
                                         </table>
-                                        </form>
+                                    </form>
                                 </div>
                                 {% if users.has_other_pages %}
                                 <nav aria-label="...">
@@ -146,7 +146,6 @@
                                             {% endif %}
                                         {% endfor %}
                                 
-
                                         {% if users.has_next %}
                                         <li class="page-item">
                                             <a class="page-link" href="?page={{ users.next_page_number }}">Next</a>

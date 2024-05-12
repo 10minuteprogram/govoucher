@@ -1,10 +1,7 @@
 {% extends 'management/base.html' %}
 
-
 {% block content %}
-<!-- ============================================================== -->
-<!-- Start right Content here -->
-<!-- ============================================================== -->
+
 <div class="main-content">
 
     <div class="page-content">
@@ -66,8 +63,8 @@
                                         {% if subcategors %}
                                         <tr>
                                             <th>ID</th>
-                                            <th>categors</th>
-                                            <th>sub categors</th>
+                                            <th>sub categorys</th>
+                                            <th>categorys</th>
                                             <th>Created on</th>
                                             <th>Created by</th>
                                             <th>Edit</th>
@@ -81,16 +78,22 @@
 
                                         <tr data-id="1">
                                             <td data-field="id" style="width: 80px">{{forloop.counter}}</td>
-                                            <td data-field="name"><b><a href="#">{{subcategors.category.name}}</td></a></b>
                                             <td data-field="name"><b><a href="#">{{subcategors.name}}</td></a></b>
+                                            <td data-field="name"><b><a href="#">{{subcategors.category.name}}</td></a></b>
                                             <td data-field="age">{{subcategors.created_on}}</td>
                                             <td data-field="gender">{{subcategors.created_by}}</td>
                                             <td style="width: 100px">
-                                                <a class="btn btn-outline-secondary btn-sm edit" title="Edit">
+                                                <button class="btn btn-outline-secondary btn-sm edit" title="Edit"
+                                                data-bs-toggle="modal" 
+                                                data-id="{{subcategors.id}}"
+                                                data-category="{{subcategors.category.id}}"
+                                                data-name="{{subcategors.name}}"
+                                                data-description="{{subcategors.description}}"
+                                                data-bs-target="#staticBackdrop" 
+                                                onclick="setTemplateValues(this)">
                                                     <i class="fas fa-pencil-alt"></i>
-                                                </a>
+                                                </button>
                                             </td>
-                                            
                                         </tr>
                                         {% endfor %}
                                         {% else %}
@@ -100,21 +103,42 @@
                                     </tbody>
                                 </table>
                             </div>
+                            {% if subcategors.has_other_pages %}
                             <nav aria-label="...">
                                 <ul class="pagination">
+                                    {% if subcategors.has_previous %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page={{ subcategors.previous_page_number }}" tabindex="-1">Previous</a>
+                                    </li>
+                                    {% else %}
                                     <li class="page-item disabled">
                                         <a class="page-link" href="#" tabindex="-1">Previous</a>
                                     </li>
-                                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                    <li class="page-item active">
-                                        <a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>
-                                    </li>
-                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                    {% endif %}
+
+                                    {% for i in subcategors.paginator.page_range %}
+                                        
+                                        {% if subcategors.number == i %}
+                                        <li class="page-item active">
+                                            <a class="page-link" >{{ i }} <span class="sr-only">(current)</span></a>
+                                        </li>
+                                        {% else %}
+                                        <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                                        {% endif %}
+                                    {% endfor %}
+
+                                    {% if subcategors.has_next %}
                                     <li class="page-item">
+                                        <a class="page-link" href="?page={{ subcategors.next_page_number }}">Next</a>
+                                    </li>
+                                    {% else %}
+                                    <li class="page-item disabled">
                                         <a class="page-link" href="#">Next</a>
                                     </li>
+                                    {% endif %}
                                 </ul>
                             </nav>
+                            {% endif %}
                         </div>
                     </div>
                 </div> <!-- end col -->
@@ -122,16 +146,86 @@
 
         </div> <!-- container-fluid -->
     </div>
-    <!-- End Page-content -->
-    <!-- Include jQuery -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <!-- Include Select2 JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            // Initialize Select2
-            $('#categorySelect').select2();
-        });
-    </script>
+</div>
+
+{% comment %} modals {% endcomment %}
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static"
+    data-bs-keyboard="false" tabindex="-1" role="dialog"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg"> 
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Edit Sub Category
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+
+            <form method='post' class="container" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="hidden" name="subcategory_id" id="subcategoryId" >
+
+                <div class="mb-3 mt-3 row">
+                    <label for="category" class="col-md-2 col-form-label"> Category</label>
+                    <div class="col-md-10">
+                        <select name="category_id" class="form-control" id="categoryId">
+                            <option value="">Select Category</option>
+                            {% for c in categorys %}
+                                {% if c.id == categoryId %}
+                                    <option value="{{c.id}}" selected>{{c.name}}</option>
+                                {% else %}
+                                    <option value="{{c.id}}">{{c.name}}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+
+                <div class="mb-3 mt-3 row">
+                    <label for="name" class="col-md-2 col-form-label">Name</label>
+                    <div class="col-md-10">
+                        <input class="form-control" type="text"  name="name" id="subcategoryName">
+                    </div>
+                </div>
+                <div class="mb-3 mt-3 row">
+                    <label for="template_id" class="col-md-2 col-form-label">Image</label>
+                    <div class="col-md-10">
+                        <input type="file" name="image" id="image" class="form-control" >
+                    </div>
+                </div>
+                <div class="mb-3 mt-3 row">
+                    <label for="name" class="col-md-2 col-form-label">Description</label>
+                    <div class="col-md-10">
+                        <textarea id="subdescription" name="description" class="form-control" rows="10" required></textarea>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light waves-effect"
+                        data-bs-dismiss="modal">Close</button>
+                    <button type="submit"
+                        class="btn btn-primary waves-effect waves-light">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    function setTemplateValues(button) {
+        var subcategoryId = button.dataset.id;
+        var subcategoryName = button.dataset.name;
+        var subdescription = button.dataset.description;
+        var categoryId = button.dataset.category; // Corrected variable name
+    
+        document.getElementById("subcategoryId").value = subcategoryId;
+        document.getElementById("subcategoryName").value = subcategoryName;
+        document.getElementById("subdescription").value = subdescription;
+        document.getElementById("categoryId").value = categoryId; // Corrected element ID
         
-    {% endblock %}
+
+    }
+</script>
+        
+{% endblock %}

@@ -64,7 +64,7 @@
                                                 data-name="{{template.name}}"
                                                 data-subject="{{template.subject}}"
                                                 data-body="{{template.body}}"
-                                                data-bs-target="#staticBackdrop" 
+                                                data-bs-target="#exampleModalFullscreen" 
                                                 onclick="setTemplateValues(this)">
                                                     <i class="fas fa-pencil-alt"></i>
                                                 </button>
@@ -122,47 +122,60 @@
 </div>
 
     {% comment %} modals {% endcomment %}
-    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static"
-        data-bs-keyboard="false" tabindex="-1" role="dialog"
-        aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="staticBackdropLabel">Edit Template
-                    </h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                        aria-label="Close"></button>
+    <div id="exampleModalFullscreen" class="modal fade" tabindex="-1"
+    aria-labelledby="#exampleModalFullscreenLabel" style="display: none;"
+    aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title mt-0" id="exampleModalFullscreenLabel"> Edit Template</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+                <div class="row">
+                    <div class="col-xl-6">
+                        <form method='post' class="container">
+                            {% csrf_token %}
+                            <input type="hidden" name="template_id" id="templateId" >
+                            <div class="mb-3 mt-3 row">
+                                <label for="name" class="col-md-2 col-form-label">Template Name</label>
+                                <div class="col-md-10">
+                                    <input class="form-control" type="text"  name="name" id="templateName">
+                                </div>
+                            </div>
+                            <div class="mb-3 mt-3 row">
+                                <label for="template_id" class="col-md-2 col-form-label">Subject Name</label>
+                                <div class="col-md-10">
+                                    <input class="form-control" type="text"  name="subject" id="templateSubject">
+                                </div>
+                            </div>
+                            <div class="mb-3 mt-3 row">
+                                <label for="name" class="col-md-2 col-form-label">Template Body</label>
+                                <div class="col-md-10">
+                                    <textarea id="templateBody" oninput="convertTag()" name="body" class="form-control" rows="10" required></textarea>
+                                </div>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-light waves-effect"
+                                    data-bs-dismiss="modal">Close</button>
+                                <button type="submit"
+                                    class="btn btn-primary waves-effect waves-light">Save</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-xl-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="input-box">
+                                    <label for="body" class="mt-3">Template Output</label>
+                                    <div  id="output" class="output"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-
-                <form method='post' class="container">
-                    {% csrf_token %}
-                    <input type="hidden" name="template_id" id="templateId" >
-                    <div class="mb-3 mt-3 row">
-                        <label for="name" class="col-md-2 col-form-label">Template Name</label>
-                        <div class="col-md-10">
-                            <input class="form-control" type="text"  name="name" id="templateName">
-                        </div>
-                    </div>
-                    <div class="mb-3 mt-3 row">
-                        <label for="template_id" class="col-md-2 col-form-label">Subject Name</label>
-                        <div class="col-md-10">
-                            <input class="form-control" type="text"  name="subject" id="templateSubject">
-                        </div>
-                    </div>
-                    <div class="mb-3 mt-3 row">
-                        <label for="name" class="col-md-2 col-form-label">Template Body</label>
-                        <div class="col-md-10">
-                            <textarea id="templateBody" name="body" class="form-control" rows="10" required></textarea>
-                        </div>
-                    </div>
-
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-light waves-effect"
-                            data-bs-dismiss="modal">Close</button>
-                        <button type="submit"
-                            class="btn btn-primary waves-effect waves-light">Save</button>
-                    </div>
-                </form>
+                
             </div>
         </div>
     </div>
@@ -178,6 +191,10 @@
         document.getElementById("templateSubject").value = templateSubject;
         document.getElementById("templateBody").value = templateBody;
     }
-    
+
+    function convertTag() {
+        var inputText = document.getElementById("templateBody").value;
+        document.getElementById("output").innerHTML = inputText;
+    }
 </script>
 {% endblock %}

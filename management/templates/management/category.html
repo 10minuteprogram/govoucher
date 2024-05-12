@@ -1,12 +1,8 @@
 {% extends 'management/base.html' %}
 
-
 {% block content %}
-<!-- ============================================================== -->
-<!-- Start right Content here -->
-<!-- ============================================================== -->
-<div class="main-content">
 
+<div class="main-content">
     <div class="page-content">
         <div class="container-fluid">
 
@@ -14,10 +10,10 @@
             <div class="row">
                 <div class="col-sm-6">
                     <div class="page-title-box">
-                        <h4>Superuser List Table</h4>
+                        <h4>Category List</h4>
                         <ol class="breadcrumb m-0">
-                            <li class="breadcrumb-item"><a href="{% url 'superuser_list' %}">superuser</a></li>
-                            <li class="breadcrumb-item"><a href="{% url 'create_superuser' %}">create_superuser</a></li>
+                            <li class="breadcrumb-item"><a href="#">home</a></li>
+                            <li class="breadcrumb-item"><a href="#">category</a></li>
                         </ol>
                     </div>
                 </div>
@@ -30,9 +26,11 @@
                     <div class="card">
                         <div class="card-body">
 
-                            <h4 class="card-title">Table Edits</h4>
-                            <p class="card-title-desc">Table Edits is a lightweight jQuery plugin for making table rows
-                            editable.</p>
+                            <h4 class="card-title">Categorys</h4>
+                            <p class="card-title-desc">All Category Table List</p>
+                            {% if messages %}
+                            {% include 'management/message.html' %}
+                            {% endif %}
                             {% if user.is_superuser  %}
                             <div style="text-align: end;">
                                 <a href="{% url 'add_category' %}" class="btn btn-primary">Add category</a>
@@ -62,9 +60,15 @@
                                             <td data-field="age">{{category.created_on}}</td>
                                             <td data-field="gender">{{category.created_by}}</td>
                                             <td style="width: 100px">
-                                                <a class="btn btn-outline-secondary btn-sm edit" title="Edit">
+                                                <button class="btn btn-outline-secondary btn-sm edit" title="Edit"
+                                                data-bs-toggle="modal" 
+                                                data-id="{{category.id}}"
+                                                data-name="{{category.name}}"
+                                                data-description="{{category.description}}"
+                                                data-bs-target="#staticBackdrop" 
+                                                onclick="setTemplateValues(this)">
                                                     <i class="fas fa-pencil-alt"></i>
-                                                </a>
+                                                </button>
                                             </td>
                                             <td>
                                                 <form method="POST" action="{% url 'category' %}" class="delete-form">
@@ -82,59 +86,135 @@
                                     </tbody>
                                 </table>
                             </div>
+                            {% if categorys.has_other_pages %}
                             <nav aria-label="...">
                                 <ul class="pagination">
+                                    {% if categorys.has_previous %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page={{ categorys.previous_page_number }}" tabindex="-1">Previous</a>
+                                    </li>
+                                    {% else %}
                                     <li class="page-item disabled">
                                         <a class="page-link" href="#" tabindex="-1">Previous</a>
                                     </li>
-                                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                    <li class="page-item active">
-                                        <a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>
-                                    </li>
-                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                    <li class="page-item">
-                                        <a class="page-link" href="#">Next</a>
-                                    </li>
+                                    {% endif %}
+
+                                    {% for i in categorys.paginator.page_range %}
+                                        
+                                        {% if categorys.number == i %}
+                                        <li class="page-item active">
+                                            <a class="page-link" >{{ i }} <span class="sr-only">(current)</span></a>
+                                        </li>
+                                        {% else %}
+                                        <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                                        {% endif %}
+                                    {% endfor %}
+
+                                    {% if categorys.has_next %}
+                                        <li class="page-item">
+                                            <a class="page-link" href="?page={{ categorys.next_page_number }}">Next</a>
+                                        </li>
+                                        {% else %}
+                                        <li class="page-item disabled">
+                                            <a class="page-link" href="#">Next</a>
+                                        </li>
+                                    {% endif %}
                                 </ul>
                             </nav>
+                            {% endif %}
                         </div>
                     </div>
                 </div> <!-- end col -->
             </div> <!-- end row -->
-
         </div> <!-- container-fluid -->
     </div>
-    <!-- End Page-content -->
+</div>
+ 
+{% comment %} modals {% endcomment %}
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static"
+    data-bs-keyboard="false" tabindex="-1" role="dialog"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Edit Category
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
 
-    <!-- Include SweetAlert2 JS -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-    <!-- Your JavaScript code goes here -->
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            // Select all forms with class "delete-form" and add a submit event listener to each
-            document.querySelectorAll(".delete-form").forEach(function(form) {
-                form.addEventListener("submit", function(event) {
-                    event.preventDefault(); // Prevent the default form submission
+            <form method='post' class="container" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="hidden" name="category_id" id="categoryId" >
+                <div class="mb-3 mt-3 row">
+                    <label for="name" class="col-md-2 col-form-label">category Name</label>
+                    <div class="col-md-10">
+                        <input class="form-control" type="text"  name="name" id="categoryName">
+                    </div>
+                </div>
+                <div class="mb-3 mt-3 row">
+                    <label for="template_id" class="col-md-2 col-form-label">category Image</label>
+                    <div class="col-md-10">
+                        <input type="file" name="image" id="image" class="form-control" >
+                    </div>
+                </div>
+                <div class="mb-3 mt-3 row">
+                    <label for="name" class="col-md-2 col-form-label">category description</label>
+                    <div class="col-md-10">
+                        <textarea id="description" name="description" class="form-control" rows="10" required></textarea>
+                    </div>
+                </div>
 
-                    // Show SweetAlert confirmation dialog
-                    Swal.fire({
-                        title: "Are you sure?",
-                        text: "You won't be able to revert this!",
-                        icon: "warning",
-                        showCancelButton: true,
-                        confirmButtonColor: "#34c38f",
-                        cancelButtonColor: "#f46a6a",
-                        confirmButtonText: "Yes, delete it!"
-                    }).then(function(result) {
-                        // Check if the user clicked the confirm button
-                        if (result.isConfirmed) {
-                            // If user confirmed, submit the form
-                            form.submit();
-                        }
-                    });
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light waves-effect"
+                        data-bs-dismiss="modal">Close</button>
+                    <button type="submit"
+                        class="btn btn-primary waves-effect waves-light">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Include SweetAlert2 JS -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<!-- Your JavaScript code goes here -->
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Select all forms with class "delete-form" and add a submit event listener to each
+        document.querySelectorAll(".delete-form").forEach(function(form) {
+            form.addEventListener("submit", function(event) {
+                event.preventDefault(); // Prevent the default form submission
+
+                // Show SweetAlert confirmation dialog
+                Swal.fire({
+                    title: "Are you sure?",
+                    text: "You won't be able to revert this!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#34c38f",
+                    cancelButtonColor: "#f46a6a",
+                    confirmButtonText: "Yes, delete it!"
+                }).then(function(result) {
+                    // Check if the user clicked the confirm button
+                    if (result.isConfirmed) {
+                        // If user confirmed, submit the form
+                        form.submit();
+                    }
                 });
             });
         });
-    </script>
+    });
+
+    function setTemplateValues(button) {
+        var categoryId = button.dataset.id;
+        var categoryName = button.dataset.name;
+        var description = button.dataset.description;
+    
+        document.getElementById("categoryId").value = categoryId;
+        document.getElementById("categoryName").value = categoryName;
+        document.getElementById("description").value = description;
+    }
+</script>
 
 {% endblock %}
