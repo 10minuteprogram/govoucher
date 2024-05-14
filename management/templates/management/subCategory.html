@@ -11,10 +11,10 @@
             <div class="row">
                 <div class="col-sm-6">
                     <div class="page-title-box">
-                        <h4>Superuser List Table</h4>
+                        <h4>Sub Category List</h4>
                         <ol class="breadcrumb m-0">
-                            <li class="breadcrumb-item"><a href="{% url 'superuser_list' %}">superuser</a></li>
-                            <li class="breadcrumb-item"><a href="{% url 'create_superuser' %}">create_superuser</a></li>
+                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                            <li class="breadcrumb-item"><a href="#">Sub Category</a></li>
                         </ol>
                     </div>
                 </div>
@@ -27,9 +27,8 @@
                     <div class="card">
                         <div class="card-body">
 
-                            <h4 class="card-title">Table Edits</h4>
-                            <p class="card-title-desc">Table Edits is a lightweight jQuery plugin for making table rows
-                            editable.</p>
+                            <h4 class="card-title">Sub Category</h4>
+                            <p class="card-title-desc">All Sub Category Table List.</p>
                             {% if user.is_superuser  %}
                             <div style="text-align: end;">
                                 <a href="{% url 'add_subCategory' %}" class="btn btn-primary">Add Sub category</a>
@@ -68,6 +67,7 @@
                                             <th>Created on</th>
                                             <th>Created by</th>
                                             <th>Edit</th>
+                                            <th>Delete</th>
                                             
                                         </tr>
                                     </thead>
@@ -93,6 +93,16 @@
                                                 onclick="setTemplateValues(this)">
                                                     <i class="fas fa-pencil-alt"></i>
                                                 </button>
+                                            </td>
+                                            <td>
+                                                <form method="POST" action="{% url 'subCategory' %}" class="delete-form">
+                                                    {% csrf_token %}
+                                                    <input type="hidden" name="delete_item" value="{{ subcategors.id }}">
+                                                    <button type="submit" class="btn btn-primary waves-effect waves-light">
+                                                        <i class="far fa-trash-alt"></i>
+                                                    </button>
+                                                </form>
+                                                                                                
                                             </td>
                                         </tr>
                                         {% endfor %}
@@ -210,9 +220,34 @@
         </div>
     </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
 <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Select all forms with class "delete-form" and add a submit event listener to each
+        document.querySelectorAll(".delete-form").forEach(function(form) {
+            form.addEventListener("submit", function(event) {
+                event.preventDefault(); // Prevent the default form submission
 
+                // Show SweetAlert confirmation dialog
+                Swal.fire({
+                    title: "Are you sure?",
+                    text: "You won't be able to revert this!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#34c38f",
+                    cancelButtonColor: "#f46a6a",
+                    confirmButtonText: "Yes, delete it!"
+                }).then(function(result) {
+                    // Check if the user clicked the confirm button
+                    if (result.isConfirmed) {
+                        // If user confirmed, submit the form
+                        form.submit();
+                    }
+                });
+            });
+        });
+    });
     function setTemplateValues(button) {
         var subcategoryId = button.dataset.id;
         var subcategoryName = button.dataset.name;

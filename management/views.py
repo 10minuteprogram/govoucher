@@ -654,7 +654,16 @@ def subCategory(request):
             subcategor.save()
 
             return redirect('subCategory')
-
+        
+    #delete category
+    if request.method=='POST':
+        delete_item = request.POST.get("delete_item")
+        print(delete_item)
+        # if delete_item:
+        #     item = get_object_or_404(Category, id=delete_item)
+        #     item.delete()
+        #     #messages.success(request, f"{item} is deleted Successfully")
+        #     return redirect('category')
 
     if request.method == 'GET':
         search = request.GET.get("name")
@@ -724,9 +733,27 @@ def add_brand(request):
     return render(request,"management/add_brand.html",context)
 
 def brand_list(request):
+    all_brand = None
+    sub_categorys = SubCategory.objects.all()
 
+    #update_brand
+    if request.method == 'POST':
+        subcategory_id = request.POST.get('subcategory_id')
+        brand_id = request.POST.get('brand_id')
+        name = request.POST.get('name')
+        image = request.FILES.get('image')
+        description = request.POST.get('description')
+        print(subcategory_id,brand_id,name,image,description)
+        if brand_id:
+            brand = Brand.objects.get(id=brand_id)
+            brand.sub_category_id = subcategory_id
+            brand.name = name
+            brand.cover = image
+            brand.description = description
+            brand.save()
 
-    brands = SubCategory.objects.all()
+            return redirect('brand_list')
+
 
     if request.method == 'GET':
         search = request.GET.get("name")
@@ -736,21 +763,21 @@ def brand_list(request):
         else:
             all_brand = Brand.objects.all()
 
-    # pagination
-    paginator = Paginator(all_brand, 5) # pagination Show 10 users per page.
+        # pagination
+        paginator = Paginator(all_brand, 5) # pagination Show 10 users per page.
 
-    page = request.GET.get('page', 1)
+        page = request.GET.get('page', 1)
 
-    try:
-        all_brand = paginator.page(page)
-    except PageNotAnInteger:
-        all_brand = paginator.page(1)
-    except EmptyPage:
-        all_brand = paginator.page(paginator.num_pages)
+        try:
+            all_brand = paginator.page(page)
+        except PageNotAnInteger:
+            all_brand = paginator.page(1)
+        except EmptyPage:
+            all_brand = paginator.page(paginator.num_pages)
 
     context ={
         'brands' : all_brand,
-        'brand':brands,
+        'sub_categorys':sub_categorys,
     }
 
     return render(request,"management/brand_list.html",context)
@@ -762,6 +789,18 @@ def deal_list(request):
 
     all_brand = Brand.objects.all()
 
+    #update_brand
+    if request.method == 'POST':
+        brand_id = request.POST.get('brand_id')
+        deal_id = request.POST.get('deal_id')
+        name = request.POST.get('name')
+        if deal_id:
+            deal = Deal.objects.get(id=deal_id)
+            deal.brand_id = brand_id
+            deal.name = name
+            deal.save()
+            return redirect('deal_list')
+
     if request.method == 'GET':
         search = request.GET.get("name")
         if search:
@@ -770,17 +809,17 @@ def deal_list(request):
         else:
             deals = Deal.objects.all()
 
-    # pagination
-    paginator = Paginator(deals, 5) # pagination Show 10 users per page.
+        # pagination
+        paginator = Paginator(deals, 5) # pagination Show 10 users per page.
 
-    page = request.GET.get('page', 1)
+        page = request.GET.get('page', 1)
 
-    try:
-        deals = paginator.page(page)
-    except PageNotAnInteger:
-        deals = paginator.page(1)
-    except EmptyPage:
-        deals = paginator.page(paginator.num_pages)
+        try:
+            deals = paginator.page(page)
+        except PageNotAnInteger:
+            deals = paginator.page(1)
+        except EmptyPage:
+            deals = paginator.page(paginator.num_pages)
 
     context ={
         "all_brand" : all_brand,

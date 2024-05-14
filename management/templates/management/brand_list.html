@@ -1,9 +1,7 @@
 {% extends 'management/base.html' %}
 
 {% block content %}
-<!-- ============================================================== -->
-<!-- Start right Content here -->
-<!-- ============================================================== -->
+
 <div class="main-content">
 
     <div class="page-content">
@@ -13,10 +11,10 @@
             <div class="row">
                 <div class="col-sm-6">
                     <div class="page-title-box">
-                        <h4>Superuser List Table</h4>
+                        <h4>Brand List</h4>
                         <ol class="breadcrumb m-0">
-                            <li class="breadcrumb-item"><a href="{% url 'superuser_list' %}">superuser</a></li>
-                            <li class="breadcrumb-item"><a href="{% url 'create_superuser' %}">create_superuser</a></li>
+                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                            <li class="breadcrumb-item"><a href="#">Brand</a></li>
                         </ol>
                     </div>
                 </div>
@@ -29,9 +27,8 @@
                     <div class="card">
                         <div class="card-body">
 
-                            <h4 class="card-title">Table Edits</h4>
-                            <p class="card-title-desc">Table Edits is a lightweight jQuery plugin for making table rows
-                            editable.</p>
+                            <h4 class="card-title">Brand</h4>
+                            <p class="card-title-desc">All Brand Table List.</p>
                             {% if user.is_superuser  %}
                             <div style="text-align: end;">
                                 <a href="{% url 'add_brand' %}" class="btn btn-primary">Add Brand</a>
@@ -49,8 +46,8 @@
                                         <form method='GET'>
                                         
                                             <div class="dropdown-menu" >
-                                                {% for brand in brand %}
-                                                <button class="dropdown-item" type="submit" name="name" value="{{ brand.id }}">{{ brand.name }}</button>
+                                                {% for sub in sub_categorys %}
+                                                <button class="dropdown-item" type="submit" name="name" value="{{ sub.id }}">{{ sub.name }}</button>
                                                 {% endfor %}
                                             </div>
                                             
@@ -86,9 +83,16 @@
                                             <td data-field="age">{{brand.created_on}}</td>
                                             <td data-field="gender">{{brand.created_by}}</td>
                                             <td style="width: 100px">
-                                                <a class="btn btn-outline-secondary btn-sm edit" title="Edit">
+                                                <button class="btn btn-outline-secondary btn-sm edit" title="Edit"
+                                                data-bs-toggle="modal" 
+                                                data-id="{{brand.id}}"
+                                                data-sub_category="{{brand.sub_category.id}}"
+                                                data-name="{{brand.name}}"
+                                                data-description="{{brand.description}}"
+                                                data-bs-target="#staticBackdrop" 
+                                                onclick="setTemplateValues(this)">
                                                     <i class="fas fa-pencil-alt"></i>
-                                                </a>
+                                                </button>
                                             </td>
                                             
                                         </tr>
@@ -143,5 +147,84 @@
 
         </div> <!-- container-fluid -->
     </div>
-    <!-- End Page-content -->
+</div>
+
+{% comment %} modals {% endcomment %}
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static"
+    data-bs-keyboard="false" tabindex="-1" role="dialog"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg"> 
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Edit Brand
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+
+            <form method='post' class="container" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="hidden" name="brand_id" id="brandId" >
+
+                <div class="mb-3 mt-3 row">
+                    <label for="category" class="col-md-2 col-form-label"> Sub Category</label>
+                    <div class="col-md-10">
+                        <select name="subcategory_id" class="form-control" id="subcategoryId">
+                            <option value="">Select Sub Category</option>
+                            {% for c in sub_categorys %}
+                                {% if c.id == subcategoryId %}
+                                    <option value="{{c.id}}" selected>{{c.name}}</option>
+                                {% else %}
+                                    <option value="{{c.id}}">{{c.name}}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+
+                <div class="mb-3 mt-3 row">
+                    <label for="name" class="col-md-2 col-form-label">Name</label>
+                    <div class="col-md-10">
+                        <input class="form-control" type="text"  name="name" id="brandName">
+                    </div>
+                </div>
+                <div class="mb-3 mt-3 row">
+                    <label for="template_id" class="col-md-2 col-form-label">Image</label>
+                    <div class="col-md-10">
+                        <input type="file" name="image" id="image" class="form-control" >
+                    </div>
+                </div>
+                <div class="mb-3 mt-3 row">
+                    <label for="name" class="col-md-2 col-form-label">Description</label>
+                    <div class="col-md-10">
+                        <textarea id="branddescription" name="description" class="form-control" rows="10" required></textarea>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light waves-effect"
+                        data-bs-dismiss="modal">Close</button>
+                    <button type="submit"
+                        class="btn btn-primary waves-effect waves-light">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    function setTemplateValues(button) {
+        var brandId = button.dataset.id;
+        var brandName = button.dataset.name;
+        var bdescription = button.dataset.description;
+        var subcategoryId = button.dataset.sub_category; // Corrected variable name
+    
+        document.getElementById("brandId").value = brandId;
+        document.getElementById("brandName").value = brandName;
+        document.getElementById("branddescription").value = bdescription;
+        document.getElementById("subcategoryId").value = subcategoryId; // Corrected element ID
+        
+
+    }
+</script>
 {% endblock %}
