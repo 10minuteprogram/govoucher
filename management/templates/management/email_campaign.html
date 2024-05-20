@@ -17,9 +17,44 @@
                         </ol>
                     </div>
                 </div>
-
             </div>
             <!-- end page title -->
+            <div class="container mt-5">
+                <div class="card">
+                    <div class="card-body">
+                        <h3>Filter Campaigns</h3>
+                        <form method="GET">
+                            <div class="row">
+                                <!-- Name Filter -->
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="filter_name">Name</label>
+                                        <input id="filter_name" type="text" name="name" class="form-control" placeholder="Search by Name" value="{{ request.GET.name }}">
+                                    </div>
+                                </div>
+                                <!-- Source Filter -->
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="filter_source">Source</label>
+                                        <input id="filter_source" type="text" name="source" class="form-control" placeholder="Search by Source" value="{{ request.GET.source }}">
+                                    </div>
+                                </div>
+                                <!-- Total Participants Filter -->
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="filter_total_participants">Total Participants</label>
+                                        <input id="filter_total_participants" type="number" name="total_participants" class="form-control" placeholder="Search by Total Participants" value="{{ request.GET.total_participants }}">
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-success mt-2">Filter</button>
+                            <a href="" class="btn btn-secondary ml-2">Reset</a>
+                        </form>
+                        
+                    </div>
+                </div>
+            </div>
+
 
             <div class="row">
                 <div class="col-12">
@@ -61,20 +96,20 @@
                                     </tbody>
                                 </table>
                             </div>
-                            {% if superusers.has_other_pages %}
+                            {% if email_campaigns.has_other_pages %}
                             <nav aria-label="...">
                                 <ul class="pagination">
-                                    {% if superusers.has_previous %}
+                                    {% if email_campaigns.has_previous %}
                                         <li class="page-item ">
-                                            <a class="page-link" href="?page={{ superusers.previous_page_number }}" tabindex="-1">Previous</a>
+                                            <a class="page-link" href="?page={{ email_campaigns.previous_page_number }}" tabindex="-1">Previous</a>
                                         </li>
                                     {% else %}
                                         <li class="page-item disabled">
                                             <a class="page-link" tabindex="-1">Previous</a>
                                         </li>
                                     {% endif %}
-                                    {% for i in superusers.paginator.page_range %}
-                                        {% if superusers.number == i %}
+                                    {% for i in email_campaigns.paginator.page_range %}
+                                        {% if email_campaigns.number == i %}
                                             <li class="page-item active">
                                                 <a class="page-link" > {{ i }} <span class="sr-only">(current)</span></a>
                                             </li>
@@ -84,9 +119,9 @@
 
                                     {% endfor %}
 
-                                    {% if superusers.has_next %}
+                                    {% if email_campaigns.has_next %}
                                         <li class="page-item">
-                                            <a class="page-link" href="?page={{ superusers.next_page_number }}">Next</a>
+                                            <a class="page-link" href="?page={{ email_campaigns.next_page_number }}">Next</a>
                                         </li>
                                     {% else %}
                                         <li class="page-item disabled">

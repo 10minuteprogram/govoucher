@@ -475,7 +475,7 @@ def create_staff(request):
             'password': password,
         }        
         print(password)
-        send_email('your staff account', [email], 'management/emails/staff_info_email.html', context, [])
+        #send_email('your staff account', [email], 'management/emails/staff_info_email.html', context, [])
 
         #messages.success(request, 'Staff user created successfully.')
         return redirect('staffs_list')
@@ -558,6 +558,37 @@ def category(request):
 
     categorys =  Category.objects.all()
 
+    #update category
+    if request.method == 'POST':
+        category_id = request.POST.get('category_id')
+        name = request.POST.get('name')
+        image = request.FILES.get('image')
+        description = request.POST.get('description')
+
+        if category_id and name and image and description:
+            category = categorys.get(id=category_id)
+            category.name = name
+            category.cover = image
+            category.description = description
+            category.save()
+            messages.success(request, f"{category} is updated Successfully")
+            return redirect('category')
+        else:
+            messages.error(request,"All fields are required")
+
+    # pagination
+    paginator = Paginator(categorys, 5) # pagination Show 10 users per page.
+
+    page = request.GET.get('page', 1)
+
+    try:
+        categorys = paginator.page(page)
+    except PageNotAnInteger:
+        categorys = paginator.page(1)
+    except EmptyPage:
+        categorys = paginator.page(paginator.num_pages)
+
+    #delete category
     if request.method=='POST':
         delete_item = request.POST.get("delete_item")
         if delete_item:
@@ -607,6 +638,32 @@ def subCategory(request):
 
     categorys = Category.objects.all()
 
+    #update sub-category
+    if request.method == 'POST':
+        category_id = request.POST.get('category_id')
+        subcategory_id = request.POST.get('subcategory_id')
+        name = request.POST.get('name')
+        image = request.FILES.get('image')
+        description = request.POST.get('description')
+        if subcategory_id:
+            subcategor = SubCategory.objects.get(id=subcategory_id)
+            subcategor.category_id = category_id
+            subcategor.name = name
+            subcategor.cover = image
+            subcategor.description = description
+            subcategor.save()
+
+            return redirect('subCategory')
+        
+    #delete category
+    if request.method=='POST':
+        delete_item = request.POST.get("delete_item")
+        print(delete_item)
+        # if delete_item:
+        #     item = get_object_or_404(Category, id=delete_item)
+        #     item.delete()
+        #     #messages.success(request, f"{item} is deleted Successfully")
+        #     return redirect('category')
 
     if request.method == 'GET':
         search = request.GET.get("name")
@@ -615,7 +672,18 @@ def subCategory(request):
             subcategors = SubCategory.objects.filter(category_id=search)
         else:
             subcategors = SubCategory.objects.all()
-                
+
+    # pagination
+    paginator = Paginator(subcategors, 5) # pagination Show 10 users per page.
+
+    page = request.GET.get('page', 1)
+
+    try:
+        subcategors = paginator.page(page)
+    except PageNotAnInteger:
+        subcategors = paginator.page(1)
+    except EmptyPage:
+        subcategors = paginator.page(paginator.num_pages)
 
     context = {
         'subcategors' : subcategors,
@@ -665,9 +733,27 @@ def add_brand(request):
     return render(request,"management/add_brand.html",context)
 
 def brand_list(request):
+    all_brand = None
+    sub_categorys = SubCategory.objects.all()
 
+    #update_brand
+    if request.method == 'POST':
+        subcategory_id = request.POST.get('subcategory_id')
+        brand_id = request.POST.get('brand_id')
+        name = request.POST.get('name')
+        image = request.FILES.get('image')
+        description = request.POST.get('description')
+        print(subcategory_id,brand_id,name,image,description)
+        if brand_id:
+            brand = Brand.objects.get(id=brand_id)
+            brand.sub_category_id = subcategory_id
+            brand.name = name
+            brand.cover = image
+            brand.description = description
+            brand.save()
 
-    brands = SubCategory.objects.all()
+            return redirect('brand_list')
+
 
     if request.method == 'GET':
         search = request.GET.get("name")
@@ -677,9 +763,21 @@ def brand_list(request):
         else:
             all_brand = Brand.objects.all()
 
+        # pagination
+        paginator = Paginator(all_brand, 5) # pagination Show 10 users per page.
+
+        page = request.GET.get('page', 1)
+
+        try:
+            all_brand = paginator.page(page)
+        except PageNotAnInteger:
+            all_brand = paginator.page(1)
+        except EmptyPage:
+            all_brand = paginator.page(paginator.num_pages)
+
     context ={
         'brands' : all_brand,
-        'brand':brands,
+        'sub_categorys':sub_categorys,
     }
 
     return render(request,"management/brand_list.html",context)
@@ -689,19 +787,43 @@ def deal_list(request):
     all_brand = None
     deals = None
 
-    deals = Brand.objects.all()
+    all_brand = Brand.objects.all()
+
+    #update_brand
+    if request.method == 'POST':
+        brand_id = request.POST.get('brand_id')
+        deal_id = request.POST.get('deal_id')
+        name = request.POST.get('name')
+        if deal_id:
+            deal = Deal.objects.get(id=deal_id)
+            deal.brand_id = brand_id
+            deal.name = name
+            deal.save()
+            return redirect('deal_list')
 
     if request.method == 'GET':
         search = request.GET.get("name")
         if search:
             # Filter subcategories based on search query
-            all_brand = Deal.objects.filter(brand_id=search)
+            deals = Deal.objects.filter(brand_id=search)
         else:
-            all_brand = Deal.objects.all()
+            deals = Deal.objects.all()
+
+        # pagination
+        paginator = Paginator(deals, 5) # pagination Show 10 users per page.
+
+        page = request.GET.get('page', 1)
+
+        try:
+            deals = paginator.page(page)
+        except PageNotAnInteger:
+            deals = paginator.page(1)
+        except EmptyPage:
+            deals = paginator.page(paginator.num_pages)
 
     context ={
-        "deals" : deals,
-        "all_brand":all_brand,
+        "all_brand" : all_brand,
+        "deals":deals,
     }
     return render(request, 'management/deal-list.html',context)
 
@@ -758,15 +880,43 @@ def add_deal(request):
 
     return render(request, 'management/add_deal.html',context)
 
+def coupon(request):
+    coupons = Coupon.objects.all()
+    context = {
+        'coupons': coupons,
+        }
+    return render(request, 'management/coupon.html',context)
+
 
 def subscriber(request):
     subscribers = Subscribers.objects.all()
     email_campaigns = EmailCampaign.objects.all()
     templates = EmailTemplate.objects.all()
 
-    q = request.GET.get('q')
-    if q:
-        subscribers = subscribers.filter(email__icontains=q)
+    email = request.GET.get('email')
+    campaign_sent = request.GET.get('campaign_sent')
+    last_sent = request.GET.get('last_sent')
+
+    # Apply additional filters based on parameters
+    if email:
+        subscribers = subscribers.filter(email__icontains=email)
+    if campaign_sent:
+        subscribers = subscribers.exclude(campaign_sent=campaign_sent)
+    if last_sent:
+        subscribers = subscribers.exclude(last_sent__date=last_sent)
+
+
+    # pagination
+    paginator = Paginator(subscribers, 10) # pagination Show 10 users per page.
+
+    page = request.GET.get('page', 1)
+
+    try:
+        subscribers = paginator.page(page)
+    except PageNotAnInteger:
+        subscribers = paginator.page(1)
+    except EmptyPage:
+        subscribers = paginator.page(paginator.num_pages)
 
     context = {
         'subscribers': subscribers,
@@ -820,6 +970,32 @@ def create_campaign(request):
 
 def email_campaign(request):
     email_campaigns = EmailCampaign.objects.all()
+
+    #filter
+    name = request.GET.get('name')
+    source = request.GET.get('source')
+    total_participants = request.GET.get('total_participants')
+
+    if name:
+        email_campaigns = email_campaigns.filter(name__icontains=name)
+    if source:
+        email_campaigns = email_campaigns.filter(source__icontains=source)
+    if total_participants:
+        email_campaigns = email_campaigns.filter(total_participant=total_participants)
+
+    # pagination
+    paginator = Paginator(email_campaigns, 5) # pagination Show 10 users per page.
+
+    page = request.GET.get('page', 1)
+
+    try:
+        email_campaigns = paginator.page(page)
+    except PageNotAnInteger:
+        email_campaigns = paginator.page(1)
+    except EmptyPage:
+        email_campaigns = paginator.page(paginator.num_pages)
+
+
     context = {
         'email_campaigns': email_campaigns,
     }
@@ -867,6 +1043,33 @@ def send_email(request):
 
 def email_template(request):
     email_templates = EmailTemplate.objects.all()
+
+    if request.method == 'POST':
+        template_id = request.POST.get('template_id')  # Assuming you have a hidden input field for template ID in your form
+        name = request.POST.get('name')
+        subject = request.POST.get('subject')
+        body = request.POST.get('body')
+
+        if template_id and name and subject and body:
+            email_template = email_templates.get(id=template_id)
+            email_template.name = name
+            email_template.subject = subject
+            email_template.body = body
+            email_template.save()
+            messages.success(request, 'Campaign has been updated successfully!')
+            return redirect('email_template')
+        
+    # pagination
+    paginator = Paginator(email_templates, 5) # pagination Show 10 users per page.
+
+    page = request.GET.get('page', 1)
+
+    try:
+        email_templates = paginator.page(page)
+    except PageNotAnInteger:
+        email_templates = paginator.page(1)
+    except EmptyPage:
+        email_templates = paginator.page(paginator.num_pages)
     context = {
         'email_templates': email_templates,
     }
@@ -879,14 +1082,12 @@ def add_email_template(request):
         name = request.POST.get('name')
         subject = request.POST.get('subject')
         body = request.POST.get('body')
-        status = request.POST.get('status')
 
-        if name and subject and body and status:
+        if name and subject and body :
             EmailTemplate.objects.create(
                 name=name,
                 subject=subject,
                 body=body,
-                status=status,
                 created_by = Profile.objects.get(user=request.user),
             )
             return redirect('email_template')

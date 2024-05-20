@@ -3,7 +3,6 @@
 {% block content %}
 
 <div class="main-content">
-
     <div class="page-content">
         <div class="container-fluid">
 
@@ -11,10 +10,10 @@
             <div class="row">
                 <div class="col-sm-6">
                     <div class="page-title-box">
-                        <h4>Sub Category List</h4>
+                        <h4>Coupon List</h4>
                         <ol class="breadcrumb m-0">
-                            <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item"><a href="#">Sub Category</a></li>
+                            <li class="breadcrumb-item"><a href="#">home</a></li>
+                            <li class="breadcrumb-item"><a href="#">coupon</a></li>
                         </ol>
                     </div>
                 </div>
@@ -26,101 +25,77 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-body">
-                            
 
-                            <h4 class="card-title">Sub Category</h4>
-                            <p class="card-title-desc">All Sub Category Table List.</p>
+                            <h4 class="card-title">Coupons</h4>
+                            <p class="card-title-desc">All Coupon Table List</p>
+                            {% if messages %}
+                            {% include 'management/message.html' %}
+                            {% endif %}
                             {% if user.is_superuser  %}
                             <div style="text-align: end;">
-                                <a href="{% url 'add_subCategory' %}" class="btn btn-primary">Add Sub category</a>
+                                <a href="#" class="btn btn-primary">Add Coupon</a>
                             </div>
                             {% endif %}
-                            <div class="mb-3 col-xl-6">
-                                <form action="">
-                                    <label class="form-label">Single Select</label>
-                                    <select name="name" class="form-control select2">
-                                        <option value="">Select</option>
-                                        
-                                        {% for category in categorys %}
-                                        <option value="{{category.id}}">{{category.name}}</option>
-                                        {% endfor %}
-                                    </select>
-                                    <button type="submit" class="btn btn-outline-secondary search-button">
-                                        <i class="ti-search"></i>
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
+                            
 
                             <div class="table-responsive">
                                 <table class="table table-editable table-nowrap align-middle table-edits">
                                     <thead>
-                                        {% if subcategors %}
                                         <tr>
                                             <th>ID</th>
-                                            <th>sub categorys</th>
-                                            <th>categorys</th>
-                                            <th>Created on</th>
+                                            <th>Coupon Name</th>
+                                            <th>Coupon Code</th>
+                                            <th>Start Date</th>
+                                            <th>End Date</th>
                                             <th>Created by</th>
                                             <th>Edit</th>
                                             <th>Delete</th>
-                                            
                                         </tr>
                                     </thead>
                                     <tbody>
- 
 
-                                        {% for subcategors in subcategors %}
+                                        {% for coupon in coupons %}
 
                                         <tr data-id="1">
                                             <td data-field="id" style="width: 80px">{{forloop.counter}}</td>
-                                            <td data-field="name"><b><a href="#">{{subcategors.name}}</td></a></b>
-                                            <td data-field="name"><b><a href="#">
-                                                {% if subcategors.category %}
-                                                    {{subcategors.category.name}}
-                                                {% else %}
-                                                </a><span class="badge bg-danger">No category</span>
-                                                {% endif %}
-                                            </td></b>
-                                            <td data-field="age">{{subcategors.created_on}}</td>
-                                            <td data-field="gender">{{subcategors.created_by}}</td>
+                                            <td data-field="name"><b><a href="#">{{coupon.name}}</td></a></b>
+                                            <td data-field="age">{{coupon.code}}</td>
+                                            <td>{{coupon.start_date}}</td>
+                                            <td>{{coupon.end_date}}</td>
+                                            <td data-field="gender">{{coupon.created_by}}</td>
                                             <td style="width: 100px">
                                                 <button class="btn btn-outline-secondary btn-sm edit" title="Edit"
                                                 data-bs-toggle="modal" 
-                                                data-id="{{subcategors.id}}"
-                                                data-category="{{subcategors.category.id}}"
-                                                data-name="{{subcategors.name}}"
-                                                data-description="{{subcategors.description}}"
+                                                data-id="{{category.id}}"
+                                                data-name="{{category.name}}"
+                                                data-description="{{category.description}}"
                                                 data-bs-target="#staticBackdrop" 
                                                 onclick="setTemplateValues(this)">
                                                     <i class="fas fa-pencil-alt"></i>
                                                 </button>
                                             </td>
                                             <td>
-                                                <form method="POST" action="{% url 'subCategory' %}" class="delete-form">
+                                                <form method="POST" action="#" class="delete-form">
                                                     {% csrf_token %}
-                                                    <input type="hidden" name="delete_item" value="{{ subcategors.id }}">
+                                                    <input type="hidden" name="delete_item" value="">
                                                     <button type="submit" class="btn btn-primary waves-effect waves-light">
                                                         <i class="far fa-trash-alt"></i>
                                                     </button>
                                                 </form>
                                                                                                 
                                             </td>
+                                            
                                         </tr>
                                         {% endfor %}
-                                        {% else %}
-                                        <td data-field="name" ><b>No Sub Categors Found!</td></b>
-                                        
-                                        {% endif %}
                                     </tbody>
                                 </table>
                             </div>
-                            {% if subcategors.has_other_pages %}
+                            {% if categorys.has_other_pages %}
                             <nav aria-label="...">
                                 <ul class="pagination">
-                                    {% if subcategors.has_previous %}
+                                    {% if categorys.has_previous %}
                                     <li class="page-item">
-                                        <a class="page-link" href="?page={{ subcategors.previous_page_number }}" tabindex="-1">Previous</a>
+                                        <a class="page-link" href="?page={{ categorys.previous_page_number }}" tabindex="-1">Previous</a>
                                     </li>
                                     {% else %}
                                     <li class="page-item disabled">
@@ -128,9 +103,9 @@
                                     </li>
                                     {% endif %}
 
-                                    {% for i in subcategors.paginator.page_range %}
+                                    {% for i in categorys.paginator.page_range %}
                                         
-                                        {% if subcategors.number == i %}
+                                        {% if categorys.number == i %}
                                         <li class="page-item active">
                                             <a class="page-link" >{{ i }} <span class="sr-only">(current)</span></a>
                                         </li>
@@ -139,14 +114,14 @@
                                         {% endif %}
                                     {% endfor %}
 
-                                    {% if subcategors.has_next %}
-                                    <li class="page-item">
-                                        <a class="page-link" href="?page={{ subcategors.next_page_number }}">Next</a>
-                                    </li>
-                                    {% else %}
-                                    <li class="page-item disabled">
-                                        <a class="page-link" href="#">Next</a>
-                                    </li>
+                                    {% if categorys.has_next %}
+                                        <li class="page-item">
+                                            <a class="page-link" href="?page={{ categorys.next_page_number }}">Next</a>
+                                        </li>
+                                        {% else %}
+                                        <li class="page-item disabled">
+                                            <a class="page-link" href="#">Next</a>
+                                        </li>
                                     {% endif %}
                                 </ul>
                             </nav>
@@ -155,19 +130,18 @@
                     </div>
                 </div> <!-- end col -->
             </div> <!-- end row -->
-
         </div> <!-- container-fluid -->
     </div>
 </div>
-
+ 
 {% comment %} modals {% endcomment %}
 <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static"
     data-bs-keyboard="false" tabindex="-1" role="dialog"
     aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg"> 
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="staticBackdropLabel">Edit Sub Category
+                <h5 class="modal-title" id="staticBackdropLabel">Edit Category
                 </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                     aria-label="Close"></button>
@@ -175,40 +149,23 @@
 
             <form method='post' class="container" enctype="multipart/form-data">
                 {% csrf_token %}
-                <input type="hidden" name="subcategory_id" id="subcategoryId" >
-
+                <input type="hidden" name="category_id" id="categoryId" >
                 <div class="mb-3 mt-3 row">
-                    <label for="category" class="col-md-2 col-form-label"> Category</label>
+                    <label for="name" class="col-md-2 col-form-label">category Name</label>
                     <div class="col-md-10">
-                        <select name="category_id" class="form-control" id="categoryId">
-                            <option value="">Select Category</option>
-                            {% for c in categorys %}
-                                {% if c.id == categoryId %}
-                                    <option value="{{c.id}}" selected>{{c.name}}</option>
-                                {% else %}
-                                    <option value="{{c.id}}">{{c.name}}</option>
-                                {% endif %}
-                            {% endfor %}
-                        </select>
-                    </div>
-                </div>
-
-                <div class="mb-3 mt-3 row">
-                    <label for="name" class="col-md-2 col-form-label">Name</label>
-                    <div class="col-md-10">
-                        <input class="form-control" type="text"  name="name" id="subcategoryName">
+                        <input class="form-control" type="text"  name="name" id="categoryName">
                     </div>
                 </div>
                 <div class="mb-3 mt-3 row">
-                    <label for="template_id" class="col-md-2 col-form-label">Image</label>
+                    <label for="template_id" class="col-md-2 col-form-label">category Image</label>
                     <div class="col-md-10">
                         <input type="file" name="image" id="image" class="form-control" >
                     </div>
                 </div>
                 <div class="mb-3 mt-3 row">
-                    <label for="name" class="col-md-2 col-form-label">Description</label>
+                    <label for="name" class="col-md-2 col-form-label">category description</label>
                     <div class="col-md-10">
-                        <textarea id="subdescription" name="description" class="form-control" rows="10" required></textarea>
+                        <textarea id="description" name="description" class="form-control" rows="10" required></textarea>
                     </div>
                 </div>
 
@@ -222,6 +179,8 @@
         </div>
     </div>
 </div>
+
+<!-- Include SweetAlert2 JS -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function() {
@@ -249,24 +208,6 @@
             });
         });
     });
-    function setTemplateValues(button) {
-        var subcategoryId = button.dataset.id;
-        var subcategoryName = button.dataset.name;
-        var subdescription = button.dataset.description;
-        var categoryId = button.dataset.category; // Corrected variable name
-    
-        document.getElementById("subcategoryId").value = subcategoryId;
-        document.getElementById("subcategoryName").value = subcategoryName;
-        document.getElementById("subdescription").value = subdescription;
-        document.getElementById("categoryId").value = categoryId; // Corrected element ID
-        
-
-    }
-    $(document).ready(function() {
-        $('.select2').select2();
-    });
-    // Select Box
-
 </script>
-        
+
 {% endblock %}

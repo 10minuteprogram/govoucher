@@ -85,6 +85,12 @@ class Brand(models.Model):
 class Deal(models.Model):
     brand = models.ForeignKey(Brand,on_delete=models.SET_NULL,related_name='bdeals',null=True,blank=True)
     name = models.CharField(max_length=200)
+    photo = models.ImageField(upload_to="deal/photos",blank=True,null=True)
+    description = models.TextField(blank=True, null=True)
+    start_date = models.DateTimeField(blank=True)
+    end_date = models.DateTimeField(blank=True)
+    is_active = models.BooleanField(default=True)
+
     created_on = models.DateTimeField(auto_now_add=True,blank=True, null=True)
     created_by = models.ForeignKey(Profile,related_name='crdeal', on_delete=models.SET_NULL,blank=True, null=True)
     upldated_on =  models.DateTimeField(auto_now=True)
@@ -92,7 +98,39 @@ class Deal(models.Model):
 
     def __str__(self):
         return f"{self.name}"
+
+
+class Coupon(models.Model):
+    PERCENTAGE = 'PERCENTAGE'
+    FIXED = 'FIXED'
+    DISCOUNT_TYPE_CHOICES = [
+        (PERCENTAGE, 'Percentage'),
+        (FIXED, 'Fixed Amount'),
+    ]
+    brand = models.ForeignKey(Brand,on_delete=models.SET_NULL,null=True,blank=True)
+
+    name = models.CharField(max_length=200)
+    code = models.CharField(max_length=50, unique=True)
+    description = models.TextField(blank=True)
+    discount_type = models.CharField(max_length=20, choices=DISCOUNT_TYPE_CHOICES)
+    discount_value = models.DecimalField(max_digits=10, decimal_places=2)
+    max_uses = models.PositiveIntegerField(null=True, blank=True)
+    uses_per_user = models.PositiveIntegerField(null=True, blank=True)
+    start_date = models.DateTimeField(blank=True, null=True)
+    end_date = models.DateTimeField(blank=True, null=True)
+    minimum_purchase_amount = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    times_redeemed = models.PositiveIntegerField(default=0)
+    last_redeemed = models.DateTimeField(null=True, blank=True)
+    is_active = models.BooleanField(default=True)
+    created_on = models.DateTimeField(auto_now_add=True)
+    updated_on = models.DateTimeField(auto_now=True)
     
+    created_by = models.ForeignKey(User,related_name='crdeals', on_delete=models.SET_NULL, blank=True, null=True)
+    updated_by = models.ForeignKey(User,related_name='updeals', on_delete=models.SET_NULL, blank=True, null=True)
+    
+    def __str__(self):
+        return f"{self.name} | {self.code}"
+
 
 class Subscribers(models.Model):
     name = models.CharField(max_length=400)
