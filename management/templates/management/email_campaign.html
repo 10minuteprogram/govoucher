@@ -17,9 +17,44 @@
                         </ol>
                     </div>
                 </div>
-
             </div>
             <!-- end page title -->
+            <div class="container mt-5">
+                <div class="card">
+                    <div class="card-body">
+                        <h3>Filter Campaigns</h3>
+                        <form method="GET">
+                            <div class="row">
+                                <!-- Name Filter -->
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="filter_name">Name</label>
+                                        <input id="filter_name" type="text" name="name" class="form-control" placeholder="Search by Name" value="{{ request.GET.name }}">
+                                    </div>
+                                </div>
+                                <!-- Source Filter -->
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="filter_source">Source</label>
+                                        <input id="filter_source" type="text" name="source" class="form-control" placeholder="Search by Source" value="{{ request.GET.source }}">
+                                    </div>
+                                </div>
+                                <!-- Total Participants Filter -->
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="filter_total_participants">Total Participants</label>
+                                        <input id="filter_total_participants" type="number" name="total_participants" class="form-control" placeholder="Search by Total Participants" value="{{ request.GET.total_participants }}">
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-success mt-2">Filter</button>
+                            <a href="" class="btn btn-secondary ml-2">Reset</a>
+                        </form>
+                        
+                    </div>
+                </div>
+            </div>
+
 
             <div class="row">
                 <div class="col-12">

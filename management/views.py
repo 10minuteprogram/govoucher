@@ -475,7 +475,7 @@ def create_staff(request):
             'password': password,
         }        
         print(password)
-        send_email('your staff account', [email], 'management/emails/staff_info_email.html', context, [])
+        #send_email('your staff account', [email], 'management/emails/staff_info_email.html', context, [])
 
         #messages.success(request, 'Staff user created successfully.')
         return redirect('staffs_list')
@@ -880,28 +880,31 @@ def add_deal(request):
 
     return render(request, 'management/add_deal.html',context)
 
+def coupon(request):
+    coupons = Coupon.objects.all()
+    context = {
+        'coupons': coupons,
+        }
+    return render(request, 'management/coupon.html',context)
+
 
 def subscriber(request):
     subscribers = Subscribers.objects.all()
     email_campaigns = EmailCampaign.objects.all()
     templates = EmailTemplate.objects.all()
 
-    q = request.GET.get('q')
-    if q:
-        subscribers = subscribers.filter(email__icontains=q)
+    email = request.GET.get('email')
+    campaign_sent = request.GET.get('campaign_sent')
+    last_sent = request.GET.get('last_sent')
 
-    # # Filter by last_sent date
-    # last_sent = request.GET.get('last_sent')
+    # Apply additional filters based on parameters
+    if email:
+        subscribers = subscribers.filter(email__icontains=email)
+    if campaign_sent:
+        subscribers = subscribers.exclude(campaign_sent=campaign_sent)
+    if last_sent:
+        subscribers = subscribers.exclude(last_sent__date=last_sent)
 
-    # if last_sent:
-    #     # Convert last_sent to a datetime object if needed
-    #     # Assuming last_sent is in ISO 8601 format (e.g., '2024-04-25T12:00:00Z')
-    #     last_sent_date = timezone.datetime.fromisoformat(last_sent)
-        
-    #     # Calculate the date 7 days ago
-    #     seven_days_ago = last_sent_date - timedelta(days=7)
-
-    #     subscribers = subscribers.filter(last_sent__lte=seven_days_ago)
 
     # pagination
     paginator = Paginator(subscribers, 10) # pagination Show 10 users per page.
@@ -967,6 +970,18 @@ def create_campaign(request):
 
 def email_campaign(request):
     email_campaigns = EmailCampaign.objects.all()
+
+    #filter
+    name = request.GET.get('name')
+    source = request.GET.get('source')
+    total_participants = request.GET.get('total_participants')
+
+    if name:
+        email_campaigns = email_campaigns.filter(name__icontains=name)
+    if source:
+        email_campaigns = email_campaigns.filter(source__icontains=source)
+    if total_participants:
+        email_campaigns = email_campaigns.filter(total_participant=total_participants)
 
     # pagination
     paginator = Paginator(email_campaigns, 5) # pagination Show 10 users per page.

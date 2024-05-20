@@ -41,7 +41,8 @@ urlpatterns = [
     path('add-category/', add_category, name='add_category'),
     path('add-sub-category/', add_subCategory, name='add_subCategory'),
     path('add-brand/', add_brand, name='add_brand'),
-    path('add-deal', add_deal, name='add_deal'),
+    path('add-deal/', add_deal, name='add_deal'),
+    path('coupon/', coupon, name='coupon'),
 
     #email_campaign_url
     path('subscriber/', subscriber, name='subscriber'),

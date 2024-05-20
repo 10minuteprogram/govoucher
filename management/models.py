@@ -85,11 +85,11 @@ class Brand(models.Model):
 class Deal(models.Model):
     brand = models.ForeignKey(Brand,on_delete=models.SET_NULL,related_name='bdeals',null=True,blank=True)
     name = models.CharField(max_length=200)
-
-    # description = models.TextField(blank=True, null=True)
-    # start_date = models.DateTimeField(blank=True)
-    # end_date = models.DateTimeField(blank=True)
-    # is_active = models.BooleanField(default=True)
+    photo = models.ImageField(upload_to="deal/photos",blank=True,null=True)
+    description = models.TextField(blank=True, null=True)
+    start_date = models.DateTimeField(blank=True)
+    end_date = models.DateTimeField(blank=True)
+    is_active = models.BooleanField(default=True)
 
     created_on = models.DateTimeField(auto_now_add=True,blank=True, null=True)
     created_by = models.ForeignKey(Profile,related_name='crdeal', on_delete=models.SET_NULL,blank=True, null=True)
@@ -107,35 +107,29 @@ class Coupon(models.Model):
         (PERCENTAGE, 'Percentage'),
         (FIXED, 'Fixed Amount'),
     ]
-    
+    brand = models.ForeignKey(Brand,on_delete=models.SET_NULL,null=True,blank=True)
+
+    name = models.CharField(max_length=200)
     code = models.CharField(max_length=50, unique=True)
     description = models.TextField(blank=True)
     discount_type = models.CharField(max_length=20, choices=DISCOUNT_TYPE_CHOICES)
     discount_value = models.DecimalField(max_digits=10, decimal_places=2)
     max_uses = models.PositiveIntegerField(null=True, blank=True)
     uses_per_user = models.PositiveIntegerField(null=True, blank=True)
-    # start_date = models.DateTimeField(default=timezone.now)
-    # end_date = models.DateTimeField(default=timezone.now)
+    start_date = models.DateTimeField(blank=True, null=True)
+    end_date = models.DateTimeField(blank=True, null=True)
     minimum_purchase_amount = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
-    # applicable_products = models.ManyToManyField('Product', blank=True, related_name='coupons')
-    applicable_categories = models.ManyToManyField(Category, blank=True, related_name='coupons')
-    applicable_subcategories = models.ManyToManyField(SubCategory, blank=True, related_name='coupons')
-    applicable_brands = models.ManyToManyField(Brand, blank=True, related_name='coupons')
-    # excluded_products = models.ManyToManyField('Product', blank=True, related_name='excluded_coupons')
-    excluded_categories = models.ManyToManyField(Category, blank=True, related_name='excluded_coupons')
-    excluded_subcategories = models.ManyToManyField(SubCategory, blank=True, related_name='excluded_coupons')
-    excluded_brands = models.ManyToManyField(Brand, blank=True, related_name='excluded_coupons')
-    applicable_deals = models.ManyToManyField(Deal, blank=True, related_name='coupons')
-    user_specific = models.BooleanField(default=False)
-    eligible_users = models.ManyToManyField(User, blank=True, related_name='coupons')
     times_redeemed = models.PositiveIntegerField(default=0)
-    # last_redeemed = models.DateTimeField(default=timezone.now,null=True, blank=True)
+    last_redeemed = models.DateTimeField(null=True, blank=True)
     is_active = models.BooleanField(default=True)
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
     
+    created_by = models.ForeignKey(User,related_name='crdeals', on_delete=models.SET_NULL, blank=True, null=True)
+    updated_by = models.ForeignKey(User,related_name='updeals', on_delete=models.SET_NULL, blank=True, null=True)
+    
     def __str__(self):
-        return self.code
+        return f"{self.name} | {self.code}"
 
 
 class Subscribers(models.Model):

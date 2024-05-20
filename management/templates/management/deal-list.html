@@ -81,7 +81,14 @@
                                             <td data-field="name"><b><a href="#">{{deal.name}}</td></a></b>
                                             <td data-field="name"><b><a href="#">{{deal.brand.name}}</td></a></b>
                                             <td data-field="name"><b><a href="#">{{deal.brand.sub_category.name}}</td></a></b>
-                                            <td data-field="name"><b><a href="#">{{deal.brand.sub_category.category.name}}</td></a></b>
+                                            <td data-field="name"><b><a href="#">
+                                                {% if deal.brand.sub_category.category %}
+                                                    {{deal.brand.sub_category.category.name}}
+                                                {% else %}
+                                                </a><span class="badge bg-danger">No Category</span>
+                                                {% endif %}
+
+                                            </td></b>
                                             <td data-field="age">{{deal.created_on}}</td>
                                             <td data-field="gender">{{deal.created_by}}</td>
                                             <td style="width: 100px">
