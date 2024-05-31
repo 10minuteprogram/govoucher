@@ -141,7 +141,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="staticBackdropLabel">Edit Category
+                <h5 class="modal-title" id="staticBackdropLabel">Edit Coupon
                 </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                     aria-label="Close"></button>
@@ -151,19 +151,19 @@
                 {% csrf_token %}
                 <input type="hidden" name="category_id" id="categoryId" >
                 <div class="mb-3 mt-3 row">
-                    <label for="name" class="col-md-2 col-form-label">category Name</label>
+                    <label for="name" class="col-md-2 col-form-label">Coupon Name</label>
                     <div class="col-md-10">
                         <input class="form-control" type="text"  name="name" id="categoryName">
                     </div>
                 </div>
                 <div class="mb-3 mt-3 row">
-                    <label for="template_id" class="col-md-2 col-form-label">category Image</label>
+                    <label for="template_id" class="col-md-2 col-form-label">Coupon Code</label>
                     <div class="col-md-10">
-                        <input type="file" name="image" id="image" class="form-control" >
+                        <input type="text" name="code" id="code" class="form-control" >
                     </div>
                 </div>
                 <div class="mb-3 mt-3 row">
-                    <label for="name" class="col-md-2 col-form-label">category description</label>
+                    <label for="name" class="col-md-2 col-form-label">Coupon description</label>
                     <div class="col-md-10">
                         <textarea id="description" name="description" class="form-control" rows="10" required></textarea>
                     </div>

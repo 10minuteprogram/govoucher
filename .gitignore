@@ -1,6 +1,7 @@
 db.sqlite3
 media/
 Pipfile.lock
+dealdot_theme
 
 **/migrations/*
 !**/migrations/__init__.py

@@ -558,8 +558,17 @@ def category(request):
 
     categorys =  Category.objects.all()
 
-    #update category
+    #update category or delete category
     if request.method == 'POST':
+        delete_item = request.POST.get("delete_item")
+        if delete_item:
+            item = categorys.get(id=delete_item)
+            item.delete()
+            #messages.success(request, f"{item} is deleted Successfully")
+            return redirect('category')
+        else:
+            pass
+        
         category_id = request.POST.get('category_id')
         name = request.POST.get('name')
         image = request.FILES.get('image')
@@ -588,14 +597,6 @@ def category(request):
     except EmptyPage:
         categorys = paginator.page(paginator.num_pages)
 
-    #delete category
-    if request.method=='POST':
-        delete_item = request.POST.get("delete_item")
-        if delete_item:
-            item = get_object_or_404(Category, id=delete_item)
-            item.delete()
-            #messages.success(request, f"{item} is deleted Successfully")
-            return redirect('category')
 
     context = {
         'categorys': categorys,

@@ -30,6 +30,7 @@ INSTALLED_APPS = [
 
     #our created app
     'management',
+    'customer',
 ]
 
 MIDDLEWARE = [

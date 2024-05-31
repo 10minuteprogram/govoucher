@@ -34,26 +34,23 @@
                                 <a href="{% url 'add_brand' %}" class="btn btn-primary">Add Brand</a>
                             </div>
                             {% endif %}
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <div class="dropdown">
-                                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <i class="mdi mdi-format-list-checks"></i>
-                                            Select Sub category
-                                            <i class="mdi mdi-chevron-down"></i>
-                                        </button>
+                            
+                            <div class="mb-3 col-xl-6">
+                                <form action="">
+                                    <label class="form-label">Select Sub Category</label>
+                                    <select name="name" class="form-control select2">
+                                        <option value="">Select</option>
                                         
-                                        <form method='GET'>
-                                        
-                                            <div class="dropdown-menu" >
-                                                {% for sub in sub_categorys %}
-                                                <button class="dropdown-item" type="submit" name="name" value="{{ sub.id }}">{{ sub.name }}</button>
-                                                {% endfor %}
-                                            </div>
-                                            
-                                        </form>
-                                    </div>                                               
-                                </div><!-- end col -->
+                                        {% for sub in sub_categorys %}
+                                        <option value="{{sub.id}}">{{sub.name}}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <button type="submit" class="btn btn-outline-secondary search-button">
+                                        <i class="ti-search"></i>
+                                    </button>
+                                </form>
+                            </div>
+                            
 
                             <div class="table-responsive">
                                 <table class="table table-editable table-nowrap align-middle table-edits">
@@ -232,5 +229,9 @@
         
 
     }
+    $(document).ready(function() {
+        $('.select2').select2();
+    });
+    // Select Box
 </script>
 {% endblock %}
