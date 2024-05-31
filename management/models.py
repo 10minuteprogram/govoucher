@@ -45,6 +45,7 @@ class Category(models.Model):
     name = models.CharField(max_length=100)
     cover = models.FileField(upload_to="category/images",blank=True, null=True)
     description = models.TextField()
+    click_count = models.IntegerField(default=0)
     created_on = models.DateTimeField(auto_now_add=True)
     created_by = models.ForeignKey(Profile, related_name="crcategories", on_delete=models.SET_NULL, null=True, blank=True)
     upldated_on =  models.DateTimeField(auto_now=True)
