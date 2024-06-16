@@ -91,14 +91,21 @@ class Deal(models.Model):
     start_date = models.DateTimeField(blank=True)
     end_date = models.DateTimeField(blank=True)
     is_active = models.BooleanField(default=True)
+    slug = models.SlugField(blank=True,null=True)
 
     created_on = models.DateTimeField(auto_now_add=True,blank=True, null=True)
     created_by = models.ForeignKey(Profile,related_name='crdeal', on_delete=models.SET_NULL,blank=True, null=True)
     upldated_on =  models.DateTimeField(auto_now=True)
     updated_by =  models.ForeignKey(Profile, on_delete=models.SET_NULL,blank=True, null=True, related_name='updeal')
 
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
+        
     def __str__(self):
         return f"{self.name}"
+
 
 
 class Coupon(models.Model):

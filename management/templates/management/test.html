@@ -111,6 +111,27 @@
             </div>
         </div>
     </div>
+
+    <div class="sidebar-widget woocommerce widget_price_filter"><h3 class="section-title">Filter by price</h3>
+        <form method="get" action="">
+            <div class="price_slider_wrapper">
+                <div class="price_slider ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content" style=""><div class="ui-slider-range ui-corner-all ui-widget-header" style="left: 11.7647%; width: 68.6275%;"></div><span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default" style="left: 11.7647%;"></span><span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default" style="left: 80.3922%;"></span></div>
+                <div class="price_slider_amount" data-step="10">
+                    <label class="screen-reader-text" for="min_price">Min price</label>
+                    <input type="text" id="min_price" name="min_price" value="150" data-min="90" placeholder="Min price" style="display: none;">
+                    <label class="screen-reader-text" for="max_price">Max price</label>
+                    <input type="text" id="max_price" name="max_price" value="600" data-max="600" placeholder="Max price" style="display: none;">
+                                <button type="submit" class="button">Filter</button>
+                    <div class="price_label" style="">
+                        Price: <span class="from">$150</span> — <span class="to">$500</span>
+                    </div>
+                    <input type="hidden" name="filter_cat" value="28">			<div class="clear"></div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+
     <!-- Bootstrap JavaScript -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
@@ -121,7 +142,8 @@
             for (var checkbox of checkboxes) {
                 checkbox.checked = this.checked;
             }
-        }
+        },
+        document.querySelector("#top-banner-and-menu > div.body-content.outer-top-ts > div > div > div.col-sm-3.col-xs-12.col-sm-pull-9.klb-sidebar.sidebar > div.sidebar-widget.woocommerce.widget_price_filter")
     </script>
 </body>
 </html>

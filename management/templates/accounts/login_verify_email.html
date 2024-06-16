@@ -170,10 +170,15 @@
       <div class="form-group">
         <label for="otp">Enter OTP</label>
         <input type="text" class="form-control" name="otp" id="otp" placeholder="Enter your OTP">
+
+        <div id="countdown-timer" style="margin-top: 10px;">
+          Time remaining: <span id="time"></span>
+        </div>
+        
       </div>
       <button type="submit" class="btn btn-primary btn-login-signup btn-login">Verify Email</button>
       <div class="login-signup-link">
-        <a href="#">Resend OTP</a>
+        <a href="{% url 'resend_otp' %}">Resend OTP</a>
       </div>
     </form>
   </div>
@@ -187,5 +192,30 @@
       </script>
     {% endfor %}
   {% endif %}
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+      // Set the countdown duration (2 minutes = 120 seconds)
+      var countdownDuration = 120; 
+      var countdownElement = document.getElementById('time');
+      
+      function updateCountdown() {
+          var minutes = Math.floor(countdownDuration / 60);
+          var seconds = countdownDuration % 60;
+          countdownElement.textContent = minutes + "m " + seconds + "s";
+          countdownDuration--;
+  
+          if (countdownDuration < 0) {
+              clearInterval(countdownInterval);
+              countdownElement.textContent = "OTP expired. Please request a new one.";
+          }
+      }
+  
+      // Update the countdown every second
+      var countdownInterval = setInterval(updateCountdown, 1000);
+      updateCountdown();  // Initial call to set the countdown immediately
+  });
+  </script>
   </body>
   </html>

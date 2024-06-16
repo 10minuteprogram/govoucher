@@ -23,14 +23,28 @@
 <link rel="stylesheet" href="{% static 'customer/css/rateit.css' %}">
 <link rel="stylesheet" href="{% static 'customer/css/bootstrap-select.min.css' %}">
 
+<link href="{% static 'customer/css/lightbox.css' %}" rel="stylesheet">
+
+
+<!-- Htmx -->
+<script src="https://unpkg.com/htmx.org@1.6.1"></script>
+
+<script src="https://unpkg.com/htmx.org@1.9.12" integrity="sha384-ujb1lZYygJmzgSwoxRggbCHcjc0rB2XoQrxeTUQyRjrOnlCoYta87iKBWq3EsdM2" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/htmx.org@1.9.12/dist/htmx.js" integrity="sha384-qbtR4rS9RrUMECUWDWM2+YGgN3U4V4ZncZ0BvUcg9FGct0jqXz3PUdVpU1p0yrXS" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/htmx.org@1.8.4/dist/htmx.min.js" integrity="sha384-oSxADmdGw8A3fbZ+UanFVj1qZC1VjA1Vcx/sAzYeMKYeXo+1o1Mo61w9r4P2/MrJ" crossorigin="anonymous"></script>
+
 <!-- Icons/Glyphs -->
 <link rel="stylesheet" href="{% static 'customer/css/font-awesome.css' %}">
-
+{% block head %}
+{% endblock %}
 <!-- Fonts -->
 <link href="https://fonts.googleapis.com/css?family=Barlow:200,300,300i,400,400i,500,500i,600,700,800" rel="stylesheet">
 <link href='http://fonts.googleapis.com/css?family=Roboto:300,400,500,700' rel='stylesheet' type='text/css'>
 <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,400italic,600,600italic,700,700italic,800' rel='stylesheet' type='text/css'>
 <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/3.0.1/js.cookie.min.js"></script>
 </head>
 <body {% if request.path == '/' %}class="cnt-home"{% endif %}>
 <!-- ============================================== HEADER ============================================== -->
@@ -178,7 +192,9 @@
 
 <!-- For demo purposes – can be removed on production --> 
 
-<!-- For demo purposes – can be removed on production : End --> 
+<!-- Htmx --> 
+
+
 
 <!-- JavaScripts placed at the end of the document so the pages load faster --> 
 <script src="{% static 'customer/js/jquery-1.11.1.min.js' %}"></script> 

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Categories</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        .category-item {
+            margin: 8px;
+            padding: 6px;
+            background-color: #f9f9f9;
+            border: 1px solid #ccc;
+            width: 200px;
+            position: relative;
+        }
+
+        .subcategory-list, .brand-list {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 100%;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            width: 200px;
+            z-index: 1000;
+        }
+
+        .category-item:hover .subcategory-list,
+        .subcategory-item:hover .brand-list {
+            display: block;
+        }
+
+        .subcategory-item {
+            position: relative;
+            float: none;
+            width: auto;
+        
+        }
+        /* Arrow icons */
+        .arrow::after {
+            content: " →";
+            float: right;
+            color: #888;
+            opacity: 0; /* Initially hidden */
+            transition: opacity 0.3s; /* Smooth transition */
+        }
+
+        /* Show arrow icons when hovering over the names */
+        .category-item:hover .arrow::after,
+        .subcategory-item:hover .arrow::after {
+            opacity: 1;
+        }
+
+        
+    </style>
+</head>
+<body>
+    <ul class="categories">
+        {% for category in categories %}
+            <li class="category-item">
+                <a href="#" class="category-name">
+                    {{ category.name }}
+                    <span class="arrow"></span>
+                </a>
+                <ul class="subcategory-list">
+                    {% for subcategory in category.subcategories.all %}
+                        <li class="subcategory-item">
+                            <a href="#" class="subcategory-name">
+                                {{ subcategory.name }}
+                            </a>
+                            <ul class="brand-list">
+                                {% for brand in subcategory.brand.all %}
+                                    <li class="brand-item">
+                                        <a href="#" class="brand-name">
+                                            {{ brand.name }}
+                                        </a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </li>
+        {% endfor %}
+    </ul>
+    
+    
+
+<script>
+    $(document).ready(function() {
+        $('.category-item').hover(function() {
+            $(this).find('.subcategory-list').slideDown();
+        }, function() {
+            $(this).find('.subcategory-list').slideUp();
+        });
+
+        $('.subcategory-item').hover(function() {
+            $(this).find('.brand-list').slideDown();
+        }, function() {
+            $(this).find('.brand-list').slideUp();
+        });
+    });
+</script>
+    
+</body>
+</html>

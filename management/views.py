@@ -291,9 +291,16 @@ def login_verify(request):
             user = User.objects.get(id=user_otp.user.id)
 
             if otp == user_otp.email_verification_code:
+                user.backend = 'django.contrib.auth.backends.ModelBackend'  # or the appropriate backend
                 auth_login(request, user)
                 #messages.success(request, "Login successful")
-                return redirect('home')
+
+                # Check if the user is a superuser or staff
+                if user.is_superuser:
+                    return redirect('home')  # URL name for admin dashboard
+                elif user.is_staff:
+                    return redirect('home')
+                
             else:
                 messages.error(request, "Invalid OTP entered")
         else:
@@ -303,6 +310,26 @@ def login_verify(request):
 
 
     return render(request, 'accounts/login_verify_email.html')
+
+
+def resend_otp(request):
+    # Assuming the user is authenticated and their profile is accessible via request.user.profile
+    profile = Profile.objects.get(user=request.user)
+    
+    # Generate a new OTP (You can use a better OTP generation mechanism)
+    new_otp = random.randint(100000, 999999)
+    print(new_otp)
+    
+    # Update the OTP in the user's profile
+    profile.email_verification_code = new_otp
+    profile.save()
+    
+    # Send the new OTP to the user's email
+    # (You should implement the send_email function)
+    # send_email(profile.user.email, "Your new OTP", f"Your new OTP is {new_otp}")
+    
+    messages.success(request, "A new OTP has been sent to your email.")
+    return redirect('verify_account')
 
 
 

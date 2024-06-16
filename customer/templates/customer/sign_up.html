@@ -1,0 +1,121 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Meta -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="">
+<meta name="author" content="">
+<meta name="keywords" content="MediaCenter, Template, eCommerce">
+<meta name="robots" content="all">
+<title>DealDots premium HTML5 & CSS3 Template</title>
+
+<!-- Bootstrap Core CSS -->
+<link rel="stylesheet" href="{% static 'customer/css/bootstrap.min.css' %}">
+
+<!-- Customizable CSS -->
+<link rel="stylesheet" href="{% static 'customer/css/main.css' %}">
+<link rel="stylesheet" href="{% static 'customer/css/blue.css' %}">
+<link rel="stylesheet" href="{% static 'customer/css/owl.carousel.css' %}">
+<link rel="stylesheet" href="{% static 'customer/css/owl.transitions.css' %}">
+<link rel="stylesheet" href="{% static 'customer/css/rateit.css' %}">
+<link rel="stylesheet" href="{% static 'customer/css/bootstrap-select.min.css' %}">
+
+<!-- Icons/Glyphs -->
+<link rel="stylesheet" href="{% static 'customer/css/font-awesome.css' %}">
+
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css?family=Barlow:200,300,300i,400,400i,500,500i,600,700,800" rel="stylesheet">
+<link href='http://fonts.googleapis.com/css?family=Roboto:300,400,500,700' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,400italic,600,600italic,700,700italic,800' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+</head>
+<body class="cnt-home">
+
+    
+<div class="body-content">
+    <div class="container">
+        <div class="col-md-6">
+
+            <div class="sign-in-page">
+            <div class="row">
+
+                <!-- create a new account -->
+                <div class="col-md-12 col-sm-6 create-new-account">
+                <h4 class="checkout-subtitle">Create a new account</h4>
+                <p class="text title-tag-line">Create your new account.</p>
+                <form class="register-form outer-top-xs" role="form">
+                    <div class="form-group">
+                    <label class="info-title" for="exampleInputEmail2">Email
+                        Address <span>*</span></label>
+                    <input type="email"
+                        class="form-control unicase-form-control text-input"
+                        id="exampleInputEmail2">
+                    </div>
+                    <div class="form-group">
+                    <label class="info-title" for="exampleInputEmail1">Name
+                        <span>*</span></label>
+                    <input type="email"
+                        class="form-control unicase-form-control text-input"
+                        id="exampleInputEmail1">
+                    </div>
+                    <div class="form-group">
+                    <label class="info-title" for="exampleInputEmail1">Phone
+                        Number <span>*</span></label>
+                    <input type="email"
+                        class="form-control unicase-form-control text-input"
+                        id="exampleInputEmail1">
+                    </div>
+                    <div class="form-group">
+                    <label class="info-title"
+                        for="exampleInputEmail1">Password <span>*</span></label>
+                    <input type="email"
+                        class="form-control unicase-form-control text-input"
+                        id="exampleInputEmail1">
+                    </div>
+                    <div class="form-group">
+                    <label class="info-title" for="exampleInputEmail1">Confirm
+                        Password <span>*</span></label>
+                    <input type="email"
+                        class="form-control unicase-form-control text-input"
+                        id="exampleInputEmail1">
+                    </div>
+                    <div class="w-full text-center p-t-55">
+						<span class="txt2">
+							Already Have An Account?
+						</span>
+
+						<a href="{% url 'sign-in' %}" class="txt2 bo1">
+							Sign in now
+						</a>
+					</div>
+                    <button type="submit"
+                    class="btn-upper btn btn-primary checkout-page-button">Sign
+                    Up</button>
+                </form>
+
+                </div>
+                <!-- create a new account -->
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<!-- JavaScripts placed at the end of the document so the pages load faster --> 
+<script src="{% static 'customer/js/jquery-1.11.1.min.js' %}"></script> 
+<script src="{% static 'customer/js/bootstrap.min.js' %}"></script> 
+<script src="{% static 'customer/js/bootstrap-hover-dropdown.min.js' %}"></script> 
+<script src="{% static 'customer/js/owl.carousel.min.js' %}"></script> 
+<script src="{% static 'customer/js/echo.min.js' %}"></script> 
+<script src="{% static 'customer/js/jquery.easing-1.3.min.js' %}"></script> 
+<script src="{% static 'customer/js/bootstrap-slider.min.js' %}"></script> 
+<script src="{% static 'customer/js/jquery.rateit.min.js' %}"></script> 
+<script type="text/javascript" src="{% static 'customer/js/lightbox.min.js' %}"></script> 
+<script src="{% static 'customer/js/bootstrap-select.min.js' %}"></script> 
+<script src="{% static 'customer/js/wow.min.js' %}"></script> 
+<script src="{% static 'customer/js/scripts.js' %}"></script>
+</body>
+</html>
