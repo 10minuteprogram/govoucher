@@ -13,6 +13,8 @@ class Profile(models.Model):
     location = models.CharField(max_length=30, blank=True, null=True)
     birth_date = models.DateField(null=True, blank=True)
     profile_image = models.FileField(upload_to='user/profile/images', blank=True, null=True)
+    profile_picture = models.URLField(max_length=200, blank=True, null=True)
+
     father_name = models.CharField(max_length=150,null=True, blank=True)
     mother_name = models.CharField(max_length=150,null=True, blank=True)
     age = models.IntegerField(blank=True, null=True)
@@ -28,7 +30,12 @@ class Profile(models.Model):
 
     def __str__(self):
         return f"{self.user.username}"
-
+    def update_profile_picture_from_google(self, picture_url):
+        """
+        Update the profile picture URL from Google login.
+        """
+        self.profile_picture = picture_url
+        self.save()
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):

@@ -1,0 +1,190 @@
+{% extends 'customer/base.html' %}
+{% load static %}
+{% block head %}
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+    }
+
+    .header {
+        background-color: #fff;
+        padding: 20px;
+        text-align: center;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .profile-container {
+        width: 80%;
+        margin: 20px auto;
+        overflow: hidden;
+    }
+
+    .profile-header {
+        background-color: #0f6cb2;
+        color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .profile-pic {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        margin-right: 20px;
+    }
+
+    .user-info {
+        flex: 1;
+    }
+
+    .user-info h2, .user-info p {
+        margin: 0;
+    }
+
+    .rewards-info {
+        display: flex;
+        gap: 20px;
+    }
+
+    .reward {
+        text-align: right;
+    }
+
+    .reward p {
+        margin: 0;
+    }
+
+    .profile-details {
+        background-color: #fff;
+        padding: 20px;
+        margin-top: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .editable {
+        border: 1px solid #ccc;
+        padding: 10px;
+        border-radius: 4px;
+        background-color: #e9ecef;
+        cursor: pointer;
+        margin: 10px 0;
+    }
+
+    .editable[contenteditable="true"] {
+        background-color: #fff;
+        border-color: #28a745;
+    }
+
+    .profile-form button {
+        background-color: #28a745;
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-top: 20px;
+    }
+
+    .profile-form button:hover {
+        background-color: #218838;
+    }
+
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="header">
+    <h1>Account</h1>
+</div>
+<div class="profile-container">
+    <div class="profile-header">
+        <img src="{% if profile.profile_image %}{{ profile.profile_image.url }}{% elif profile.profile_picture %}{{ profile.profile_picture }}{% else %}{% static 'default-profile.png' %}{% endif %}" alt="Profile Picture" class="profile-pic">
+        <div class="user-info">
+            <h2>Hello, {{user.get_full_name}}</h2>
+            <p>{{user.email}}</p>
+        </div>
+        <div class="rewards-info">
+            <div class="reward">
+                <p>Approved Rewards</p>
+                <h3>$0.00</h3>
+            </div>
+            <div class="reward">
+                <p>Lifetime Savings</p>
+                <h3>$0.00</h3>
+            </div>
+        </div>
+    </div>
+    <div class="profile-details">
+        <h2>Profile Details</h2>
+        <div class="profile-form">
+            <div>
+                <label for="password">Full Name:</label>
+                <div class="editable" id="name" contenteditable="false">{{user.get_full_name}}</div>
+            </div>
+            <div>
+                <label for="username">Username:</label>
+                <div class="editable" id="username" contenteditable="false">{{user.username}}</div>
+            </div>
+            <div>
+                <label for="email">Email:</label>
+                <div class="editable" id="email" contenteditable="false">{{user.email}}</div>
+            </div>
+
+            <div>
+                <label for="bio">Bio:</label>
+                <div class="editable" id="bio" contenteditable="false">Avid coupon collector and deal finder.</div>
+            </div>
+            {% if logged_in_with_google %}
+                <button class="btn btn-info" id="syncProfileBtn">Sync Profile</button>
+            {% else %}
+                <button class="btn btn-primary" data-toggle="modal" data-target="#editProfileModal">Edit Profile</button>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="editProfileModal" tabindex="-1" role="dialog" aria-labelledby="editProfileModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editProfileModalLabel">Edit Profile</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="profileForm">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="fullName">Full Name:</label>
+                        <input type="text" class="form-control" id="fullName" name="fullName" value="{{ user.get_full_name }}">
+                    </div>
+                    <div class="form-group">
+                        <label for="username">Username:</label>
+                        <input type="text" class="form-control" id="username" name="username" value="{{ user.username }}">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        <input type="email" class="form-control" id="email" name="email" value="{{ user.email }}">
+                    </div>
+                    <div class="form-group">
+                        <label for="bio">Bio:</label>
+                        <textarea class="form-control" id="bio" name="bio" rows="3">Avid coupon collector and deal finder.</textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

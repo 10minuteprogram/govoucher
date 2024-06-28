@@ -61,6 +61,9 @@ SOCIALACCOUNT_PROVIDERS = {
 
 SITE_ID = 2
 
+SOCIALACCOUNT_ADAPTER = 'management.adapters.MySocialAccountAdapter'
+
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',

@@ -23,10 +23,11 @@
         <div class="col-md-9 rht-col">
 
             <div class="category-product coupons-section coupons-section-inner">
-            <div class="row coupons-deals">
-                <div class="col-sm-6 col-md-6 col-lg-6 wow fadeInUp">
-                <div class="item">
-                    <div class="products">
+                <div class="row coupons-deals">
+                    {% for coupon in coupons %}
+                    <div class="col-sm-6 col-md-6 col-lg-6 wow fadeInUp">
+                        <div class="item">
+                            <div class="products">
                     <div class="product">
                         <div class="product-image">
                         <div class="image">
@@ -43,7 +44,7 @@
                         <!-- /.product-image -->
 
                         <div class="product-info text-left">
-                        <div class="discount">25% <span>OFF</span></div>
+                        <div class="discount">{{coupon.name}} <span>OFF</span></div>
                         <div class="show-code"><a href="#" data-toggle="modal"
                             data-target="#myModal">Show Code</a></div>
                         <p class="exp-date"><i class="fa fa-clock-o"></i>
@@ -57,567 +58,99 @@
                     <!-- /.products -->
 
                 </div>
-                </div>
-                <!-- /.item -->
-
-                <div class="col-sm-6 col-md-6 col-lg-6 wow fadeInUp">
-                <div class="item">
-                    <div class="products">
-                    <div class="product">
-                        <div class="product-image">
-                        <div class="image">
-                            <img class="img-responsive"
-                            src="assets/images/coupons/img2.jpg" alt>
-                            <div class="brand">Marazzo</div>
-                            <h3 class="name"><a href="#">Get 15% off on shopping
-                                above $ 2000 at Vanitywagon</a></h3>
-
-                        </div>
-                        <!-- /.image -->
-
-                        </div>
-                        <!-- /.product-image -->
-
-                        <div class="product-info text-left">
-                        <div class="discount">15% <span>OFF</span></div>
-                        <div class="show-code"><a href="#" data-toggle="modal"
-                            data-target="#myModal">Show Code</a></div>
-                        <p class="exp-date"><i class="fa fa-clock-o"></i>
-                            Expires on 2019-11-16</p>
-                        </div>
-
-                    </div>
-                    <!-- /.product -->
-
-                    </div>
-                    <!-- /.products -->
-                </div>
-                </div>
-                <!-- /.item -->
-
-                <div class="col-sm-6 col-md-6 col-lg-6 wow fadeInUp">
-                <div class="item">
-                    <div class="products">
-                    <div class="product">
-                        <div class="product-image">
-                        <div class="image">
-                            <img class="img-responsive"
-                            src="assets/images/coupons/img3.jpg" alt>
-                            <div class="brand">Qualis</div>
-                            <h3 class="name"><a href="#"> Monsoon Sale: Upto 10%
-                                Off on Domestic Flight Bookings </a></h3>
-
-                        </div>
-                        <!-- /.image -->
-
-                        </div>
-                        <!-- /.product-image -->
-
-                        <div class="product-info text-left">
-                        <div class="discount">10% <span>OFF</span></div>
-                        <div class="show-code"><a href="#" data-toggle="modal"
-                            data-target="#myModal">Show Code</a></div>
-                        <p class="exp-date"><i class="fa fa-clock-o"></i>
-                            Expires on 2019-11-16</p>
-                        </div>
-
-                    </div>
-                    <!-- /.product -->
-
-                    </div>
-                    <!-- /.products -->
-                </div>
-                </div>
-                <!-- /.item -->
-
-                <div class="col-sm-6 col-md-6 col-lg-6 wow fadeInUp">
-                <div class="item">
-                    <div class="products">
-                    <div class="product">
-                        <div class="product-image">
-                        <div class="image">
-                            <img class="img-responsive"
-                            src="assets/images/coupons/img4.jpg" alt>
-                            <div class="brand">Harrier</div>
-                            <h3 class="name"><a href="#">Flat 90% off on night
-                                dinner hotel bookings</a></h3>
-
-                        </div>
-                        <!-- /.image -->
-
-                        </div>
-                        <!-- /.product-image -->
-
-                        <div class="product-info text-left">
-                        <div class="discount">90% <span>OFF</span></div>
-                        <div class="show-code"><a href="#" data-toggle="modal"
-                            data-target="#myModal">Show Code</a></div>
-                        <p class="exp-date"><i class="fa fa-clock-o"></i>
-                            Expires on 2019-11-16</p>
-                        </div>
-
-                    </div>
-                    <!-- /.product -->
-
-                    </div>
-                    <!-- /.products -->
-                </div>
-                </div>
-                <!-- /.item -->
-
-                <div class="col-sm-6 col-md-6 col-lg-6 wow fadeInUp">
-                <div class="item">
-                    <div class="products">
-                    <div class="product">
-                        <div class="product-image">
-                        <div class="image">
-                            <img class="img-responsive"
-                            src="assets/images/coupons/img1.jpg" alt>
-                            <div class="brand">Flipmart</div>
-                            <h3 class="name"><a href="#">Flat 40% off on hotel
-                                bookings in 10 cities</a></h3>
-
-                        </div>
-                        <!-- /.image -->
-
-                        </div>
-                        <!-- /.product-image -->
-
-                        <div class="product-info text-left">
-                        <div class="discount">25% <span>OFF</span></div>
-                        <div class="show-code"><a href="#" data-toggle="modal"
-                            data-target="#myModal">Show Code</a></div>
-                        <p class="exp-date"><i class="fa fa-clock-o"></i>
-                            Expires on 2019-11-16</p>
-                        </div>
-
-                    </div>
-                    <!-- /.product -->
-
-                    </div>
-                    <!-- /.products -->
-
-                </div>
-                </div>
-                <!-- /.item -->
-
-                <div class="col-sm-6 col-md-6 col-lg-6 wow fadeInUp">
-                <div class="item">
-                    <div class="products">
-                    <div class="product">
-                        <div class="product-image">
-                        <div class="image">
-                            <img class="img-responsive"
-                            src="assets/images/coupons/img2.jpg" alt>
-                            <div class="brand">Marazzo</div>
-                            <h3 class="name"><a href="#">Get 15% off on shopping
-                                above $ 2000 at Vanitywagon</a></h3>
-
-                        </div>
-                        <!-- /.image -->
-
-                        </div>
-                        <!-- /.product-image -->
-
-                        <div class="product-info text-left">
-                        <div class="discount">15% <span>OFF</span></div>
-                        <div class="show-code"><a href="#" data-toggle="modal"
-                            data-target="#myModal">Show Code</a></div>
-                        <p class="exp-date"><i class="fa fa-clock-o"></i>
-                            Expires on 2019-11-16</p>
-                        </div>
-
-                    </div>
-                    <!-- /.product -->
-
-                    </div>
-                    <!-- /.products -->
-                </div>
-                </div>
-                <!-- /.item -->
-
-                <div class="col-sm-6 col-md-6 col-lg-6 wow fadeInUp">
-                <div class="item">
-                    <div class="products">
-                    <div class="product">
-                        <div class="product-image">
-                        <div class="image">
-                            <img class="img-responsive"
-                            src="assets/images/coupons/img3.jpg" alt>
-                            <div class="brand">Qualis</div>
-                            <h3 class="name"><a href="#"> Monsoon Sale: Upto 10%
-                                Off on Domestic Flight Bookings </a></h3>
-
-                        </div>
-                        <!-- /.image -->
-
-                        </div>
-                        <!-- /.product-image -->
-
-                        <div class="product-info text-left">
-                        <div class="discount">10% <span>OFF</span></div>
-                        <div class="show-code"><a href="#" data-toggle="modal"
-                            data-target="#myModal">Show Code</a></div>
-                        <p class="exp-date"><i class="fa fa-clock-o"></i>
-                            Expires on 2019-11-16</p>
-                        </div>
-
-                    </div>
-                    <!-- /.product -->
-
-                    </div>
-                    <!-- /.products -->
-                </div>
-                </div>
-                <!-- /.item -->
-
-                <div class="col-sm-6 col-md-6 col-lg-6 wow fadeInUp">
-                <div class="item">
-                    <div class="products">
-                    <div class="product">
-                        <div class="product-image">
-                        <div class="image">
-                            <img class="img-responsive"
-                            src="assets/images/coupons/img4.jpg" alt>
-                            <div class="brand">Harrier</div>
-                            <h3 class="name"><a href="#">Flat 90% off on night
-                                dinner hotel bookings</a></h3>
-
-                        </div>
-                        <!-- /.image -->
-
-                        </div>
-                        <!-- /.product-image -->
-
-                        <div class="product-info text-left">
-                        <div class="discount">90% <span>OFF</span></div>
-                        <div class="show-code"><a href="#" data-toggle="modal"
-                            data-target="#myModal">Show Code</a></div>
-                        <p class="exp-date"><i class="fa fa-clock-o"></i>
-                            Expires on 2019-11-16</p>
-                        </div>
-
-                    </div>
-                    <!-- /.product -->
-
-                    </div>
-                    <!-- /.products -->
-                </div>
-                </div>
-                <!-- /.item -->
-                <div class="col-sm-6 col-md-6 col-lg-6 wow fadeInUp">
-                <div class="item">
-                    <div class="products">
-                    <div class="product">
-                        <div class="product-image">
-                        <div class="image">
-                            <img class="img-responsive"
-                            src="assets/images/coupons/img1.jpg" alt>
-                            <div class="brand">Flipmart</div>
-                            <h3 class="name"><a href="#">Flat 40% off on hotel
-                                bookings in 10 cities</a></h3>
-
-                        </div>
-                        <!-- /.image -->
-
-                        </div>
-                        <!-- /.product-image -->
-
-                        <div class="product-info text-left">
-                        <div class="discount">25% <span>OFF</span></div>
-                        <div class="show-code"><a href="#" data-toggle="modal"
-                            data-target="#myModal">Show Code</a></div>
-                        <p class="exp-date"><i class="fa fa-clock-o"></i>
-                            Expires on 2019-11-16</p>
-                        </div>
-
-                    </div>
-                    <!-- /.product -->
-
-                    </div>
-                    <!-- /.products -->
-
-                </div>
-                </div>
-                <!-- /.item -->
-
-                <div class="col-sm-6 col-md-6 col-lg-6 wow fadeInUp">
-                <div class="item">
-                    <div class="products">
-                    <div class="product">
-                        <div class="product-image">
-                        <div class="image">
-                            <img class="img-responsive"
-                            src="assets/images/coupons/img2.jpg" alt>
-                            <div class="brand">Marazzo</div>
-                            <h3 class="name"><a href="#">Get 15% off on shopping
-                                above $ 2000 at Vanitywagon</a></h3>
-
-                        </div>
-                        <!-- /.image -->
-
-                        </div>
-                        <!-- /.product-image -->
-
-                        <div class="product-info text-left">
-                        <div class="discount">15% <span>OFF</span></div>
-                        <div class="show-code"><a href="#" data-toggle="modal"
-                            data-target="#myModal">Show Code</a></div>
-                        <p class="exp-date"><i class="fa fa-clock-o"></i>
-                            Expires on 2019-11-16</p>
-                        </div>
-
-                    </div>
-                    <!-- /.product -->
-
-                    </div>
-                    <!-- /.products -->
-                </div>
-                </div>
-                <!-- /.item -->
-
-                <div class="col-sm-6 col-md-6 col-lg-6 wow fadeInUp">
-                <div class="item">
-                    <div class="products">
-                    <div class="product">
-                        <div class="product-image">
-                        <div class="image">
-                            <img class="img-responsive"
-                            src="assets/images/coupons/img3.jpg" alt>
-                            <div class="brand">Qualis</div>
-                            <h3 class="name"><a href="#"> Monsoon Sale: Upto 10%
-                                Off on Domestic Flight Bookings </a></h3>
-
-                        </div>
-                        <!-- /.image -->
-
-                        </div>
-                        <!-- /.product-image -->
-
-                        <div class="product-info text-left">
-                        <div class="discount">10% <span>OFF</span></div>
-                        <div class="show-code"><a href="#" data-toggle="modal"
-                            data-target="#myModal">Show Code</a></div>
-                        <p class="exp-date"><i class="fa fa-clock-o"></i>
-                            Expires on 2019-11-16</p>
-                        </div>
-
-                    </div>
-                    <!-- /.product -->
-
-                    </div>
-                    <!-- /.products -->
-                </div>
-                </div>
-                <!-- /.item -->
-
-                <div class="col-sm-6 col-md-6 col-lg-6 wow fadeInUp">
-                <div class="item">
-                    <div class="products">
-                    <div class="product">
-                        <div class="product-image">
-                        <div class="image">
-                            <img class="img-responsive"
-                            src="assets/images/coupons/img4.jpg" alt>
-                            <div class="brand">Harrier</div>
-                            <h3 class="name"><a href="#">Flat 90% off on night
-                                dinner hotel bookings</a></h3>
-
-                        </div>
-                        <!-- /.image -->
-
-                        </div>
-                        <!-- /.product-image -->
-
-                        <div class="product-info text-left">
-                        <div class="discount">90% <span>OFF</span></div>
-                        <div class="show-code"><a href="#" data-toggle="modal"
-                            data-target="#myModal">Show Code</a></div>
-                        <p class="exp-date"><i class="fa fa-clock-o"></i>
-                            Expires on 2019-11-16</p>
-                        </div>
-
-                    </div>
-                    <!-- /.product -->
-
-                    </div>
-                    <!-- /.products -->
-                </div>
-                </div>
-                <!-- /.item -->
-
-                <div class="col-sm-6 col-md-6 col-lg-6 wow fadeInUp">
-                <div class="item">
-                    <div class="products">
-                    <div class="product">
-                        <div class="product-image">
-                        <div class="image">
-                            <img class="img-responsive"
-                            src="assets/images/coupons/img1.jpg" alt>
-                            <div class="brand">Flipmart</div>
-                            <h3 class="name"><a href="#">Flat 40% off on hotel
-                                bookings in 10 cities</a></h3>
-
-                        </div>
-                        <!-- /.image -->
-
-                        </div>
-                        <!-- /.product-image -->
-
-                        <div class="product-info text-left">
-                        <div class="discount">25% <span>OFF</span></div>
-                        <div class="show-code"><a href="#" data-toggle="modal"
-                            data-target="#myModal">Show Code</a></div>
-                        <p class="exp-date"><i class="fa fa-clock-o"></i>
-                            Expires on 2019-11-16</p>
-                        </div>
-
-                    </div>
-                    <!-- /.product -->
-
-                    </div>
-                    <!-- /.products -->
-
-                </div>
-                </div>
-                <!-- /.item -->
-
-                <div class="col-sm-6 col-md-6 col-lg-6 wow fadeInUp">
-                <div class="item">
-                    <div class="products">
-                    <div class="product">
-                        <div class="product-image">
-                        <div class="image">
-                            <img class="img-responsive"
-                            src="assets/images/coupons/img2.jpg" alt>
-                            <div class="brand">Marazzo</div>
-                            <h3 class="name"><a href="#">Get 15% off on shopping
-                                above $ 2000 at Vanitywagon</a></h3>
-
-                        </div>
-                        <!-- /.image -->
-
-                        </div>
-                        <!-- /.product-image -->
-
-                        <div class="product-info text-left">
-                        <div class="discount">15% <span>OFF</span></div>
-                        <div class="show-code"><a href="#" data-toggle="modal"
-                            data-target="#myModal">Show Code</a></div>
-                        <p class="exp-date"><i class="fa fa-clock-o"></i>
-                            Expires on 2019-11-16</p>
-                        </div>
-
-                    </div>
-                    <!-- /.product -->
-
-                    </div>
-                    <!-- /.products -->
-                </div>
-                </div>
-                <!-- /.item -->
-
-                <div class="col-sm-6 col-md-6 col-lg-6 wow fadeInUp">
-                <div class="item">
-                    <div class="products">
-                    <div class="product">
-                        <div class="product-image">
-                        <div class="image">
-                            <img class="img-responsive"
-                            src="assets/images/coupons/img3.jpg" alt>
-                            <div class="brand">Qualis</div>
-                            <h3 class="name"><a href="#"> Monsoon Sale: Upto 10%
-                                Off on Domestic Flight Bookings </a></h3>
-
-                        </div>
-                        <!-- /.image -->
-
-                        </div>
-                        <!-- /.product-image -->
-
-                        <div class="product-info text-left">
-                        <div class="discount">10% <span>OFF</span></div>
-                        <div class="show-code"><a href="#" data-toggle="modal"
-                            data-target="#myModal">Show Code</a></div>
-                        <p class="exp-date"><i class="fa fa-clock-o"></i>
-                            Expires on 2019-11-16</p>
-                        </div>
-
-                    </div>
-                    <!-- /.product -->
-
-                    </div>
-                    <!-- /.products -->
-                </div>
-                </div>
-                <!-- /.item -->
-
-                <div class="col-sm-6 col-md-6 col-lg-6 wow fadeInUp">
-                <div class="item">
-                    <div class="products">
-                    <div class="product">
-                        <div class="product-image">
-                        <div class="image">
-                            <img class="img-responsive"
-                            src="assets/images/coupons/img4.jpg" alt>
-                            <div class="brand">Harrier</div>
-                            <h3 class="name"><a href="#">Flat 90% off on night
-                                dinner hotel bookings</a></h3>
-
-                        </div>
-                        <!-- /.image -->
-
-                        </div>
-                        <!-- /.product-image -->
-
-                        <div class="product-info text-left">
-                        <div class="discount">90% <span>OFF</span></div>
-                        <div class="show-code"><a href="#" data-toggle="modal"
-                            data-target="#myModal">Show Code</a></div>
-                        <p class="exp-date"><i class="fa fa-clock-o"></i>
-                            Expires on 2019-11-16</p>
-                        </div>
-
-                    </div>
-                    <!-- /.product -->
-
-                    </div>
-                    <!-- /.products -->
-                </div>
-                </div>
-                <!-- /.item -->
             </div>
-            <!-- /.row -->
-            </div>
-            <!-- /.category-product -->
-
-            <!-- /.tab-pane -->
-
-            <!-- /.tab-pane #list-container -->
-
-            <!-- /.tab-content -->
-            <div class="clearfix filters-container bottom-row">
-            <div class="text-right">
-                <div class="pagination-container">
-                <ul class="list-inline list-unstyled">
-                    <li class="prev"><a href="#"><i
-                        class="fa fa-angle-left"></i></a></li>
-                    <li><a href="#">1</a></li>
-                    <li class="active"><a href="#">2</a></li>
-                    <li><a href="#">3</a></li>
-                    <li><a href="#">4</a></li>
-                    <li class="next"><a href="#"><i
-                        class="fa fa-angle-right"></i></a></li>
-                </ul>
-                <!-- /.list-inline -->
+            {% endfor %}
+                <!-- /.item -->
+                <!-- Modal -->
+                <div id="myModal" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+        
+                    <!-- Modal content-->
+                    <div class="modal-content">
+        
+                        <div class="modal-body">
+                        <button type="button" class="close"
+                            data-dismiss="modal">&times;</button>
+                        <div>
+                            <img class="img-responsive"
+                            src="{% static 'customer/images/coupons/img1.jpg' %}" alt>
+                            <h3 class="mb-20">Flat 40% off hotel bookings in 10
+                            cities</h3>
+                            <div class="coupon-content">Not applicable to ICANN fees,
+                            taxes, transfers,or gift cards. Cannot be used in
+                            conjunction with any other offer, sale, discount or
+                            promotion.
+                            <span
+                                style="color: #ed6663; display:block; margin-top:10px;"><a
+                                style="color: #ed6663; text-decoration:underline"
+                                href="#">Visit our Store</a></span>
+                            </div>
+        
+                        </div>
+        
+                        <div><h6 class="color-mid">Click below to get your coupon
+                            code</h6>
+                            <div class="copy-coupon-wrap">
+                            <input type="text" value="X132-17GT-OL57"
+                                id="X132-17GT-OL571" class="coupon-code">
+                            </div></div>
+                        </div>
+        
+                        <div class="modal-footer">
+                        <h4>Subscribe to Mail</h4>
+                        <p>Get our Daily email newsletter with Special Services,
+                            Updates, Offers and more!</p>
+                        <form id="mc4wp-form-2" class="mc4wp-form mc4wp-form-1257"
+                            method="post" data-id="1257" data-name="dealdots">
+                            <div class="mc4wp-form-fields">
+                            <div id="container_form_news">
+                                <div id="container_form_news2">
+                                <input type="email" id="newsletter1" name="EMAIL"
+                                    placeholder="Your email address" required>
+                                <button type="submit"
+                                    class="button subscribe"><span>Subscribe</span></button>
+                                </div>
+                            </div></div>
+                        </form>
+                        </div>
+        
+                    </div>
+        
+                    </div>
                 </div>
-                <!-- /.pagination-container --> </div>
-            <!-- /.text-right -->
 
-            </div>
-            <!-- /.filters-container -->
+                    </div>
+                    <!-- /.row -->
+                    </div>
+                    <!-- /.category-product -->
 
-        </div>
+                    <!-- /.tab-pane -->
+
+                    <!-- /.tab-pane #list-container -->
+
+                    <!-- /.tab-content -->
+                    <div class="clearfix filters-container bottom-row">
+                    <div class="text-right">
+                        <div class="pagination-container">
+                        <ul class="list-inline list-unstyled">
+                            <li class="prev"><a href="#"><i
+                                class="fa fa-angle-left"></i></a></li>
+                            <li><a href="#">1</a></li>
+                            <li class="active"><a href="#">2</a></li>
+                            <li><a href="#">3</a></li>
+                            <li><a href="#">4</a></li>
+                            <li class="next"><a href="#"><i
+                                class="fa fa-angle-right"></i></a></li>
+                        </ul>
+                        <!-- /.list-inline -->
+                        </div>
+                        <!-- /.pagination-container --> </div>
+                    <!-- /.text-right -->
+
+                    </div>
+                    <!-- /.filters-container -->
+
+                </div>
         <!-- /.col -->
         <!-- ============================================== SIDEBAR ============================================== -->
         <div class="col-md-3 sidebar">
@@ -1313,4 +846,6 @@
         </div>
     </div>  
 </div>
+
+
 {% endblock %}

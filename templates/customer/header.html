@@ -1,4 +1,17 @@
 {% load static %}
+{% block head %}
+<style>
+  .dropdown-menu .dropdown-item {
+      color: black !important;
+      background-color: white !important;
+      display: block !important; /* Ensure items are block elements */
+      width: 100% !important;  
+  }
+  .dropdown-menu .dropdown-item:hover {
+      border: 1px solid !important; /* Slightly different background color on hover */
+  }
+</style>
+{% endblock %}
 <header class="header-style-1"> 
   <!-- ============================================== TOP MENU ============================================== -->
   <div class="top-bar animate-dropdown">
@@ -6,7 +19,24 @@
       <div class="header-top-inner">
         <div class="cnt-account">
           <ul class="list-unstyled">
-            <li><a href="#"><i class="icon fa fa-user"></i>My Account</a></li>
+            {% if request.user.is_authenticated %}
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="icon fa fa-user"></i> My Account
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="#">My Rewards</a>
+                        <a class="dropdown-item" href="{% url 'customer_profile' %}">My Profile</a>
+                        <a class="dropdown-item" href="{% url 'logout_view' %}">Log Out</a>
+                    </div>
+                </li>
+            {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'sign-in' %}">
+                        <i class="icon fa fa-heart"></i> Sign in
+                    </a>
+                </li>
+            {% endif %}
             <li><a href="#"><i class="icon fa fa-heart"></i>Wishlist</a></li>
             <li><a href="#"><i class="icon fa fa-shopping-cart"></i>My Cart</a></li>
             <li><a href="#"><i class="icon fa fa-check"></i>Checkout</a></li>

@@ -1,55 +1,60 @@
 {% extends 'customer/base.html' %}
 {% load static %}
 {% block head %}
-  <style>
-    .category-item {
-        margin: 8px;
-        padding: 6px;
-        background-color: #f9f9f9;
-        border: 1px solid #ccc;
-        width: 200px;
-        position: relative;
-    }
+<style>
+  .category-item {
+      margin: 8px;
+      width: 200px;
+      position: relative;
+  }
 
-    .subcategory-list, .brand-list {
-        display: none;
-        position: absolute;
-        top: 0;
-        left: 100%;
-        background-color: #fff;
-        border: 1px solid #ccc;
-        width: 200px;
-        z-index: 1000;
-    }
+  .subcategory-list, .brand-list {
+      display: none;
+      position: absolute;
+      top: 0;
+      left: 100%;
+      background-color: #fff;
+      border: 1px solid #ccc;
+      width: 200px;
+      z-index: 1000;
+  }
 
-    .category-item:hover .subcategory-list,
-    .subcategory-item:hover .brand-list {
-        display: block;
-    }
+  .category-item:hover > .subcategory-list,
+  .subcategory-item:hover > .brand-list {
+      display: block;
+  }
 
-    .subcategory-item {
-        position: relative;
-        float: none;
-        width: auto;
-    
-    }
-    /* Arrow icons */
-    .arrow::after {
-        content: " →";
-        float: right;
-        color: #888;
-        opacity: 0; /* Initially hidden */
-        transition: opacity 0.3s; /* Smooth transition */
-    }
+  .subcategory-item {
+      position: relative;
+      width: auto;
+  }
 
-    /* Show arrow icons when hovering over the names */
-    .category-item:hover .arrow::after,
-    .subcategory-item:hover .arrow::after {
-        opacity: 1;
-    }
+  .category-name, .subcategory-name, .brand-name {
+      text-decoration: none;
+      color: #333;
+      display: block;
+      padding: 8px;
+      position: relative;
+  }
 
-    
-  </style>
+  .category-name:hover, .subcategory-name:hover, .brand-name:hover {
+      background-color: #f0f0f0;
+  }
+
+  .arrow::after {
+      content: " →";
+      float: right;
+      color: #888;
+      opacity: 0;
+      transition: opacity 0.3s;
+  }
+
+  .category-item:hover .arrow::after,
+  .subcategory-item:hover .arrow::after {
+      opacity: 1;
+  }
+</style>
+
 {% endblock %}
 {% block content %}
 <!-- /.breadcrumb -->
@@ -88,6 +93,7 @@
                               <li class="subcategory-item">
                                   <a href="#" class="subcategory-name">
                                       {{ subcategory.name }}
+                                      <span class="arrow"></span>
                                   </a>
                                   <ul class="brand-list">
                                       {% for brand in subcategory.brand.all %}
